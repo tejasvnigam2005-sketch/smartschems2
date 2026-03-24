@@ -1,27 +1,70 @@
-// Text-to-Speech utility supporting Hindi and English
+// Text-to-Speech utility — improved Hindi support
 const TTS = {
   speaking: false,
   currentUtterance: null,
+  voicesLoaded: false,
+
+  // Pre-load voices (needed on some browsers)
+  init() {
+    if (this.voicesLoaded) return;
+    if ('speechSynthesis' in window) {
+      speechSynthesis.getVoices();
+      speechSynthesis.onvoiceschanged = () => { this.voicesLoaded = true; };
+    }
+  },
+
+  // Get the best voice for a language
+  getBestVoice(langCode) {
+    const voices = speechSynthesis.getVoices();
+    const lang = langCode.split('-')[0]; // 'hi' or 'en'
+
+    // Priority 1: Google voices (best quality)
+    const googleVoice = voices.find(v =>
+      v.lang.startsWith(lang) && v.name.toLowerCase().includes('google')
+    );
+    if (googleVoice) return googleVoice;
+
+    // Priority 2: Microsoft voices
+    const msVoice = voices.find(v =>
+      v.lang.startsWith(lang) && v.name.toLowerCase().includes('microsoft')
+    );
+    if (msVoice) return msVoice;
+
+    // Priority 3: Any voice matching the full lang code
+    const exactVoice = voices.find(v => v.lang === langCode);
+    if (exactVoice) return exactVoice;
+
+    // Priority 4: Any voice matching the language prefix
+    const prefixVoice = voices.find(v => v.lang.startsWith(lang));
+    if (prefixVoice) return prefixVoice;
+
+    return null;
+  },
 
   speak(text, lang = 'en-IN') {
     if (!('speechSynthesis' in window)) {
-      console.warn('Text-to-Speech not supported');
+      console.warn('Text-to-Speech not supported in this browser');
       return false;
     }
 
-    // Stop any ongoing speech
     this.stop();
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-    utterance.rate = 0.9;
-    utterance.pitch = 1;
+
+    // Hindi needs slower rate and higher pitch for clarity
+    if (lang.startsWith('hi')) {
+      utterance.rate = 0.85;
+      utterance.pitch = 1.05;
+    } else {
+      utterance.rate = 0.95;
+      utterance.pitch = 1;
+    }
     utterance.volume = 1;
 
-    // Try to find an appropriate voice
-    const voices = speechSynthesis.getVoices();
-    const langVoice = voices.find(v => v.lang.startsWith(lang.split('-')[0]));
-    if (langVoice) utterance.voice = langVoice;
+    // Set the best available voice
+    const voice = this.getBestVoice(lang);
+    if (voice) utterance.voice = voice;
 
     utterance.onstart = () => { this.speaking = true; };
     utterance.onend = () => { this.speaking = false; this.currentUtterance = null; };
@@ -33,7 +76,7 @@ const TTS = {
   },
 
   stop() {
-    if (speechSynthesis.speaking) {
+    if ('speechSynthesis' in window && speechSynthesis.speaking) {
       speechSynthesis.cancel();
     }
     this.speaking = false;
@@ -49,13 +92,28 @@ const TTS = {
     return true;
   },
 
-  // Generate scheme description text for TTS
+  // Generate natural scheme description for TTS
   schemeToSpeech(scheme, lang = 'en') {
     if (lang === 'hi') {
-      return `योजना का नाम: ${scheme.name}। विवरण: ${scheme.description}। लाभ: ${scheme.benefits?.join(', ')}। पात्रता: ${scheme.eligibility?.join(', ')}।`;
+      const benefits = scheme.benefits?.length
+        ? `इस योजना के लाभ हैं: ${scheme.benefits.join('। ')}`
+        : '';
+      const eligibility = scheme.eligibility?.length
+        ? `पात्रता: ${scheme.eligibility.join('। ')}`
+        : '';
+      return `योजना: ${scheme.name}। ${scheme.description}। ${benefits}। ${eligibility}`;
     }
-    return `Scheme name: ${scheme.name}. Description: ${scheme.description}. Benefits include: ${scheme.benefits?.join(', ')}. Eligibility: ${scheme.eligibility?.join(', ')}.`;
+    const benefits = scheme.benefits?.length
+      ? `Benefits include: ${scheme.benefits.join('. ')}`
+      : '';
+    const eligibility = scheme.eligibility?.length
+      ? `Eligibility criteria: ${scheme.eligibility.join('. ')}`
+      : '';
+    return `${scheme.name}. ${scheme.description}. ${benefits}. ${eligibility}`;
   }
 };
+
+// Init voices on load
+TTS.init();
 
 export default TTS;

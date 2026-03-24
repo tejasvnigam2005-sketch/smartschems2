@@ -712,29 +712,30 @@ const educationSchemes = [
   }
 ];
 
-async function seedDatabase() {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('✅ Connected to MongoDB for seeding');
+// Export for auto-seeding from server.js
+module.exports = { businessSchemes, educationSchemes };
 
-    // Clear existing data
-    await BusinessScheme.deleteMany({});
-    await EducationScheme.deleteMany({});
-    console.log('🗑️  Cleared existing schemes');
-
-    // Insert seed data
-    await BusinessScheme.insertMany(businessSchemes);
-    console.log(`✅ Seeded ${businessSchemes.length} business schemes`);
-
-    await EducationScheme.insertMany(educationSchemes);
-    console.log(`✅ Seeded ${educationSchemes.length} education schemes`);
-
-    console.log('\n🎉 Database seeding complete!');
-    process.exit(0);
-  } catch (error) {
-    console.error('❌ Seeding error:', error);
-    process.exit(1);
+// Run directly: node data/seed.js
+if (require.main === module) {
+  async function seedDatabase() {
+    try {
+      dotenv.config();
+      await mongoose.connect(process.env.MONGO_URI);
+      console.log('✅ Connected to MongoDB for seeding');
+      await BusinessScheme.deleteMany({});
+      await EducationScheme.deleteMany({});
+      console.log('🗑️  Cleared existing schemes');
+      await BusinessScheme.insertMany(businessSchemes);
+      console.log(`✅ Seeded ${businessSchemes.length} business schemes`);
+      await EducationScheme.insertMany(educationSchemes);
+      console.log(`✅ Seeded ${educationSchemes.length} education schemes`);
+      console.log('\n🎉 Database seeding complete!');
+      process.exit(0);
+    } catch (error) {
+      console.error('❌ Seeding error:', error);
+      process.exit(1);
+    }
   }
+  seedDatabase();
 }
 
-seedDatabase();
