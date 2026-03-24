@@ -12,7 +12,7 @@ const updates = [
 export default function UpdatesPage() {
   return (
     <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-surface)' }}>
-      <div className="max-w-2xl mx-auto px-6 py-10 sm:py-14">
+      <div style={{ maxWidth: '672px', margin: '0 auto', padding: '40px 24px 56px' }}>
         <div className="text-center mb-10 animate-fade-up">
           <div className="section-tag mx-auto mb-4">Feed</div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px', marginBottom: '8px' }}>Latest Updates</h1>
