@@ -26,117 +26,146 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
 
   return (
     <div
-      className="card animate-fade-up p-0 overflow-hidden"
-      style={{ animationDelay: `${index * 0.08}s` }}
+      className="scheme-card animate-fade-up"
+      style={{ animationDelay: `${index * 0.08}s`, padding: 0, overflow: 'hidden' }}
     >
       {/* Top accent line */}
-      <div className="h-[3px] bg-gradient-to-r from-primary-400 via-accent-400 to-primary-400" />
+      <div style={{ height: '3px', background: 'linear-gradient(90deg, #0B6E4F, #34D399, #0B6E4F)' }} />
 
-      <div className="p-5 sm:p-6">
+      <div style={{ padding: '20px 24px' }}>
         {/* Header row */}
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex-1 min-w-0">
-            <h3 className="text-[0.9375rem] font-bold text-slate-800 leading-snug mb-1">{scheme.name}</h3>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827', lineHeight: 1.4, marginBottom: '4px' }}>{scheme.name}</h3>
             {scheme.ministry && (
-              <p className="text-[0.6875rem] font-medium text-slate-400 uppercase tracking-wider">{scheme.ministry}</p>
+              <p style={{ fontSize: '0.6875rem', fontWeight: 500, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{scheme.ministry}</p>
             )}
           </div>
           {scheme.relevanceScore !== undefined && (
-            <div className="text-center shrink-0">
+            <div style={{ textAlign: 'center', flexShrink: 0 }}>
               <div className={`score-badge ${scoreClass(scheme.relevanceScore)}`}>
                 {scheme.relevanceScore}
               </div>
-              <p className="text-[0.625rem] text-slate-400 mt-1 font-medium">{scoreLabel(scheme.relevanceScore)}</p>
+              <p style={{ fontSize: '0.625rem', color: '#9CA3AF', marginTop: '4px', fontWeight: 500 }}>{scoreLabel(scheme.relevanceScore)}</p>
             </div>
           )}
         </div>
 
         {/* Description */}
-        <p className="text-[0.8125rem] text-slate-500 leading-relaxed mb-4">{scheme.description}</p>
+        <p style={{ fontSize: '0.8125rem', color: '#6B7280', lineHeight: 1.7, marginBottom: '16px' }}>{scheme.description}</p>
 
         {/* Quick info chips */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
           {(scheme.fundingAmount || scheme.scholarshipAmount) && (
-            <span className="tag bg-emerald-50 text-emerald-700">
+            <span className="tag-green" style={{ padding: '5px 12px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 600 }}>
               {scheme.fundingAmount || scheme.scholarshipAmount}
             </span>
           )}
-          <span className="tag bg-blue-50 text-blue-700">
+          <span style={{
+            padding: '5px 12px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 600,
+            background: 'rgba(59,130,246,0.06)', color: '#3B82F6', border: '1px solid rgba(59,130,246,0.12)',
+          }}>
             {scheme.deadline || 'Ongoing'}
           </span>
           {scheme.website && (
-            <a href={scheme.website} target="_blank" rel="noopener noreferrer" className="tag bg-slate-50 text-slate-600 hover:bg-slate-100 transition-colors no-underline">
-              Website ↗
+            <a href={scheme.website} target="_blank" rel="noopener noreferrer" style={{
+              padding: '5px 12px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 600,
+              background: '#F3F4F6', color: '#4B5563', textDecoration: 'none',
+              transition: 'all 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '4px',
+            }}>
+              Website
+              <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
             </a>
           )}
         </div>
 
         {/* Benefits */}
-        <div className="mb-4">
-          <p className="text-[0.6875rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">Benefits</p>
-          <ul className="space-y-1.5">
+        <div style={{ marginBottom: '16px' }}>
+          <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>Benefits</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {scheme.benefits?.slice(0, expanded ? undefined : 3).map((b, i) => (
-              <li key={i} className="flex items-start gap-2 text-[0.8125rem] text-slate-600">
-                <svg className="w-3.5 h-3.5 text-emerald-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <svg style={{ width: '14px', height: '14px', marginTop: '2px', flexShrink: 0, color: '#0B6E4F' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                <span>{b}</span>
-              </li>
+                <span style={{ fontSize: '0.8125rem', color: '#4B5563', lineHeight: 1.5 }}>{b}</span>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
 
         {/* Expanded content */}
         {expanded && (
-          <div className="space-y-4 animate-fade-in">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', animation: 'fade-in 0.25s ease both' }}>
             <div>
-              <p className="text-[0.6875rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">Eligibility</p>
-              <ul className="space-y-1.5">
+              <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>Eligibility</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {scheme.eligibility?.map((e, i) => (
-                  <li key={i} className="flex items-start gap-2 text-[0.8125rem] text-slate-600">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary-400 mt-1.5 shrink-0" />
-                    <span>{e}</span>
-                  </li>
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                    <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#0B6E4F', marginTop: '7px', flexShrink: 0 }} />
+                    <span style={{ fontSize: '0.8125rem', color: '#4B5563', lineHeight: 1.5 }}>{e}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
             <div>
-              <p className="text-[0.6875rem] font-semibold text-slate-400 uppercase tracking-wider mb-2">How to Apply</p>
-              <ol className="space-y-2">
+              <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>How to Apply</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {scheme.applicationProcess?.map((step, i) => (
-                  <li key={i} className="flex items-start gap-3 text-[0.8125rem] text-slate-600">
-                    <span className="w-5 h-5 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-[0.625rem] font-bold shrink-0 mt-0.5">
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                    <span style={{
+                      width: '22px', height: '22px', borderRadius: '50%',
+                      background: 'rgba(11,110,79,0.06)', color: '#0B6E4F',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '0.625rem', fontWeight: 800, flexShrink: 0, marginTop: '1px',
+                    }}>
                       {i + 1}
                     </span>
-                    <span>{step}</span>
-                  </li>
+                    <span style={{ fontSize: '0.8125rem', color: '#4B5563', lineHeight: 1.5 }}>{step}</span>
+                  </div>
                 ))}
-              </ol>
+              </div>
             </div>
           </div>
         )}
 
         {/* Footer */}
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #F3F4F6',
+        }}>
           <button
             onClick={() => setExpanded(!expanded)}
-            className="text-[0.8125rem] font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+            style={{
+              fontSize: '0.8125rem', fontWeight: 600, color: '#0B6E4F',
+              background: 'none', border: 'none', cursor: 'pointer',
+              transition: 'all 0.2s ease', padding: '4px 0',
+              display: 'flex', alignItems: 'center', gap: '4px',
+            }}
           >
             {expanded ? '← Less' : 'Details →'}
           </button>
 
-          <div className="flex items-center gap-1.5">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <button
               onClick={() => setLang(l => l === 'en' ? 'hi' : 'en')}
-              className="px-2.5 py-1.5 rounded-lg text-[0.6875rem] font-semibold bg-slate-50 text-slate-500 hover:bg-slate-100 transition-colors"
+              style={{
+                padding: '5px 10px', borderRadius: '8px',
+                fontSize: '0.6875rem', fontWeight: 600,
+                background: '#F3F4F6', color: '#6B7280',
+                border: 'none', cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
             >
               {lang === 'en' ? 'हिंदी' : 'ENG'}
             </button>
             <button onClick={handleTTS} className={`audio-btn ${playing ? 'playing' : ''}`} title={playing ? 'Stop' : 'Listen'}>
               {playing ? (
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" /><rect x="14" y="4" width="4" height="16" rx="1" /></svg>
+                <svg style={{ width: '14px', height: '14px' }} fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1" /><rect x="14" y="4" width="4" height="16" rx="1" /></svg>
               ) : (
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                <svg style={{ width: '14px', height: '14px' }} fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               )}
             </button>
           </div>

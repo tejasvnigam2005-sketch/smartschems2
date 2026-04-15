@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRecommendations } from '../utils/api';
+import Footer from '../components/Footer';
 
 const STATES = ['all','andhra pradesh','arunachal pradesh','assam','bihar','chhattisgarh','goa','gujarat','haryana','himachal pradesh','jharkhand','karnataka','kerala','madhya pradesh','maharashtra','manipur','meghalaya','mizoram','nagaland','odisha','punjab','rajasthan','sikkim','tamil nadu','telangana','tripura','uttar pradesh','uttarakhand','west bengal','jammu & kashmir','ladakh','delhi','chandigarh'];
 const cap = s => s === 'all' ? 'All India' : s.replace(/\b\w/g, c => c.toUpperCase());
@@ -25,19 +26,29 @@ export default function BusinessFormPage() {
   };
 
   return (
-    <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-surface)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
-      <div style={{ width: '100%', maxWidth: '460px', padding: '48px 24px 64px' }}>
-        {/* Header */}
-        <div className="text-center animate-fade-up" style={{ marginBottom: '32px' }}>
+    <div style={{ paddingTop: '64px', minHeight: '100vh', background: '#fff' }}>
+      {/* Hero */}
+      <div style={{
+        background: 'linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 50%, #F9FAFB 100%)',
+        padding: '48px 0 40px',
+        borderBottom: '1px solid rgba(11,110,79,0.06)',
+      }}>
+        <div className="container animate-fade-up" style={{ textAlign: 'center' }}>
           <div className="section-tag" style={{ margin: '0 auto 16px' }}>Business</div>
-          <h1 style={{ fontSize: '1.625rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px', marginBottom: '8px' }}>Business Schemes</h1>
-          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Tell us about your business for AI recommendations</p>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px', marginBottom: '8px' }}>Business Schemes</h1>
+          <p style={{ fontSize: '0.9375rem', color: '#6B7280', maxWidth: '400px', margin: '0 auto' }}>Tell us about your business for AI-powered recommendations</p>
         </div>
+      </div>
 
-        {/* Form Card */}
-        <form onSubmit={submit} className="card animate-fade-up delay-1" style={{ padding: '32px 28px' }}>
+      {/* Form area */}
+      <div style={{ maxWidth: '500px', margin: '0 auto', padding: '40px 24px 64px' }}>
+        <form onSubmit={submit} className="card-static animate-fade-up delay-1" style={{ padding: '32px 28px', borderRadius: '20px' }}>
           {error && (
-            <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '10px', padding: '10px 14px', marginBottom: '20px', color: '#EF4444', fontSize: '0.8125rem', fontWeight: 500, textAlign: 'center' }}>
+            <div style={{
+              background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)',
+              borderRadius: '12px', padding: '12px 16px', marginBottom: '20px',
+              color: '#EF4444', fontSize: '0.8125rem', fontWeight: 500, textAlign: 'center',
+            }}>
               {error}
             </div>
           )}
@@ -78,10 +89,20 @@ export default function BusinessFormPage() {
           </div>
 
           <button type="submit" disabled={loading} className="btn-primary" style={{ width: '100%', marginTop: '28px', height: '50px' }}>
-            {loading ? <><div className="spinner" /> Finding Schemes…</> : 'Get AI Recommendations'}
+            {loading ? <><div className="spinner" /> Finding Schemes…</> : (
+              <>
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <circle cx="11" cy="11" r="8" />
+                  <path strokeLinecap="round" d="m21 21-4.35-4.35" />
+                </svg>
+                Get AI Recommendations
+              </>
+            )}
           </button>
         </form>
       </div>
+
+      <Footer />
     </div>
   );
 }

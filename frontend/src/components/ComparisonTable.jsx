@@ -7,55 +7,65 @@ export default function ComparisonTable({ schemes, schemeType }) {
   const medals = ['🥇', '🥈', '🥉'];
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200">
+    <div style={{ overflowX: 'auto', borderRadius: '16px', border: '1px solid #E5E7EB' }}>
       <table className="comparison-table">
         <thead>
           <tr>
-            <th className="min-w-[200px]">Scheme</th>
-            <th className="min-w-[120px]">{schemeType === 'business' ? 'Funding' : 'Scholarship'}</th>
-            <th className="min-w-[200px]">Key Benefits</th>
-            <th className="min-w-[180px]">Eligibility</th>
+            <th style={{ minWidth: '200px' }}>Scheme</th>
+            <th style={{ minWidth: '120px' }}>{schemeType === 'business' ? 'Funding' : 'Scholarship'}</th>
+            <th style={{ minWidth: '200px' }}>Key Benefits</th>
+            <th style={{ minWidth: '180px' }}>Eligibility</th>
             <th>Deadline</th>
-            <th className="text-center">Score</th>
+            <th style={{ textAlign: 'center' }}>Score</th>
           </tr>
         </thead>
         <tbody>
           {schemes.map((scheme, idx) => (
             <tr key={scheme._id || idx}>
-              <td className="font-semibold text-slate-700">
-                <span className="mr-1.5">{medals[idx] || ''}</span>
+              <td style={{ fontWeight: 600, color: '#374151' }}>
+                <span style={{ marginRight: '6px' }}>{medals[idx] || ''}</span>
                 {scheme.name}
               </td>
               <td>
-                <span className="tag bg-emerald-50 text-emerald-700">
+                <span style={{
+                  padding: '4px 10px', borderRadius: '8px',
+                  fontSize: '0.75rem', fontWeight: 600,
+                  background: 'rgba(11,110,79,0.06)', color: '#0B6E4F',
+                }}>
                   {scheme.fundingAmount || scheme.scholarshipAmount || 'N/A'}
                 </span>
               </td>
               <td>
-                <ul className="space-y-1">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {scheme.benefits?.slice(0, 2).map((b, i) => (
-                    <li key={i} className="flex items-start gap-1.5 text-slate-500">
-                      <svg className="w-3 h-3 text-emerald-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', color: '#6B7280' }}>
+                      <svg style={{ width: '12px', height: '12px', marginTop: '2px', flexShrink: 0, color: '#0B6E4F' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-xs">{b}</span>
-                    </li>
+                      <span style={{ fontSize: '0.75rem' }}>{b}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </td>
               <td>
-                <ul className="space-y-1">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {scheme.eligibility?.slice(0, 2).map((e, i) => (
-                    <li key={i} className="text-xs text-slate-400">• {e}</li>
+                    <div key={i} style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>• {e}</div>
                   ))}
-                </ul>
+                </div>
               </td>
               <td>
-                <span className="tag bg-blue-50 text-blue-700">{scheme.deadline || 'Ongoing'}</span>
+                <span style={{
+                  padding: '4px 10px', borderRadius: '8px',
+                  fontSize: '0.75rem', fontWeight: 600,
+                  background: 'rgba(59,130,246,0.06)', color: '#3B82F6',
+                }}>
+                  {scheme.deadline || 'Ongoing'}
+                </span>
               </td>
-              <td className="text-center">
+              <td style={{ textAlign: 'center' }}>
                 {scheme.relevanceScore !== undefined && (
-                  <div className={`score-badge mx-auto ${scoreClass(scheme.relevanceScore)}`}>
+                  <div className={`score-badge ${scoreClass(scheme.relevanceScore)}`} style={{ margin: '0 auto' }}>
                     {scheme.relevanceScore}
                   </div>
                 )}

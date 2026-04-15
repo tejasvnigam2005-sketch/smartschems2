@@ -26,20 +26,40 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-20">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8 animate-fade-up">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-sm mx-auto mb-4">S</div>
-          <h1 className="text-xl font-bold text-slate-800">Create Account</h1>
-          <p className="text-[0.8125rem] text-slate-400 mt-1">Join SmartSchemes to save preferences</p>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: 'linear-gradient(135deg, #F0FDF4 0%, #fff 50%, #F9FAFB 100%)',
+      padding: '20px',
+    }}>
+      <div style={{ width: '100%', maxWidth: '400px' }}>
+        <div className="animate-fade-up" style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{
+            width: '44px', height: '44px', borderRadius: '14px',
+            background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', fontWeight: 700, fontSize: '1rem',
+            margin: '0 auto 16px',
+            boxShadow: '0 4px 12px rgba(11,110,79,0.2)',
+          }}>
+            S
+          </div>
+          <h1 style={{ fontSize: '1.375rem', fontWeight: 800, color: '#111827' }}>Create Account</h1>
+          <p style={{ fontSize: '0.8125rem', color: '#9CA3AF', marginTop: '6px' }}>Join SmartSchemes to save preferences</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card p-6 sm:p-8 animate-fade-up delay-1">
+        <form onSubmit={handleSubmit} className="card-static animate-fade-up delay-1" style={{ padding: '28px', borderRadius: '20px' }}>
           {error && (
-            <div className="mb-5 px-4 py-3 rounded-lg bg-red-50 border border-red-100 text-[0.8125rem] text-red-600">{error}</div>
+            <div style={{
+              marginBottom: '20px', padding: '12px 16px', borderRadius: '12px',
+              background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)',
+              fontSize: '0.8125rem', color: '#EF4444',
+            }}>
+              {error}
+            </div>
           )}
 
-          <div className="space-y-5">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
               <label className="form-label">Full Name</label>
               <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required placeholder="John Doe" className="form-input" />
@@ -58,12 +78,13 @@ export default function SignupPage() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className="btn-primary w-full mt-6 !py-3">
+          <button type="submit" disabled={loading} className="btn-primary" style={{ width: '100%', marginTop: '24px', height: '48px' }}>
             {loading ? 'Creating Account…' : 'Create Account'}
           </button>
 
-          <p className="text-center text-[0.8125rem] text-slate-400 mt-5">
-            Already have an account? <Link to="/login" className="text-primary-600 font-semibold hover:underline">Login</Link>
+          <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: '#9CA3AF', marginTop: '20px' }}>
+            Already have an account?{' '}
+            <Link to="/login" style={{ color: '#0B6E4F', fontWeight: 600, textDecoration: 'none' }}>Login</Link>
           </p>
         </form>
       </div>

@@ -1,16 +1,28 @@
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 export default function ProfilePage() {
   const { user } = useAuth();
 
   if (!user) {
     return (
-      <div className="min-h-screen pt-[60px] flex items-center justify-center">
-        <div className="text-center animate-fade-up">
-          <p className="text-4xl mb-3">🔒</p>
-          <h2 className="text-xl font-bold text-slate-800 mb-1.5">Login Required</h2>
-          <p className="text-[0.875rem] text-slate-400 mb-6">Please login to view your profile</p>
+      <div style={{
+        minHeight: '100vh', paddingTop: '64px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: '#fff',
+      }}>
+        <div className="animate-fade-up" style={{ textAlign: 'center' }}>
+          <div style={{
+            width: '56px', height: '56px', borderRadius: '16px',
+            background: 'rgba(11,110,79,0.06)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1.5rem', margin: '0 auto 16px',
+          }}>
+            🔒
+          </div>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827', marginBottom: '6px' }}>Login Required</h2>
+          <p style={{ fontSize: '0.875rem', color: '#9CA3AF', marginBottom: '24px' }}>Please login to view your profile</p>
           <Link to="/login" className="btn-primary">Login</Link>
         </div>
       </div>
@@ -22,30 +34,47 @@ export default function ProfilePage() {
   const history = user.searchHistory || [];
 
   return (
-    <div className="min-h-screen bg-white pt-[60px]">
-      <div className="max-w-2xl mx-auto px-6 py-10 sm:py-14">
+    <div style={{ minHeight: '100vh', background: '#fff', paddingTop: '64px' }}>
+      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '32px 24px 56px' }}>
         {/* Profile Header */}
-        <div className="card overflow-hidden mb-6 animate-fade-up">
-          <div className="h-24 bg-gradient-to-r from-primary-600 to-accent-500" />
-          <div className="px-6 pb-6">
-            <div className="flex items-end gap-4 -mt-8 mb-5">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-500 flex items-center justify-center text-white text-2xl font-bold border-[3px] border-white shadow-sm">
+        <div className="card-static animate-fade-up" style={{ overflow: 'hidden', marginBottom: '24px', borderRadius: '20px' }}>
+          <div style={{
+            height: '100px',
+            background: 'linear-gradient(135deg, #0B6E4F, #10B981, #34D399)',
+            position: 'relative',
+          }}>
+            <div style={{
+              position: 'absolute', top: '10%', right: '10%',
+              width: '80px', height: '80px', borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)',
+            }} />
+          </div>
+          <div style={{ padding: '0 24px 24px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginTop: '-32px', marginBottom: '20px' }}>
+              <div style={{
+                width: '64px', height: '64px', borderRadius: '18px',
+                background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#fff', fontSize: '1.5rem', fontWeight: 800,
+                border: '3px solid #fff',
+                boxShadow: '0 4px 12px rgba(11,110,79,0.2)',
+              }}>
                 {user.name?.[0]?.toUpperCase()}
               </div>
-              <div className="pb-0.5">
-                <h1 className="text-xl font-bold text-slate-800">{user.name}</h1>
-                <p className="text-[0.8125rem] text-slate-400">{user.email}</p>
+              <div style={{ paddingBottom: '2px' }}>
+                <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827' }}>{user.name}</h1>
+                <p style={{ fontSize: '0.8125rem', color: '#9CA3AF' }}>{user.email}</p>
               </div>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div className="bg-blue-50/70 rounded-xl px-4 py-3">
-                <p className="text-[0.625rem] font-semibold text-blue-500 uppercase tracking-wider mb-0.5">Account</p>
-                <p className="text-sm font-bold text-blue-700">Free Plan</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div style={{ background: 'rgba(11,110,79,0.04)', borderRadius: '14px', padding: '14px 16px' }}>
+                <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#0B6E4F', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Account</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0B6E4F' }}>Free Plan</p>
               </div>
-              <div className="bg-purple-50/70 rounded-xl px-4 py-3">
-                <p className="text-[0.625rem] font-semibold text-purple-500 uppercase tracking-wider mb-0.5">Joined</p>
-                <p className="text-sm font-bold text-purple-700">
+              <div style={{ background: 'rgba(139,92,246,0.04)', borderRadius: '14px', padding: '14px 16px' }}>
+                <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Joined</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#7C3AED' }}>
                   {new Date(user.createdAt || Date.now()).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
                 </p>
               </div>
@@ -54,77 +83,100 @@ export default function ProfilePage() {
         </div>
 
         {/* Preferences */}
-        <div className="card p-6 mb-6 animate-fade-up delay-1">
-          <h2 className="text-[0.9375rem] font-bold text-slate-800 mb-4">Saved Preferences</h2>
+        <div className="card-static animate-fade-up delay-1" style={{ padding: '24px', marginBottom: '24px', borderRadius: '20px' }}>
+          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
+              <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            Saved Preferences
+          </h2>
           {hasPrefs ? (
-            <div className="grid sm:grid-cols-2 gap-3">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               {pref.category && (
-                <div className="bg-slate-50 rounded-xl px-4 py-3">
-                  <p className="text-[0.625rem] font-semibold text-slate-400 uppercase tracking-wider">Category</p>
-                  <p className="text-sm font-semibold text-slate-700 mt-0.5 capitalize">{pref.category}</p>
+                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Category</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px', textTransform: 'capitalize' }}>{pref.category}</p>
                 </div>
               )}
               {pref.state && (
-                <div className="bg-slate-50 rounded-xl px-4 py-3">
-                  <p className="text-[0.625rem] font-semibold text-slate-400 uppercase tracking-wider">State</p>
-                  <p className="text-sm font-semibold text-slate-700 mt-0.5 capitalize">{pref.state}</p>
+                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>State</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px', textTransform: 'capitalize' }}>{pref.state}</p>
                 </div>
               )}
               {pref.age && (
-                <div className="bg-slate-50 rounded-xl px-4 py-3">
-                  <p className="text-[0.625rem] font-semibold text-slate-400 uppercase tracking-wider">Age</p>
-                  <p className="text-sm font-semibold text-slate-700 mt-0.5">{pref.age}</p>
+                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Age</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px' }}>{pref.age}</p>
                 </div>
               )}
               {pref.income && (
-                <div className="bg-slate-50 rounded-xl px-4 py-3">
-                  <p className="text-[0.625rem] font-semibold text-slate-400 uppercase tracking-wider">Income</p>
-                  <p className="text-sm font-semibold text-slate-700 mt-0.5">₹{pref.income?.toLocaleString()}</p>
+                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Income</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px' }}>₹{pref.income?.toLocaleString()}</p>
                 </div>
               )}
             </div>
           ) : (
-            <div className="text-center py-6 text-slate-300">
-              <p className="text-2xl mb-1">📋</p>
-              <p className="text-[0.8125rem]">No preferences saved yet</p>
+            <div style={{ textAlign: 'center', padding: '24px 0', color: '#D1D5DB' }}>
+              <p style={{ fontSize: '1.5rem', marginBottom: '4px' }}>📋</p>
+              <p style={{ fontSize: '0.8125rem' }}>No preferences saved yet</p>
             </div>
           )}
         </div>
 
         {/* Search History */}
-        <div className="card p-6 mb-8 animate-fade-up delay-2">
-          <h2 className="text-[0.9375rem] font-bold text-slate-800 mb-4">Past Searches</h2>
+        <div className="card-static animate-fade-up delay-2" style={{ padding: '24px', marginBottom: '32px', borderRadius: '20px' }}>
+          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Past Searches
+          </h2>
           {history.length > 0 ? (
-            <div className="space-y-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {history.slice(-10).reverse().map((s, i) => (
-                <div key={i} className="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-base">{s.category === 'business' ? '💼' : '🎓'}</span>
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px',
+                  transition: 'all 0.2s ease',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ fontSize: '1rem' }}>{s.category === 'business' ? '💼' : '🎓'}</span>
                     <div>
-                      <p className="text-[0.8125rem] font-semibold text-slate-700 capitalize">{s.category} Search</p>
-                      <p className="text-[0.6875rem] text-slate-400">
+                      <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151', textTransform: 'capitalize' }}>{s.category} Search</p>
+                      <p style={{ fontSize: '0.6875rem', color: '#9CA3AF' }}>
                         {new Date(s.searchedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </div>
                   </div>
-                  <span className="tag bg-primary-50 text-primary-600">{s.results?.length || 0} results</span>
+                  <span style={{
+                    padding: '4px 10px', borderRadius: '8px',
+                    fontSize: '0.75rem', fontWeight: 600,
+                    background: 'rgba(11,110,79,0.06)', color: '#0B6E4F',
+                  }}>
+                    {s.results?.length || 0} results
+                  </span>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-6 text-slate-300">
-              <p className="text-2xl mb-1">🔍</p>
-              <p className="text-[0.8125rem]">No searches yet</p>
+            <div style={{ textAlign: 'center', padding: '24px 0', color: '#D1D5DB' }}>
+              <p style={{ fontSize: '1.5rem', marginBottom: '4px' }}>🔍</p>
+              <p style={{ fontSize: '0.8125rem' }}>No searches yet</p>
             </div>
           )}
         </div>
 
         {/* Quick Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-up delay-3">
+        <div className="animate-fade-up delay-3" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link to="/business" className="btn-primary">Explore Business Schemes</Link>
           <Link to="/education" className="btn-secondary">Explore Education Schemes</Link>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
