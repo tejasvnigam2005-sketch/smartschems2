@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="footer">
       <div className="container">
@@ -21,7 +23,7 @@ export default function Footer() {
               </span>
             </div>
             <p style={{ fontSize: '0.8125rem', color: '#6B7280', lineHeight: 1.7, maxWidth: '280px', marginBottom: '20px' }}>
-              Empowering Indian citizens through transparent and efficient access to government opportunities. Our platform ensures you never miss a benefit you’re eligible for.
+              {t('footer.desc')}
             </p>
             <div style={{ display: 'flex', gap: '8px' }}>
               <a href="#" style={{
@@ -47,10 +49,10 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '16px' }}>Resources</h4>
+            <h4 style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '16px' }}>{t('footer.resources')}</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {[
-                { label: 'Official Indian Portals', href: '#' },
+                { label: t('footer.officialPortals'), href: '#' },
                 { label: 'MyGov India', href: 'https://mygov.in' },
                 { label: 'National Portal', href: 'https://india.gov.in' },
               ].map(link => (
@@ -65,12 +67,12 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '16px' }}>Legal</h4>
+            <h4 style={{ fontSize: '0.75rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '16px' }}>{t('footer.legal')}</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {[
-                { label: 'Privacy Policy', path: '#' },
-                { label: 'Terms of Service', path: '#' },
-                { label: 'Disclaimer', path: '#' },
+                { label: t('footer.privacy'), path: '#' },
+                { label: t('footer.terms'), path: '#' },
+                { label: t('footer.disclaimer'), path: '#' },
               ].map(link => (
                 <Link key={link.label} to={link.path} style={{
                   fontSize: '0.8125rem', color: '#4B5563', transition: 'color 0.2s ease', textDecoration: 'none',
@@ -93,11 +95,11 @@ export default function Footer() {
           gap: '8px',
         }}>
           <p style={{ fontSize: '0.6875rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            © 2026 SMARTSCHEMES. INDEPENDENT PLATFORM FOR CITIZEN AWARENESS. NOT AFFILIATED WITH GOVERNMENT ENTITIES.
+            {t('footer.copyright')}
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' }} />
-            <span style={{ fontSize: '0.6875rem', color: '#9CA3AF' }}>SYSTEM STATUS: OPTIMAL</span>
+            <span style={{ fontSize: '0.6875rem', color: '#9CA3AF' }}>{t('footer.systemStatus')}</span>
           </div>
         </div>
       </div>

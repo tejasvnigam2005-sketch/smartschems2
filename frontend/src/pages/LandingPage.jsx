@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Footer from '../components/Footer';
+import { useLanguage } from '../context/LanguageContext';
 
 const topSchemes = [
   {
@@ -51,6 +52,7 @@ export default function LandingPage() {
   const sectionRef = useScrollReveal();
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
+  const { t } = useLanguage();
   const [zooming, setZooming] = useState(false);
 
   const handleFindSchemes = (e) => {
@@ -112,18 +114,18 @@ export default function LandingPage() {
               letterSpacing: '-1px',
               marginBottom: '18px',
             }}>
-              Find the Best{' '}
+              {t('landing.heroTitle1')}{' '}
               <br />
-              Government Schemes{' '}
+              {t('landing.heroTitle2')}{' '}
               <br />
-              for You in{' '}
+              {t('landing.heroTitle3')}{' '}
               <span style={{
                 color: '#0B6E4F',
                 textDecoration: 'underline',
                 textDecorationColor: '#0B6E4F',
                 textUnderlineOffset: '4px',
                 textDecorationThickness: '3px',
-              }}>India</span>
+              }}>{t('landing.heroTitle4')}</span>
             </h1>
             <p style={{
               fontSize: '1rem',
@@ -132,7 +134,7 @@ export default function LandingPage() {
               margin: '0 auto',
               lineHeight: 1.7,
             }}>
-              Personalized recommendations tailored to your profile. Navigate the complex landscape of subsidies, grants, and social welfare with ease.
+              {t('landing.heroDesc')}
             </p>
           </div>
 
@@ -154,7 +156,7 @@ export default function LandingPage() {
             <div className="hero-search">
               <div className="hero-search-grid">
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>Your Age</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.yourAge')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -163,7 +165,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>Annual Income (₹)</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.annualIncome')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -172,25 +174,25 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>State</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.state')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>Select State</span>
+                    <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>{t('landing.selectState')}</span>
                     <svg width="12" height="12" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
                       <path d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>Category</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.category')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
-                    <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>Select Category</span>
+                    <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>{t('landing.selectCategory')}</span>
                     <svg width="12" height="12" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
                       <path d="M19 9l-7 7-7-7" />
                     </svg>
@@ -210,7 +212,7 @@ export default function LandingPage() {
                   <circle cx="11" cy="11" r="8" />
                   <path strokeLinecap="round" d="m21 21-4.35-4.35" />
                 </svg>
-                Find My Schemes
+                {t('landing.findMySchemes')}
               </button>
             </div>
           </div>
@@ -229,8 +231,8 @@ export default function LandingPage() {
         <div className="container">
           <div className="scroll-reveal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
             <div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px' }}>Top Schemes For You</h2>
-              <p style={{ fontSize: '0.875rem', color: '#6B7280', marginTop: '4px' }}>Based on current trends and demographic eligibility in your region.</p>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px' }}>{t('landing.topSchemes')}</h2>
+              <p style={{ fontSize: '0.875rem', color: '#6B7280', marginTop: '4px' }}>{t('landing.topSchemesDesc')}</p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
               <button style={{
@@ -321,7 +323,7 @@ export default function LandingPage() {
                   textDecoration: 'none', transition: 'all 0.2s ease',
                   paddingTop: '12px', borderTop: '1px solid #F3F4F6', width: '100%',
                 }}>
-                  View Details
+                  {t('landing.viewDetails')}
                   <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
                   </svg>
@@ -365,7 +367,7 @@ export default function LandingPage() {
                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: '24px' }}>
                   <div style={{ fontSize: '2.25rem', fontWeight: 800, color: '#fff', marginBottom: '6px', textAlign: 'center' }}>98%</div>
                   <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.65)', lineHeight: 1.5, textAlign: 'center' }}>
-                    Success rate in identifying eligible schemes
+                    {t('landing.successRate')}
                   </p>
                 </div>
               </div>
@@ -381,10 +383,10 @@ export default function LandingPage() {
                 letterSpacing: '-0.5px',
                 marginBottom: '16px',
               }}>
-                Smart Scheme Discovery<br />for Every Citizen
+                {t('landing.smartDiscovery')}<br />{t('landing.forEveryCitizen')}
               </h2>
               <p style={{ fontSize: '0.9375rem', color: '#6B7280', lineHeight: 1.7, marginBottom: '28px' }}>
-                No more searching through endless PDF documents. SmartSchemes instantly matches your profile against thousands of active government schemes from Central and State portals.
+                {t('landing.smartDiscoveryDesc')}
               </p>
 
               <div className="feature-sub-grid" style={{ marginBottom: '28px' }}>
@@ -400,8 +402,8 @@ export default function LandingPage() {
                     </svg>
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>Instant Match</h4>
-                    <p style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: 1.5 }}>Get results in under 2 seconds across 2,000+ active schemes.</p>
+                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>{t('landing.instantMatch')}</h4>
+                    <p style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: 1.5 }}>{t('landing.instantMatchDesc')}</p>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
@@ -416,8 +418,8 @@ export default function LandingPage() {
                     </svg>
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>Multi-lingual</h4>
-                    <p style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: 1.5 }}>Access complex information in your preferred local Indian language.</p>
+                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>{t('landing.multiLingual')}</h4>
+                    <p style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: 1.5 }}>{t('landing.multiLingualDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -434,7 +436,7 @@ export default function LandingPage() {
                 textDecoration: 'none',
                 transition: 'all 0.25s ease',
               }}>
-                Learn How it Works
+                {t('landing.learnHow')}
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
@@ -470,13 +472,13 @@ export default function LandingPage() {
                 fontSize: '0.625rem', fontWeight: 700, color: '#34D399',
                 textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '16px',
               }}>
-                EXCLUSIVE INITIATIVE
+                {t('landing.exclusiveInitiative')}
               </div>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', lineHeight: 1.25, marginBottom: '12px' }}>
-                Vocal for Local: Digital MSME Transformation
+                {t('landing.vocalForLocal')}
               </h3>
               <p style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, marginBottom: '24px' }}>
-                Access zero-interest loans and technology grants to take your local business to the global market. Over 2,000 businesses joined last month.
+                {t('landing.vocalDesc')}
               </p>
               <Link to="/explore" style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
@@ -489,7 +491,7 @@ export default function LandingPage() {
                 textDecoration: 'none',
                 transition: 'all 0.25s ease',
               }}>
-                Apply for Digital Grant
+                {t('landing.applyGrant')}
               </Link>
               </div>
             </div>
@@ -505,7 +507,7 @@ export default function LandingPage() {
                 fontSize: '1.125rem', fontWeight: 700,
                 color: '#92400E', marginBottom: '20px',
               }}>
-                Upcoming Deadlines
+                {t('landing.upcomingDeadlines')}
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px' }}>
                 {[
@@ -537,7 +539,7 @@ export default function LandingPage() {
                 color: '#92400E', fontWeight: 600, fontSize: '0.8125rem',
                 textDecoration: 'none', transition: 'all 0.2s ease',
               }}>
-                View All Deadlines
+                {t('landing.viewAllDeadlines')}
               </Link>
             </div>
           </div>

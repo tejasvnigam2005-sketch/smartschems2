@@ -1,4 +1,7 @@
+import { useLanguage } from '../context/LanguageContext';
+
 export default function ComparisonTable({ schemes, schemeType }) {
+  const { t } = useLanguage();
   if (!schemes || schemes.length === 0) return null;
 
   const scoreClass = (s) =>
@@ -11,12 +14,12 @@ export default function ComparisonTable({ schemes, schemeType }) {
       <table className="comparison-table">
         <thead>
           <tr>
-            <th style={{ minWidth: '200px' }}>Scheme</th>
-            <th style={{ minWidth: '120px' }}>{schemeType === 'business' ? 'Funding' : 'Scholarship'}</th>
-            <th style={{ minWidth: '200px' }}>Key Benefits</th>
-            <th style={{ minWidth: '180px' }}>Eligibility</th>
-            <th>Deadline</th>
-            <th style={{ textAlign: 'center' }}>Score</th>
+            <th style={{ minWidth: '200px' }}>SCHEME</th>
+            <th style={{ minWidth: '120px' }}>FUNDING</th>
+            <th style={{ minWidth: '200px' }}>{t('scheme.benefits').toUpperCase()}</th>
+            <th style={{ minWidth: '180px' }}>{t('scheme.eligibility').toUpperCase()}</th>
+            <th>{t('scheme.ongoing').toUpperCase()}</th>
+            <th style={{ textAlign: 'center' }}>SCORE</th>
           </tr>
         </thead>
         <tbody>
@@ -60,7 +63,7 @@ export default function ComparisonTable({ schemes, schemeType }) {
                   fontSize: '0.75rem', fontWeight: 600,
                   background: 'rgba(59,130,246,0.06)', color: '#3B82F6',
                 }}>
-                  {scheme.deadline || 'Ongoing'}
+                  {scheme.deadline || t('scheme.ongoing')}
                 </span>
               </td>
               <td style={{ textAlign: 'center' }}>
