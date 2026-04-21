@@ -1,0 +1,21 @@
+[build]
+  base = "/"
+  # Install frontend & backend dependencies, then build frontend
+  command = "cd frontend && npm install && npm run build && cd ../backend && npm install"
+  publish = "frontend/dist"
+
+[functions]
+  directory = "backend/functions"
+  node_bundler = "esbuild"
+
+# Proxy /api calls to the Netlify Function backend
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Fallback for React Router (SPA)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
