@@ -1,33 +1,33 @@
 const express = require('express');
-const BusinessScheme = require('../models/BusinessScheme');
+const supabase = require('../config/supabase');
 const router = express.Router();
 
 // GET /api/business-schemes
 router.get('/', async (req, res) => {
   try {
     const { businessType, state, page = 1, limit = 10 } = req.query;
-    const query = { isActive: true };
+    const offset = (page - 1) * limit;
 
-    if (businessType) query.businessType = { $in: [businessType, 'all'] };
-    if (state) query.states = { $in: [state.toLowerCase(), 'all'] };
+    let query = supabase.from('business_schemes').select('*', { count: 'exact' }).eq('is_active', true);
 
-    const schemes = await BusinessScheme.find(query)
-      .skip((page - 1) * limit)
-      .limit(Number(limit))
-      .sort({ createdAt: -1 })
-      .lean();
+    if (businessType) query = query.contains('business_type', [businessType]);
+    if (state) query = query.contains('states', [state.toLowerCase()]);
 
-    const total = await BusinessScheme.countDocuments(query);
+    query = query.order('created_at', { ascending: false }).range(offset, offset + Number(limit) - 1);
+
+    const { data, count, error } = await query;
+    if (error) throw error;
 
     res.json({
-      schemes,
+      schemes: data || [],
       pagination: {
-        total,
+        total: count || 0,
         page: Number(page),
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil((count || 0) / limit)
       }
     });
   } catch (error) {
+    console.error('Business schemes error:', error);
     res.status(500).json({ message: 'Server error fetching business schemes' });
   }
 });
@@ -35,9 +35,9 @@ router.get('/', async (req, res) => {
 // GET /api/business-schemes/:id
 router.get('/:id', async (req, res) => {
   try {
-    const scheme = await BusinessScheme.findById(req.params.id).lean();
-    if (!scheme) return res.status(404).json({ message: 'Scheme not found' });
-    res.json(scheme);
+    const { data, error } = await supabase.from('business_schemes').select('*').eq('id', req.params.id).single();
+    if (error) return res.status(404).json({ message: 'Scheme not found' });
+    res.json(data);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

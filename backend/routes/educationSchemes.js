@@ -1,34 +1,34 @@
 const express = require('express');
-const EducationScheme = require('../models/EducationScheme');
+const supabase = require('../config/supabase');
 const router = express.Router();
 
 // GET /api/education-schemes
 router.get('/', async (req, res) => {
   try {
     const { educationLevel, category, state, page = 1, limit = 10 } = req.query;
-    const query = { isActive: true };
+    const offset = (page - 1) * limit;
 
-    if (educationLevel) query.educationLevel = { $in: [educationLevel, 'all'] };
-    if (category) query.category = { $in: [category, 'all'] };
-    if (state) query.states = { $in: [state.toLowerCase(), 'all'] };
+    let query = supabase.from('education_schemes').select('*', { count: 'exact' }).eq('is_active', true);
 
-    const schemes = await EducationScheme.find(query)
-      .skip((page - 1) * limit)
-      .limit(Number(limit))
-      .sort({ createdAt: -1 })
-      .lean();
+    if (educationLevel) query = query.contains('education_level', [educationLevel]);
+    if (category) query = query.contains('category', [category]);
+    if (state) query = query.contains('states', [state.toLowerCase()]);
 
-    const total = await EducationScheme.countDocuments(query);
+    query = query.order('created_at', { ascending: false }).range(offset, offset + Number(limit) - 1);
+
+    const { data, count, error } = await query;
+    if (error) throw error;
 
     res.json({
-      schemes,
+      schemes: data || [],
       pagination: {
-        total,
+        total: count || 0,
         page: Number(page),
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil((count || 0) / limit)
       }
     });
   } catch (error) {
+    console.error('Education schemes error:', error);
     res.status(500).json({ message: 'Server error fetching education schemes' });
   }
 });
@@ -36,9 +36,9 @@ router.get('/', async (req, res) => {
 // GET /api/education-schemes/:id
 router.get('/:id', async (req, res) => {
   try {
-    const scheme = await EducationScheme.findById(req.params.id).lean();
-    if (!scheme) return res.status(404).json({ message: 'Scheme not found' });
-    res.json(scheme);
+    const { data, error } = await supabase.from('education_schemes').select('*').eq('id', req.params.id).single();
+    if (error) return res.status(404).json({ message: 'Scheme not found' });
+    res.json(data);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }

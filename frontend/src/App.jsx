@@ -10,30 +10,45 @@ import ResultsPage from './pages/ResultsPage';
 import UpdatesPage from './pages/UpdatesPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import EligibleSchemesPage from './pages/EligibleSchemesPage';
 import { DashboardProvider } from './context/DashboardContext';
 import { LanguageProvider } from './context/LanguageContext';
+import { AuthProvider } from './context/AuthContext';
+import ChatBot from './components/ChatBot';
+import VoiceAssistant from './components/VoiceAssistant';
 
 export default function App() {
   return (
     <LanguageProvider>
-      <DashboardProvider>
-        <Router>
-          <ScrollToTop />
-          <Navbar />
-          <PageTransition>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/explore" element={<ExploreSchemesPage />} />
-              <Route path="/business" element={<BusinessFormPage />} />
-              <Route path="/education" element={<EducationFormPage />} />
-              <Route path="/results" element={<ResultsPage />} />
-              <Route path="/updates" element={<UpdatesPage />} />
-              <Route path="/how-it-works" element={<HowItWorksPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-            </Routes>
-          </PageTransition>
-        </Router>
-      </DashboardProvider>
+      <AuthProvider>
+        <DashboardProvider>
+          <Router>
+            <ScrollToTop />
+            <Navbar />
+            <PageTransition>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/explore" element={<ExploreSchemesPage />} />
+                <Route path="/business" element={<BusinessFormPage />} />
+                <Route path="/education" element={<EducationFormPage />} />
+                <Route path="/results" element={<ResultsPage />} />
+                <Route path="/updates" element={<UpdatesPage />} />
+                <Route path="/how-it-works" element={<HowItWorksPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/eligible-schemes" element={<EligibleSchemesPage />} />
+              </Routes>
+            </PageTransition>
+            <ChatBot />
+            <VoiceAssistant />
+          </Router>
+        </DashboardProvider>
+      </AuthProvider>
     </LanguageProvider>
   );
 }

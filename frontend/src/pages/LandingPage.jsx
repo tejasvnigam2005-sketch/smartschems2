@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Footer from '../components/Footer';
 import { useLanguage } from '../context/LanguageContext';
+import EligibilityPopup from '../components/EligibilityPopup';
 
 const topSchemes = [
   {
@@ -47,18 +48,27 @@ function useScrollReveal() {
   }, []);
   return ref;
 }
+import { useAuth } from '../context/AuthContext';
 
 export default function LandingPage() {
   const sectionRef = useScrollReveal();
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [zooming, setZooming] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleFindSchemes = (e) => {
     e.preventDefault();
-    setZooming(true);
-    setTimeout(() => navigate('/explore'), 600);
+    // If user already has saved preferences, go directly to results
+    if (user?.hasCompletedProfile) {
+      const prefs = user.preferences;
+      localStorage.setItem('ss_eligibility', JSON.stringify(prefs));
+      navigate('/eligible-schemes');
+    } else {
+      setShowPopup(true);
+    }
   };
 
   return (
@@ -548,6 +558,9 @@ export default function LandingPage() {
 
       {/* ── Footer ───────────────────────── */}
       <Footer />
+
+      {/* ── Eligibility Questionnaire Popup ── */}
+      <EligibilityPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
     </div>
   );
 }

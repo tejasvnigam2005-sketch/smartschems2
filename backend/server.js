@@ -1,12 +1,18 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+// Load env
+dotenv.config();
 
 const app = express();
 
 // ── Middleware ─────────────────────────────
 const allowedOrigins = [
   'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:5176',
   'http://localhost:3000',
   process.env.FRONTEND_URL,
 ].filter(Boolean);
@@ -15,61 +21,23 @@ app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
     if (allowedOrigins.some(a => origin.startsWith(a))) return callback(null, true);
-    callback(null, true); // Allow all for now to avoid CORS issues
+    callback(null, true); // Allow all for now
   },
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
-
-// ── Lazy DB connection ────────────────────
-let dbPromise = null;
-
-function ensureDB() {
-  if (mongoose.connection.readyState === 1) return Promise.resolve();
-  if (dbPromise) return dbPromise;
-
-  dbPromise = mongoose.connect(process.env.MONGO_URI).then(async () => {
-    console.log('✅ MongoDB connected');
-    // Auto-seed if empty
-    const BusinessScheme = require('./models/BusinessScheme');
-    const EducationScheme = require('./models/EducationScheme');
-    const [bCount, eCount] = await Promise.all([
-      BusinessScheme.countDocuments(),
-      EducationScheme.countDocuments()
-    ]);
-    if (bCount === 0 || eCount === 0) {
-      try {
-        const seedData = require('./data/seed');
-        if (bCount === 0 && seedData.businessSchemes) await BusinessScheme.insertMany(seedData.businessSchemes);
-        if (eCount === 0 && seedData.educationSchemes) await EducationScheme.insertMany(seedData.educationSchemes);
-        console.log('✅ Auto-seeded');
-      } catch (e) { console.log('Seed skip:', e.message); }
-    }
-  }).catch(err => {
-    dbPromise = null; // Reset so next request retries
-    throw err;
-  });
-
-  return dbPromise;
-}
-
-// DB middleware wrapper for Express 4 (no native async support)
-app.use((req, res, next) => {
-  ensureDB().then(() => next()).catch(err => {
-    console.error('DB error:', err.message);
-    res.status(500).json({ message: 'Database connection failed', error: err.message });
-  });
-});
 
 // ── Routes ────────────────────────────────
 app.use('/api/recommend', require('./routes/recommend'));
 app.use('/api/business-schemes', require('./routes/businessSchemes'));
 app.use('/api/education-schemes', require('./routes/educationSchemes'));
 app.use('/api/scheme-guide', require('./routes/schemeGuide'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/chat', require('./routes/chat'));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString(), db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
+  res.json({ status: 'ok', timestamp: new Date().toISOString(), db: 'supabase' });
 });
 
 // Error handler
@@ -78,17 +46,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Internal server error', error: err.message });
 });
 
-// ── Start server (local only) ─────────────
-if (!process.env.VERCEL) {
-  const dotenv = require('dotenv');
-  dotenv.config();
-
-  const PORT = process.env.PORT || 5000;
-  ensureDB().then(() => {
-    app.listen(PORT, () => {
-      console.log(`🚀 SmartSchemes API on port ${PORT}`);
-    });
-  });
-}
+// ── Start server ──────────────────────────
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 SmartSchemes API on port ${PORT} (Supabase mode)`);
+});
 
 module.exports = app;
