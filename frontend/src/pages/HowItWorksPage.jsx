@@ -105,7 +105,7 @@ export default function HowItWorksPage() {
 
       {/* ── Hero ── */}
       <div style={{
-        background: 'linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 50%, #F9FAFB 100%)',
+        background: 'linear-gradient(135deg, rgba(11,110,79,0.07) 0%, rgba(11,110,79,0.03) 50%, var(--color-surface) 100%)',
         padding: '56px 0 48px',
         borderBottom: '1px solid rgba(11,110,79,0.06)',
         position: 'relative', zIndex: 1,

@@ -70,8 +70,8 @@ export default function Navbar() {
                   alt="SmartSchemes"
                   style={{ height: '48px', width: 'auto', objectFit: 'contain', display: 'block' }}
                 />
-                <span style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px' }}>
-                  Smart<span style={{ color: '#0B6E4F' }}>Schemes</span>
+                <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--color-text-primary)', letterSpacing: '0.5px', fontFamily: "'Playfair Display', Georgia, serif" }}>
+                  SMART<span style={{ color: '#1B3A5C' }}>SCHEMES</span>
                 </span>
               </Link>
             </div>

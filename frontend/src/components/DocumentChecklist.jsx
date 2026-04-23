@@ -75,7 +75,7 @@ export default function DocumentChecklist({ schemeType, schemeId }) {
           </svg>
           Required Documents
         </h4>
-        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: progress === 100 ? '#10B981' : '#0B6E4F', background: progress === 100 ? '#D1FAE5' : 'rgba(11,110,79,0.08)', padding: '4px 10px', borderRadius: '12px' }}>
+        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: progress === 100 ? '#10B981' : '#0B6E4F', background: progress === 100 ? 'rgba(11,110,79,0.15)' : 'rgba(11,110,79,0.08)', padding: '4px 10px', borderRadius: '12px' }}>
           {progress}% Ready
         </span>
       </div>

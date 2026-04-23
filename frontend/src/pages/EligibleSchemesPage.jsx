@@ -43,7 +43,7 @@ function SchemeCard({ scheme, index }) {
         {scheme.benefits?.length > 0 && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
             {scheme.benefits.slice(0, 3).map((b, i) => (
-              <span key={i} style={{ fontSize: '0.75rem', padding: '4px 10px', borderRadius: '8px', background: '#F0FDF4', color: '#0B6E4F', fontWeight: 500 }}>✓ {b}</span>
+              <span key={i} style={{ fontSize: '0.75rem', padding: '4px 10px', borderRadius: '8px', background: 'rgba(11,110,79,0.08)', color: '#0B6E4F', fontWeight: 500 }}>✓ {b}</span>
             ))}
           </div>
         )}
@@ -122,7 +122,7 @@ export default function EligibleSchemesPage() {
   return (
     <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-surface)' }}>
       {/* Hero */}
-      <section style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #fff 60%, #EFF6FF 100%)', padding: '48px 0 40px', borderBottom: '1px solid var(--color-border-light)' }}>
+      <section style={{ background: 'linear-gradient(135deg, rgba(11,110,79,0.07) 0%, var(--color-card) 60%, rgba(59,130,246,0.04) 100%)', padding: '48px 0 40px', borderBottom: '1px solid var(--color-border-light)' }}>
         <div className="container" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🎯</div>
           <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-text-primary)', marginBottom: '8px' }}>
@@ -185,7 +185,7 @@ export default function EligibleSchemesPage() {
 
         {/* CTA */}
         {!loading && schemes.length > 0 && !user && (
-          <div style={{ maxWidth: '720px', margin: '32px auto 0', padding: '24px', borderRadius: '16px', background: 'linear-gradient(135deg, #F0FDF4, #EFF6FF)', border: '1px solid #D1FAE5', textAlign: 'center' }}>
+          <div style={{ maxWidth: '720px', margin: '32px auto 0', padding: '24px', borderRadius: '16px', background: 'linear-gradient(135deg, rgba(11,110,79,0.06), rgba(59,130,246,0.06))', border: '1px solid rgba(11,110,79,0.15)', textAlign: 'center' }}>
             <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '4px' }}>💡 Save your profile for personalized updates</p>
             <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginBottom: '16px' }}>Create an account to track applications and get notified about new schemes.</p>
             <Link to="/signup" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 24px', borderRadius: '10px', background: 'linear-gradient(135deg, #0B6E4F, #10B981)', color: '#fff', fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none', boxShadow: '0 4px 12px rgba(11,110,79,0.2)' }}>

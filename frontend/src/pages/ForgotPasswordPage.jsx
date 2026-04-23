@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
     return (
       <div style={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(135deg, #F0FDF4 0%, #fff 50%, #F9FAFB 100%)', padding: '20px',
+        background: 'linear-gradient(135deg, rgba(11,110,79,0.06) 0%, var(--color-card) 50%, var(--color-surface) 100%)', padding: '20px',
       }}>
         <div className="animate-fade-up" style={{ textAlign: 'center', maxWidth: '400px' }}>
           <div style={{
@@ -76,7 +76,7 @@ export default function ForgotPasswordPage() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: 'linear-gradient(135deg, #F0FDF4 0%, #fff 50%, #F9FAFB 100%)', padding: '20px',
+      background: 'linear-gradient(135deg, rgba(11,110,79,0.06) 0%, var(--color-card) 50%, var(--color-surface) 100%)', padding: '20px',
     }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
         <div className="animate-fade-up" style={{ textAlign: 'center', marginBottom: '28px' }}>

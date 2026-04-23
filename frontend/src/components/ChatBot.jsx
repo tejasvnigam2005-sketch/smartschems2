@@ -253,7 +253,7 @@ export default function ChatBot() {
               {m.suggestions?.length > 0 && (
                 <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
                   {m.suggestions.map((s, j) => (
-                    <button key={j} onClick={() => send(s)} style={{ padding: '4px 10px', borderRadius: '16px', border: '1px solid #D1FAE5', background: '#F0FDF4', color: '#0B6E4F', fontSize: '0.65rem', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>{s}</button>
+                    <button key={j} onClick={() => send(s)} style={{ padding: '4px 10px', borderRadius: '16px', border: '1px solid rgba(11,110,79,0.15)', background: 'rgba(11,110,79,0.08)', color: '#0B6E4F', fontSize: '0.65rem', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>{s}</button>
                   ))}
                 </div>
               )}

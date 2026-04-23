@@ -30,7 +30,7 @@ export default function ResultsPage() {
     <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-card)' }}>
       {/* Hero */}
       <div style={{
-        background: 'linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 50%, #F9FAFB 100%)',
+        background: 'linear-gradient(135deg, rgba(11,110,79,0.07) 0%, rgba(11,110,79,0.03) 50%, var(--color-surface) 100%)',
         padding: '40px 0',
         borderBottom: '1px solid rgba(11,110,79,0.06)',
       }}>

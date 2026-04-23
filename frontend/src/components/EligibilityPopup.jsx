@@ -76,7 +76,7 @@ export default function EligibilityPopup({ isOpen, onClose }) {
     if (k === 'age') return (
       <div>
         <input type="number" placeholder="Enter your age (e.g. 25)" value={data.age} onChange={e => set('age', e.target.value)} min={1} max={100} style={inputStyle} onFocus={e => e.target.style.borderColor = '#10B981'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} autoFocus />
-        {data.age && <div style={{ marginTop: '16px', padding: '12px 16px', borderRadius: '10px', background: '#F0FDF4', fontSize: '0.8125rem', color: '#0B6E4F' }}>
+        {data.age && <div style={{ marginTop: '16px', padding: '12px 16px', borderRadius: '10px', background: 'rgba(11,110,79,0.08)', fontSize: '0.8125rem', color: '#0B6E4F' }}>
           {Number(data.age) < 18 ? '📚 Great! We\'ll focus on scholarships and student schemes' : Number(data.age) < 35 ? '🚀 Perfect age for startup & skill development schemes' : '🏢 We\'ll find enterprise & veteran benefit schemes for you'}
         </div>}
       </div>

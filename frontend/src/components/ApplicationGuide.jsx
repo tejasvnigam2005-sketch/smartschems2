@@ -91,7 +91,7 @@ export default function ApplicationGuide({ schemeType, schemeId }) {
           Step-by-Step Guide
         </h4>
         {isCompleted ? (
-           <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#10B981', background: '#D1FAE5', padding: '4px 10px', borderRadius: '12px' }}>
+           <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#10B981', background: 'rgba(11,110,79,0.15)', padding: '4px 10px', borderRadius: '12px' }}>
              Completed
            </span>
         ) : (
@@ -147,7 +147,7 @@ export default function ApplicationGuide({ schemeType, schemeId }) {
         })}
         
         {isCompleted && (
-          <div className="animate-fade-up" style={{ padding: '24px', background: '#ECFDF5', borderRadius: '16px', border: '1px solid #D1FAE5', textAlign: 'center', marginTop: '16px' }}>
+          <div className="animate-fade-up" style={{ padding: '24px', background: '#ECFDF5', borderRadius: '16px', border: '1px solid rgba(11,110,79,0.15)', textAlign: 'center', marginTop: '16px' }}>
              <div style={{ width: '48px', height: '48px', background: '#10B981', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
                <svg width="24" height="24" fill="none" stroke="white" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
              </div>
