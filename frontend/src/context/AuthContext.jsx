@@ -11,6 +11,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       if (s) {
@@ -100,7 +105,7 @@ export function AuthProvider({ children }) {
   };
 
   const logoutUser = async () => {
-    await supabase.auth.signOut();
+    if (supabase) await supabase.auth.signOut();
     localStorage.removeItem('smartschemes_token');
     setSession(null);
     setUser(null);

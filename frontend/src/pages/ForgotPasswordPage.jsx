@@ -16,6 +16,7 @@ export default function ForgotPasswordPage() {
     setError('');
     setLoading(true);
     try {
+      if (!supabase) throw new Error('Authentication service is not configured.');
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/login`,
       });
