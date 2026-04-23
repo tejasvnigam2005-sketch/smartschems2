@@ -15,14 +15,17 @@ import SignupPage from './pages/SignupPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EligibleSchemesPage from './pages/EligibleSchemesPage';
 import DocumentStatusPage from './pages/DocumentStatusPage';
+import SubscriptionPage from './pages/SubscriptionPage';
 import { DashboardProvider } from './context/DashboardContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import ChatBot from './components/ChatBot';
 import ToastNotifications from './components/ToastNotifications';
 
 export default function App() {
   return (
+    <ThemeProvider>
     <LanguageProvider>
       <AuthProvider>
         <DashboardProvider>
@@ -44,6 +47,7 @@ export default function App() {
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/eligible-schemes" element={<EligibleSchemesPage />} />
                 <Route path="/document-status" element={<DocumentStatusPage />} />
+                <Route path="/subscription" element={<SubscriptionPage />} />
               </Routes>
             </PageTransition>
             <ChatBot />
@@ -52,5 +56,6 @@ export default function App() {
         </DashboardProvider>
       </AuthProvider>
     </LanguageProvider>
+    </ThemeProvider>
   );
 }

@@ -77,7 +77,7 @@ export default function LandingPage() {
 
       {/* ── Hero Section ─────────────────── */}
       <section style={{
-        background: '#fff',
+        background: 'var(--color-card)',
         padding: '80px 0 0',
         position: 'relative',
         overflow: 'hidden',
@@ -121,7 +121,7 @@ export default function LandingPage() {
               fontSize: 'clamp(2rem, 5vw, 3.25rem)',
               fontFamily: "'DM Serif Display', Georgia, serif",
               fontWeight: 400,
-              color: '#111827',
+              color: 'var(--color-text-primary)',
               lineHeight: 1.15,
               letterSpacing: '-0.5px',
               marginBottom: '18px',
@@ -264,13 +264,13 @@ export default function LandingPage() {
         {/* Curved divider */}
         <div style={{ marginTop: '60px', lineHeight: 0 }}>
           <svg viewBox="0 0 1440 60" fill="none" style={{ width: '100%', display: 'block' }}>
-            <path d="M0 60V20C240 0 480 0 720 20C960 40 1200 40 1440 20V60H0Z" fill="#F9FAFB" />
+            <path d="M0 60V20C240 0 480 0 720 20C960 40 1200 40 1440 20V60H0Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* ── Top Schemes Section ──────────── */}
-      <section style={{ padding: '60px 0 80px', background: '#F9FAFB' }}>
+      <section style={{ padding: '60px 0 80px', background: 'var(--color-surface)' }}>
         <div className="container">
           <div className="scroll-reveal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
             <div>
@@ -378,7 +378,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── AI Advantage Section ──────────── */}
-      <section style={{ padding: '80px 0', background: '#fff' }}>
+      <section style={{ padding: '80px 0', background: 'var(--color-card)' }}>
         <div className="container">
           <div className="scroll-reveal ai-grid">
             {/* Left - AI Visual Card with real image */}
@@ -421,7 +421,7 @@ export default function LandingPage() {
               <h2 style={{
                 fontSize: 'clamp(1.5rem, 3vw, 2rem)',
                 fontWeight: 800,
-                color: '#111827',
+                color: 'var(--color-text-primary)',
                 lineHeight: 1.2,
                 letterSpacing: '-0.5px',
                 marginBottom: '16px',
@@ -490,7 +490,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── CTA + Deadlines Row ──────────── */}
-      <section style={{ padding: '0 0 80px', background: '#fff' }}>
+      <section style={{ padding: '0 0 80px', background: 'var(--color-card)' }}>
         <div className="container">
           <div className="scroll-reveal cta-grid">
             {/* CTA Card */}

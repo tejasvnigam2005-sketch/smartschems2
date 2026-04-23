@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage, LANGUAGE_OPTIONS } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const NOTIFICATIONS = [
   { id: 1, type: 'new', title: 'PM Vishwakarma Yojana', desc: 'New scheme launched for traditional artisans — up to ₹3 Lakh loan at 5% interest.', time: '2 hours ago', color: '#10B981' },
@@ -18,6 +19,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { t, lang, setLanguage } = useLanguage();
   const { user, loading: authLoading, logoutUser } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef(null);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -52,6 +54,7 @@ export default function Navbar() {
     { path: '/dashboard', label: t('nav.dashboard') },
     { path: '/how-it-works', label: t('nav.howItWorks') },
     { path: '/updates', label: t('nav.updates') },
+    { path: '/subscription', label: t('nav.subscription') || 'Pricing' },
   ];
 
   const isActive = (p) => location.pathname === p;
@@ -59,7 +62,7 @@ export default function Navbar() {
   const linkStyle = (p) => ({
     padding: '6px 14px', borderRadius: '8px', fontSize: '0.8125rem',
     fontWeight: isActive(p) ? 600 : 500,
-    color: isActive(p) ? '#0B6E4F' : '#4B5563',
+    color: isActive(p) ? '#0B6E4F' : 'var(--color-text-secondary)',
     background: isActive(p) ? 'rgba(11,110,79,0.06)' : 'transparent',
     textDecoration: 'none',
     transition: 'all 0.25s ease', whiteSpace: 'nowrap',
@@ -76,7 +79,7 @@ export default function Navbar() {
               <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #0B6E4F, #10B981)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.875rem', fontWeight: 700, boxShadow: '0 2px 8px rgba(11,110,79,0.2)' }}>
                 <svg width="16" height="16" fill="#fff" viewBox="0 0 24 24"><path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18" /></svg>
               </div>
-              <span style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px' }}>
+              <span style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px' }}>
                 Smart<span style={{ color: '#0B6E4F' }}>Schemes</span>
               </span>
             </Link>
@@ -107,16 +110,39 @@ export default function Navbar() {
               {LANGUAGE_OPTIONS.map(o => <option key={o.code} value={o.code}>{o.name}</option>)}
             </select>
 
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle dark mode"
+              style={{
+                width: '36px', height: '36px', borderRadius: '10px',
+                background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F3F4F6',
+                border: 'none', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.25s ease',
+              }}
+            >
+              {theme === 'dark' ? (
+                <svg width="16" height="16" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+              ) : (
+                <svg width="16" height="16" fill="none" stroke="#6B7280" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+              )}
+            </button>
+
             {/* Notifications Bell */}
             <div ref={notifRef} style={{ position: 'relative' }}>
               <button onClick={() => setNotifOpen(!notifOpen)} style={{
                 position: 'relative', width: '36px', height: '36px', borderRadius: '10px',
-                background: notifOpen ? 'rgba(11,110,79,0.1)' : '#F3F4F6',
+                background: notifOpen ? 'rgba(11,110,79,0.1)' : (theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F3F4F6'),
                 border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'all 0.2s ease',
               }}>
-                <svg width="16" height="16" fill="none" stroke={notifOpen ? '#0B6E4F' : '#6B7280'} viewBox="0 0 24 24" strokeWidth="2">
+                <svg width="16" height="16" fill="none" stroke={notifOpen ? '#0B6E4F' : 'var(--color-text-muted)'} viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                 </svg>
                 {unreadCount > 0 && (
@@ -126,7 +152,7 @@ export default function Navbar() {
                     background: '#EF4444', color: '#fff',
                     fontSize: '0.625rem', fontWeight: 700,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    border: '2px solid #fff',
+                    border: '2px solid var(--color-card)',
                     animation: 'pulse-glow 2s infinite',
                   }}>{unreadCount}</span>
                 )}
@@ -136,8 +162,8 @@ export default function Navbar() {
                 <div style={{
                   position: 'absolute', right: 0, top: 'calc(100% + 8px)',
                   width: '340px', maxHeight: '420px',
-                  background: '#fff', borderRadius: '16px',
-                  boxShadow: '0 12px 40px rgba(0,0,0,0.12)', border: '1px solid #F3F4F6',
+                  background: 'var(--color-card)', borderRadius: '16px',
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.12)', border: '1px solid var(--color-border-light)',
                   zIndex: 100, overflow: 'hidden',
                   animation: 'fade-up 0.25s cubic-bezier(0.16,1,0.3,1) both',
                 }}>

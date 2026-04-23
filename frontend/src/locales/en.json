@@ -9,7 +9,8 @@
     "login": "Login",
     "loginSignUp": "Login / Sign Up",
     "logout": "Logout",
-    "signedInAs": "Signed in as"
+    "signedInAs": "Signed in as",
+    "subscription": "Pricing"
   },
   "dashboard": {
     "title": "My Dashboard",
