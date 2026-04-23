@@ -24,7 +24,7 @@ export default function Sidebar({ isOpen, onClose }) {
     '/dashboard': t('nav.dashboard'),
     '/how-it-works': t('nav.howItWorks'),
     '/updates': t('nav.updates'),
-    '/subscription': t('nav.subscription') || 'Pricing',
+    '/subscription': t('nav.subscription') || 'Subscription',
   };
 
   const isActive = (p) => location.pathname === p;
@@ -59,18 +59,17 @@ export default function Sidebar({ isOpen, onClose }) {
           borderBottom: '1px solid var(--color-border-light)',
         }}>
           <Link to="/" onClick={onClose} style={{
-            display: 'flex', alignItems: 'center',
+            display: 'flex', alignItems: 'center', gap: '10px',
             textDecoration: 'none',
           }}>
             <img
               src="/logo.jpg"
               alt="SmartSchemes"
-              style={{
-                height: '44px', width: 'auto',
-                objectFit: 'contain',
-                display: 'block',
-              }}
+              style={{ height: '44px', width: 'auto', objectFit: 'contain', display: 'block' }}
             />
+            <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px' }}>
+              Smart<span style={{ color: '#0B6E4F' }}>Schemes</span>
+            </span>
           </Link>
           <button onClick={onClose} style={{
             width: '32px', height: '32px', borderRadius: '8px',

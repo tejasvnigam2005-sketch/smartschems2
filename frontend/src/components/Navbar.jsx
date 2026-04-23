@@ -64,16 +64,15 @@ export default function Navbar() {
                 </svg>
               </button>
 
-              <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+              <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
                 <img
                   src="/logo.jpg"
                   alt="SmartSchemes"
-                  style={{
-                    height: '48px', width: 'auto',
-                    objectFit: 'contain',
-                    display: 'block',
-                  }}
+                  style={{ height: '48px', width: 'auto', objectFit: 'contain', display: 'block' }}
                 />
+                <span style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px' }}>
+                  Smart<span style={{ color: '#0B6E4F' }}>Schemes</span>
+                </span>
               </Link>
             </div>
 
