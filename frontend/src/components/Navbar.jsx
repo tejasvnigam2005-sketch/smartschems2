@@ -64,20 +64,16 @@ export default function Navbar() {
                 </svg>
               </button>
 
-              <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-                <div style={{
-                  width: '36px', height: '36px', borderRadius: '10px',
-                  background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 2px 8px rgba(11,110,79,0.2)',
-                }}>
-                  <svg width="16" height="16" fill="#fff" viewBox="0 0 24 24">
-                    <path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18" />
-                  </svg>
-                </div>
-                <span style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px' }}>
-                  Smart<span style={{ color: '#0B6E4F' }}>Schemes</span>
-                </span>
+              <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                <img
+                  src="/logo.jpg"
+                  alt="SmartSchemes"
+                  style={{
+                    height: '48px', width: 'auto',
+                    objectFit: 'contain',
+                    display: 'block',
+                  }}
+                />
               </Link>
             </div>
 

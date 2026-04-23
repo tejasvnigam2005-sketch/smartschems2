@@ -59,21 +59,18 @@ export default function Sidebar({ isOpen, onClose }) {
           borderBottom: '1px solid var(--color-border-light)',
         }}>
           <Link to="/" onClick={onClose} style={{
-            display: 'flex', alignItems: 'center', gap: '10px',
+            display: 'flex', alignItems: 'center',
             textDecoration: 'none',
           }}>
-            <div style={{
-              width: '32px', height: '32px', borderRadius: '9px',
-              background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <svg width="14" height="14" fill="#fff" viewBox="0 0 24 24">
-                <path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18" />
-              </svg>
-            </div>
-            <span style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>
-              Smart<span style={{ color: '#0B6E4F' }}>Schemes</span>
-            </span>
+            <img
+              src="/logo.jpg"
+              alt="SmartSchemes"
+              style={{
+                height: '44px', width: 'auto',
+                objectFit: 'contain',
+                display: 'block',
+              }}
+            />
           </Link>
           <button onClick={onClose} style={{
             width: '32px', height: '32px', borderRadius: '8px',
