@@ -5,7 +5,11 @@
     "howItWorks": "कैसे काम करता है",
     "updates": "अपडेट",
     "dashboard": "डैशबोर्ड",
-    "search": "योजनाएं खोजें..."
+    "search": "योजनाएं खोजें...",
+    "login": "लॉगिन",
+    "loginSignUp": "लॉगिन / साइन अप",
+    "logout": "लॉगआउट",
+    "signedInAs": "के रूप में लॉग इन"
   },
   "dashboard": {
     "title": "मेरा डैशबोर्ड",
@@ -38,7 +42,10 @@
     "excellent": "उत्कृष्ट",
     "good": "अच्छा",
     "fair": "ठीक",
-    "partial": "आंशिक"
+    "partial": "आंशिक",
+    "documentsTime": "आवश्यक दस्तावेज़ और प्रसंस्करण समय",
+    "estimatedTime": "अनुमानित समय",
+    "howToGet": "कैसे प्राप्त करें"
   },
   "landing": {
     "heroTitle1": "सर्वश्रेष्ठ खोजें",

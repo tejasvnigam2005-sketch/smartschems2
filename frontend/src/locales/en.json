@@ -5,7 +5,11 @@
     "howItWorks": "How It Works",
     "updates": "Updates",
     "dashboard": "Dashboard",
-    "search": "Search schemes..."
+    "search": "Search schemes...",
+    "login": "Login",
+    "loginSignUp": "Login / Sign Up",
+    "logout": "Logout",
+    "signedInAs": "Signed in as"
   },
   "dashboard": {
     "title": "My Dashboard",
@@ -38,7 +42,10 @@
     "excellent": "Excellent",
     "good": "Good",
     "fair": "Fair",
-    "partial": "Partial"
+    "partial": "Partial",
+    "documentsTime": "Required Documents & Processing Time",
+    "estimatedTime": "Estimated Time",
+    "howToGet": "How to Obtain"
   },
   "landing": {
     "heroTitle1": "Find the Best",

@@ -58,6 +58,7 @@ export default function LandingPage() {
   const { user } = useAuth();
   const [zooming, setZooming] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   const handleFindSchemes = (e) => {
     e.preventDefault();
@@ -117,35 +118,67 @@ export default function LandingPage() {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div className="animate-fade-up" style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto', marginBottom: '48px' }}>
             <h1 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: 800,
+              fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontWeight: 400,
               color: '#111827',
               lineHeight: 1.15,
-              letterSpacing: '-1px',
+              letterSpacing: '-0.5px',
               marginBottom: '18px',
             }}>
               {t('landing.heroTitle1')}{' '}
               <br />
-              {t('landing.heroTitle2')}{' '}
+              <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 800, letterSpacing: '-1px' }}>
+                {t('landing.heroTitle2')}
+              </span>{' '}
               <br />
               {t('landing.heroTitle3')}{' '}
               <span style={{
-                color: '#0B6E4F',
-                textDecoration: 'underline',
-                textDecorationColor: '#0B6E4F',
-                textUnderlineOffset: '4px',
-                textDecorationThickness: '3px',
+                display: 'inline-block',
+                backgroundImage: 'url(/images/india-flag.png)',
+                backgroundSize: '140% auto',
+                backgroundPosition: 'center 40%',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontWeight: 400,
+                fontStyle: 'italic',
+                fontSize: '1.2em',
+                filter: 'contrast(1.4) saturate(1.6) brightness(1.05)',
+                position: 'relative',
+                padding: '0 4px',
+                textShadow: 'none',
               }}>{t('landing.heroTitle4')}</span>
             </h1>
             <p style={{
               fontSize: '1rem',
               color: '#6B7280',
               maxWidth: '480px',
-              margin: '0 auto',
+              margin: '0 auto 20px',
               lineHeight: 1.7,
             }}>
               {t('landing.heroDesc')}
             </p>
+
+            {/* How to Use button */}
+            <button onClick={() => setShowVideo(true)} style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              padding: '10px 22px', borderRadius: '50px',
+              background: 'rgba(11,110,79,0.06)', color: '#0B6E4F',
+              border: '1.5px solid rgba(11,110,79,0.15)',
+              fontSize: '0.8125rem', fontWeight: 600,
+              cursor: 'pointer', transition: 'all 0.3s ease',
+              fontFamily: "'Outfit', sans-serif",
+            }}
+              onMouseOver={e => { e.currentTarget.style.background = 'rgba(11,110,79,0.12)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'rgba(11,110,79,0.06)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#0B6E4F">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              How to Use SmartSchemes
+            </button>
           </div>
 
           {/* Hero illustration image */}
@@ -561,6 +594,74 @@ export default function LandingPage() {
 
       {/* ── Eligibility Questionnaire Popup ── */}
       <EligibilityPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
+
+      {/* ── Video Walkthrough Modal ── */}
+      {showVideo && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9999,
+          background: 'rgba(0,0,0,0.85)',
+          backdropFilter: 'blur(12px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          animation: 'fade-in 0.3s ease both',
+          padding: '24px',
+        }} onClick={() => setShowVideo(false)}>
+          <div style={{
+            position: 'relative', maxWidth: '900px', width: '100%',
+            borderRadius: '20px', overflow: 'hidden',
+            boxShadow: '0 24px 80px rgba(0,0,0,0.4)',
+            background: '#000',
+            animation: 'fade-up 0.4s cubic-bezier(0.16,1,0.3,1) both',
+          }} onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{
+              padding: '16px 20px',
+              background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <span style={{ color: '#fff', fontSize: '0.9375rem', fontWeight: 700, fontFamily: "'Outfit', sans-serif" }}>How to Use SmartSchemes</span>
+              </div>
+              <button onClick={() => setShowVideo(false)} style={{
+                width: '32px', height: '32px', borderRadius: '8px',
+                background: 'rgba(255,255,255,0.15)', border: 'none',
+                color: '#fff', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'background 0.2s',
+              }}
+                onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.25)'}
+                onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+              >
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            {/* Video */}
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10', background: '#000' }}>
+              <img src="/images/walkthrough.webp" alt="SmartSchemes walkthrough tutorial"
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+              />
+            </div>
+            {/* Footer */}
+            <div style={{
+              padding: '12px 20px',
+              background: '#111',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+              <span style={{ fontSize: '0.6875rem', color: 'rgba(255,255,255,0.4)' }}>Step-by-step guide to discover government schemes</span>
+              <button onClick={() => setShowVideo(false)} style={{
+                padding: '6px 16px', borderRadius: '8px',
+                background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.1)',
+                color: '#fff', fontSize: '0.75rem', fontWeight: 600,
+                cursor: 'pointer', transition: 'all 0.2s',
+              }}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

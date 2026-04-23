@@ -13,11 +13,14 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
   const { saveScheme, removeSavedScheme, isSaved, addRecentlyViewed } = useDashboard();
   const saved = scheme._id ? isSaved(scheme._id) : false;
 
-  useEffect(() => {
-    if (scheme && scheme._id) {
+  // Track view only when user expands the card (not on mount — avoids infinite loop in Dashboard)
+  const handleExpand = () => {
+    const next = !expanded;
+    setExpanded(next);
+    if (next && scheme && (scheme._id || scheme.id)) {
       addRecentlyViewed({ ...scheme, type: schemeType });
     }
-  }, [scheme, schemeType]);
+  };
 
   const handleTTS = () => {
     const text = TTS.schemeToSpeech(scheme, lang);
@@ -144,40 +147,108 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
 
             {/* Required Documents — inline from recommend API */}
             {scheme.requiredDocuments?.length > 0 && (
-              <div>
-                <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' }}>{t('scheme.requiredDocs')}</p>
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(11,110,79,0.03), rgba(59,130,246,0.03))',
+                border: '1px solid rgba(11,110,79,0.1)',
+                borderRadius: '14px',
+                padding: '18px 20px',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                  <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <p style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0B6E4F', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{t('scheme.documentsTime')}</p>
+                </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {scheme.requiredDocuments.map((doc, i) => (
                     <div key={i} style={{
-                      background: 'rgba(11,110,79,0.02)',
+                      background: '#fff',
                       border: '1px solid rgba(11,110,79,0.08)',
                       borderRadius: '10px',
                       padding: '12px 14px',
                       transition: 'all 0.2s ease',
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                         <svg style={{ width: '14px', height: '14px', flexShrink: 0, color: '#0B6E4F' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#111827' }}>{doc.name}</span>
                       </div>
-                      <p style={{ fontSize: '0.75rem', color: '#6B7280', lineHeight: 1.6, margin: '0 0 6px 22px' }}>{doc.description}</p>
+                      {doc.description && (
+                        <p style={{ fontSize: '0.75rem', color: '#6B7280', lineHeight: 1.6, margin: '0 0 8px 22px' }}>{doc.description}</p>
+                      )}
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginLeft: '22px' }}>
                         <span style={{
-                          fontSize: '0.6875rem', padding: '3px 8px', borderRadius: '6px',
-                          background: 'rgba(59,130,246,0.06)', color: '#3B82F6',
-                          border: '1px solid rgba(59,130,246,0.1)',
+                          fontSize: '0.6875rem', padding: '4px 10px', borderRadius: '6px',
+                          background: 'rgba(59,130,246,0.08)', color: '#2563EB',
+                          border: '1px solid rgba(59,130,246,0.12)',
+                          fontWeight: 600,
+                          display: 'inline-flex', alignItems: 'center', gap: '4px',
                         }}>
-                          ⏱ {doc.estimatedTime}
+                          <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <path strokeLinecap="round" d="M12 6v6l4 2" />
+                          </svg>
+                          {t('scheme.estimatedTime')}: {doc.estimatedTime}
                         </span>
                         <span style={{
-                          fontSize: '0.6875rem', padding: '3px 8px', borderRadius: '6px',
-                          background: 'rgba(11,110,79,0.05)', color: '#0B6E4F',
+                          fontSize: '0.6875rem', padding: '4px 10px', borderRadius: '6px',
+                          background: 'rgba(11,110,79,0.06)', color: '#0B6E4F',
                           border: '1px solid rgba(11,110,79,0.1)',
-                          maxWidth: '100%', lineHeight: 1.4,
+                          fontWeight: 500, lineHeight: 1.4,
+                          display: 'inline-flex', alignItems: 'center', gap: '4px',
                         }}>
+                          <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
                           {doc.howToObtain}
                         </span>
+                      </div>
+                      {/* Apply for Document */}
+                      <div style={{ marginLeft: '22px', marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                        {doc.applyUrl ? (
+                          <a
+                            href={doc.applyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => {
+                              try {
+                                const apps = JSON.parse(localStorage.getItem('ss_doc_applications') || '[]');
+                                const exists = apps.find(a => a.docName === doc.name);
+                                if (!exists) {
+                                  apps.push({ docName: doc.name, applyUrl: doc.applyUrl, appliedAt: new Date().toISOString(), status: 'applied', estimatedTime: doc.estimatedTime });
+                                  localStorage.setItem('ss_doc_applications', JSON.stringify(apps));
+                                }
+                              } catch {}
+                            }}
+                            style={{
+                              display: 'inline-flex', alignItems: 'center', gap: '5px',
+                              padding: '5px 12px', borderRadius: '8px',
+                              fontSize: '0.6875rem', fontWeight: 600,
+                              background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
+                              color: '#fff', textDecoration: 'none',
+                              boxShadow: '0 2px 8px rgba(11,110,79,0.2)',
+                              transition: 'all 0.2s ease',
+                            }}
+                          >
+                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                            Apply for Document
+                          </a>
+                        ) : (
+                          <span style={{
+                            display: 'inline-flex', alignItems: 'center', gap: '4px',
+                            padding: '5px 12px', borderRadius: '8px',
+                            fontSize: '0.6875rem', fontWeight: 500,
+                            background: '#F3F4F6', color: '#9CA3AF',
+                          }}>
+                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Self-arranged
+                          </span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -194,7 +265,7 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
           flexWrap: 'wrap', gap: '8px',
         }}>
           <button
-            onClick={() => setExpanded(!expanded)}
+            onClick={handleExpand}
             style={{
               fontSize: '0.8125rem', fontWeight: 600, color: '#0B6E4F',
               background: 'none', border: 'none', cursor: 'pointer',

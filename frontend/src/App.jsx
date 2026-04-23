@@ -14,11 +14,12 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EligibleSchemesPage from './pages/EligibleSchemesPage';
+import DocumentStatusPage from './pages/DocumentStatusPage';
 import { DashboardProvider } from './context/DashboardContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import ChatBot from './components/ChatBot';
-import VoiceAssistant from './components/VoiceAssistant';
+import ToastNotifications from './components/ToastNotifications';
 
 export default function App() {
   return (
@@ -42,10 +43,11 @@ export default function App() {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/eligible-schemes" element={<EligibleSchemesPage />} />
+                <Route path="/document-status" element={<DocumentStatusPage />} />
               </Routes>
             </PageTransition>
             <ChatBot />
-            <VoiceAssistant />
+            <ToastNotifications />
           </Router>
         </DashboardProvider>
       </AuthProvider>

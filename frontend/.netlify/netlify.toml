@@ -1,0 +1,56 @@
+functionsDirectory = "/Users/tejasvnigam/smartschemes2/backend/functions"
+functionsDirectoryOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[build]
+publish = "/Users/tejasvnigam/smartschemes2/frontend/dist"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "/Users/tejasvnigam/smartschemes2"
+command = "cd frontend && npm install && npm run build && cd ../backend && npm install"
+functions = "/Users/tejasvnigam/smartschemes2/backend/functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+node_bundler = "esbuild"
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/api/:splat"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

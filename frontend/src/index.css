@@ -33,7 +33,8 @@
   --color-warning: #F59E0B;
   --color-info: #3B82F6;
 
-  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-main: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
 
   --animate-fade-up: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-fade-in: fade-in 0.35s ease both;
@@ -100,8 +101,16 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
-a { text-decoration: none; color: inherit; }
+a { text-decoration: none; color: inherit; transition: color 0.2s ease; }
+a:hover { opacity: 0.9; }
 img { max-width: 100%; display: block; }
+
+/* Smooth global transitions */
+::selection { background: rgba(11,110,79,0.15); color: #0B6E4F; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(11,110,79,0.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(11,110,79,0.3); }
 
 /* ── Container ─────────────────────────── */
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
@@ -413,15 +422,15 @@ select.form-input {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 50;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .navbar.scrolled {
-  background: rgba(255,255,255,0.95);
-  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 1px 12px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.02);
 }
 
 /* ── Footer ─────────────────────────────── */
@@ -476,13 +485,14 @@ select.form-input {
   border: 1px solid var(--color-border-light);
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   padding: 24px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
 .scheme-card:hover {
-  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.03);
+  transform: translateY(-5px);
+  border-color: rgba(11,110,79,0.12);
 }
 .scheme-card .card-icon {
   width: 44px; height: 44px;
