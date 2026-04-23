@@ -30,7 +30,7 @@ export default function TermsModal({ isOpen, onClose }) {
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#fff', borderRadius: '16px',
+          background: 'var(--color-card)', borderRadius: '16px',
           width: '100%', maxWidth: '600px', maxHeight: '80vh',
           display: 'flex', flexDirection: 'column',
           boxShadow: '0 24px 48px rgba(0,0,0,0.12)',
@@ -40,14 +40,14 @@ export default function TermsModal({ isOpen, onClose }) {
         {/* Header */}
         <div style={{
           padding: '24px 28px 16px',
-          borderBottom: '1px solid #F3F4F6',
+          borderBottom: '1px solid var(--color-border-light)',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
           <div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', margin: 0 }}>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-text-primary)', margin: 0 }}>
               Terms & Conditions
             </h2>
-            <p style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '4px' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '4px' }}>
               Last updated: April 2026
             </p>
           </div>
@@ -56,9 +56,9 @@ export default function TermsModal({ isOpen, onClose }) {
             aria-label="Close"
             style={{
               width: '36px', height: '36px', borderRadius: '10px',
-              border: '1px solid #E5E7EB', background: '#F9FAFB',
+              border: '1px solid var(--color-border)', background: 'var(--color-surface)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', fontSize: '1.1rem', color: '#6B7280',
+              cursor: 'pointer', fontSize: '1.1rem', color: 'var(--color-text-secondary)',
               transition: 'all 0.15s',
             }}
             onMouseOver={e => { e.target.style.background = '#F3F4F6'; e.target.style.color = '#111827'; }}
@@ -72,10 +72,10 @@ export default function TermsModal({ isOpen, onClose }) {
         <div style={{ padding: '24px 28px', overflowY: 'auto', flex: 1 }}>
           {TERMS_CONTENT.map((section, i) => (
             <div key={i} style={{ marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '6px' }}>
                 {section.title}
               </h3>
-              <p style={{ fontSize: '0.8125rem', lineHeight: 1.7, color: '#4B5563', margin: 0 }}>
+              <p style={{ fontSize: '0.8125rem', lineHeight: 1.7, color: 'var(--color-text-secondary)', margin: 0 }}>
                 {section.body}
               </p>
             </div>
@@ -85,7 +85,7 @@ export default function TermsModal({ isOpen, onClose }) {
         {/* Footer */}
         <div style={{
           padding: '16px 28px',
-          borderTop: '1px solid #F3F4F6',
+          borderTop: '1px solid var(--color-border-light)',
           display: 'flex', justifyContent: 'flex-end',
         }}>
           <button

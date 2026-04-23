@@ -153,7 +153,7 @@ export default function LandingPage() {
             </h1>
             <p style={{
               fontSize: '1rem',
-              color: '#6B7280',
+              color: 'var(--color-text-secondary)',
               maxWidth: '480px',
               margin: '0 auto 20px',
               lineHeight: 1.7,
@@ -199,44 +199,44 @@ export default function LandingPage() {
             <div className="hero-search">
               <div className="hero-search-grid">
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.yourAge')}</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.yourAge')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
+                    <svg width="16" height="16" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#111827' }}>25</span>
+                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>25</span>
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.annualIncome')}</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.annualIncome')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
+                    <svg width="16" height="16" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#111827' }}>5,00,000</span>
+                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>5,00,000</span>
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.state')}</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.state')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
+                    <svg width="16" height="16" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>{t('landing.selectState')}</span>
-                    <svg width="12" height="12" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
+                    <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{t('landing.selectState')}</span>
+                    <svg width="12" height="12" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
                       <path d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.category')}</label>
+                  <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px', display: 'block' }}>{t('landing.category')}</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <svg width="16" height="16" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2">
+                    <svg width="16" height="16" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2">
                       <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
-                    <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>{t('landing.selectCategory')}</span>
-                    <svg width="12" height="12" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
+                    <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{t('landing.selectCategory')}</span>
+                    <svg width="12" height="12" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
                       <path d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
@@ -274,16 +274,16 @@ export default function LandingPage() {
         <div className="container">
           <div className="scroll-reveal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
             <div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px' }}>{t('landing.topSchemes')}</h2>
-              <p style={{ fontSize: '0.875rem', color: '#6B7280', marginTop: '4px' }}>{t('landing.topSchemesDesc')}</p>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px' }}>{t('landing.topSchemes')}</h2>
+              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: '4px' }}>{t('landing.topSchemesDesc')}</p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
               <button style={{
                 width: '36px', height: '36px', borderRadius: '50%',
-                border: '1px solid #E5E7EB', background: '#fff',
+                border: '1px solid var(--color-border)', background: 'var(--color-card)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: 'pointer', transition: 'all 0.2s ease',
-                color: '#6B7280',
+                color: 'var(--color-text-secondary)',
               }}>
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -291,10 +291,10 @@ export default function LandingPage() {
               </button>
               <button style={{
                 width: '36px', height: '36px', borderRadius: '50%',
-                border: '1px solid #E5E7EB', background: '#fff',
+                border: '1px solid var(--color-border)', background: 'var(--color-card)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: 'pointer', transition: 'all 0.2s ease',
-                color: '#6B7280',
+                color: 'var(--color-text-secondary)',
               }}>
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -340,10 +340,10 @@ export default function LandingPage() {
                 </div>
 
                 {/* Title & Desc */}
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#111827', marginBottom: '8px', lineHeight: 1.3 }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '8px', lineHeight: 1.3 }}>
                   {scheme.title}
                 </h3>
-                <p style={{ fontSize: '0.8125rem', color: '#6B7280', lineHeight: 1.6, marginBottom: '16px' }}>
+                <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: '16px' }}>
                   {scheme.desc}
                 </p>
 
@@ -354,7 +354,7 @@ export default function LandingPage() {
                       <svg width="14" height="14" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
-                      <span style={{ fontSize: '0.8125rem', color: '#4B5563' }}>{b}</span>
+                      <span style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)' }}>{b}</span>
                     </div>
                   ))}
                 </div>
@@ -364,7 +364,7 @@ export default function LandingPage() {
                   display: 'inline-flex', alignItems: 'center', gap: '6px',
                   fontSize: '0.8125rem', fontWeight: 600, color: '#0B6E4F',
                   textDecoration: 'none', transition: 'all 0.2s ease',
-                  paddingTop: '12px', borderTop: '1px solid #F3F4F6', width: '100%',
+                  paddingTop: '12px', borderTop: '1px solid var(--color-border-light)', width: '100%',
                 }}>
                   {t('landing.viewDetails')}
                   <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
@@ -428,7 +428,7 @@ export default function LandingPage() {
               }}>
                 {t('landing.smartDiscovery')}<br />{t('landing.forEveryCitizen')}
               </h2>
-              <p style={{ fontSize: '0.9375rem', color: '#6B7280', lineHeight: 1.7, marginBottom: '28px' }}>
+              <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: '28px' }}>
                 {t('landing.smartDiscoveryDesc')}
               </p>
 
@@ -445,8 +445,8 @@ export default function LandingPage() {
                     </svg>
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>{t('landing.instantMatch')}</h4>
-                    <p style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: 1.5 }}>{t('landing.instantMatchDesc')}</p>
+                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>{t('landing.instantMatch')}</h4>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>{t('landing.instantMatchDesc')}</p>
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
@@ -461,8 +461,8 @@ export default function LandingPage() {
                     </svg>
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>{t('landing.multiLingual')}</h4>
-                    <p style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: 1.5 }}>{t('landing.multiLingualDesc')}</p>
+                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>{t('landing.multiLingual')}</h4>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>{t('landing.multiLingualDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -561,7 +561,7 @@ export default function LandingPage() {
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
                     <div style={{
                       width: '40px', height: '40px', borderRadius: '10px',
-                      background: '#fff',
+                      background: 'var(--color-card)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '1rem', fontWeight: 800, color: '#92400E', flexShrink: 0,
                       boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
@@ -569,8 +569,8 @@ export default function LandingPage() {
                       {item.day}
                     </div>
                     <div>
-                      <h4 style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#111827', marginBottom: '2px' }}>{item.title}</h4>
-                      <p style={{ fontSize: '0.75rem', color: '#6B7280', lineHeight: 1.4 }}>{item.desc}</p>
+                      <h4 style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '2px' }}>{item.title}</h4>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>{item.desc}</p>
                     </div>
                   </div>
                 ))}

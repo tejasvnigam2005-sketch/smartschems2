@@ -92,8 +92,8 @@ export default function ToastNotifications() {
                 {toast.type === 'new' ? '● NEW' : toast.type === 'ending' ? '● ENDING SOON' : '● UPCOMING'}
               </span>
             </div>
-            <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#111827', lineHeight: 1.3, marginBottom: '2px' }}>{toast.title}</p>
-            <p style={{ fontSize: '0.6875rem', color: '#6B7280', lineHeight: 1.4 }}>{toast.desc}</p>
+            <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 1.3, marginBottom: '2px' }}>{toast.title}</p>
+            <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>{toast.desc}</p>
           </div>
 
           {/* Close */}
@@ -106,7 +106,7 @@ export default function ToastNotifications() {
             onMouseOver={e => e.currentTarget.style.background = '#F3F4F6'}
             onMouseOut={e => e.currentTarget.style.background = 'transparent'}
           >
-            <svg width="12" height="12" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="2.5">
+            <svg width="12" height="12" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2.5">
               <path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>

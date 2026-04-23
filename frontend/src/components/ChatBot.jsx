@@ -213,9 +213,9 @@ export default function ChatBot() {
             {LANGS.find(l => l.code === lang)?.flag} {lang.toUpperCase()}
           </button>
           {showLangs && (
-            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: '#fff', borderRadius: '10px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', overflow: 'auto', zIndex: 10, minWidth: '130px', maxHeight: '240px' }}>
+            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '4px', background: 'var(--color-card)', borderRadius: '10px', boxShadow: '0 4px 16px rgba(0,0,0,0.12)', overflow: 'auto', zIndex: 10, minWidth: '130px', maxHeight: '240px' }}>
               {LANGS.map(l => (
-                <button key={l.code} onClick={() => { setLang(l.code); setShowLangs(false); }} style={{ display: 'block', width: '100%', padding: '7px 12px', border: 'none', background: lang === l.code ? '#F0FDF4' : '#fff', color: '#374151', fontSize: '0.75rem', cursor: 'pointer', textAlign: 'left' }}>
+                <button key={l.code} onClick={() => { setLang(l.code); setShowLangs(false); }} style={{ display: 'block', width: '100%', padding: '7px 12px', border: 'none', background: lang === l.code ? '#F0FDF4' : '#fff', color: 'var(--color-text-secondary)', fontSize: '0.75rem', cursor: 'pointer', textAlign: 'left' }}>
                   {l.flag} {l.label}
                 </button>
               ))}
@@ -243,8 +243,8 @@ export default function ChatBot() {
               {m.schemes?.length > 0 && (
                 <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
                   {m.schemes.map((s, j) => (
-                    <div key={j} style={{ padding: '7px 10px', borderRadius: '8px', background: 'rgba(255,255,255,0.8)', border: '1px solid #E5E7EB', fontSize: '0.7rem' }}>
-                      <div style={{ fontWeight: 600, color: '#111827' }}>{s.name}</div>
+                    <div key={j} style={{ padding: '7px 10px', borderRadius: '8px', background: 'rgba(255,255,255,0.8)', border: '1px solid var(--color-border)', fontSize: '0.7rem' }}>
+                      <div style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>{s.name}</div>
                       {s.funding && <div style={{ color: '#0B6E4F', fontWeight: 500 }}>💰 {s.funding}</div>}
                     </div>
                   ))}
@@ -270,11 +270,11 @@ export default function ChatBot() {
       </div>
 
       {/* Input */}
-      <div style={{ padding: '10px 14px', borderTop: '1px solid #F3F4F6', display: 'flex', gap: '6px', alignItems: 'center', background: '#fff' }}>
+      <div style={{ padding: '10px 14px', borderTop: '1px solid var(--color-border-light)', display: 'flex', gap: '6px', alignItems: 'center', background: 'var(--color-card)' }}>
         <button onClick={toggleVoice} style={{ width: '36px', height: '36px', borderRadius: '50%', border: 'none', background: listening ? '#EF4444' : '#F3F4F6', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, animation: listening ? 'cbMic 1.2s infinite' : 'none' }}>
           <svg width="15" height="15" fill="none" stroke={listening ? '#fff' : '#6B7280'} viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" /></svg>
         </button>
-        <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send(input)} placeholder={listening ? 'Listening...' : isHi ? 'अपना सवाल पूछें...' : 'Ask about schemes...'} style={{ flex: 1, padding: '9px 12px', borderRadius: '10px', border: '1.5px solid #E5E7EB', fontSize: '0.8125rem', outline: 'none', background: listening ? '#FEF2F2' : '#FAFAFA' }} onFocus={e => e.target.style.borderColor = '#10B981'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} />
+        <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send(input)} placeholder={listening ? 'Listening...' : isHi ? 'अपना सवाल पूछें...' : 'Ask about schemes...'} style={{ flex: 1, padding: '9px 12px', borderRadius: '10px', border: '1.5px solid var(--color-border)', fontSize: '0.8125rem', outline: 'none', background: listening ? '#FEF2F2' : '#FAFAFA' }} onFocus={e => e.target.style.borderColor = '#10B981'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} />
         <button onClick={() => send(input)} disabled={!input.trim() || loading} style={{ width: '36px', height: '36px', borderRadius: '50%', border: 'none', background: input.trim() && !loading ? 'linear-gradient(135deg, #0B6E4F, #10B981)' : '#E5E7EB', cursor: input.trim() ? 'pointer' : 'default', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <svg width="15" height="15" fill="none" stroke="#fff" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
         </button>

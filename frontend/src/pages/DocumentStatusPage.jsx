@@ -6,7 +6,7 @@ const STATUS_CONFIG = {
   applied: { label: 'Applied', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)', icon: 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' },
   processing: { label: 'Processing', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)', icon: 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99' },
   ready: { label: 'Ready to Collect', color: '#10B981', bg: 'rgba(16,185,129,0.1)', icon: 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
-  collected: { label: 'Collected', color: '#6B7280', bg: 'rgba(107,114,128,0.1)', icon: 'M4.5 12.75l6 6 9-13.5' },
+  collected: { label: 'Collected', color: 'var(--color-text-secondary)', bg: 'rgba(107,114,128,0.1)', icon: 'M4.5 12.75l6 6 9-13.5' },
 };
 
 export default function DocumentStatusPage() {
@@ -75,8 +75,8 @@ export default function DocumentStatusPage() {
               </svg>
             </div>
             <div>
-              <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px' }}>Document Application Status</h1>
-              <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Track your document applications across government portals</p>
+              <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px' }}>Document Application Status</h1>
+              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>Track your document applications across government portals</p>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function DocumentStatusPage() {
                     {/* Content */}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px', flexWrap: 'wrap', gap: '6px' }}>
-                        <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827' }}>{app.docName}</h3>
+                        <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{app.docName}</h3>
                         <span style={{
                           fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase',
                           letterSpacing: '0.5px', padding: '3px 10px', borderRadius: '6px',
@@ -136,7 +136,7 @@ export default function DocumentStatusPage() {
                       </div>
 
                       {/* Applied date & estimated time */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '0.6875rem', color: '#9CA3AF', marginBottom: '10px' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '0.6875rem', color: 'var(--color-text-muted)', marginBottom: '10px' }}>
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                           <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                             <path strokeLinecap="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75" />
@@ -153,7 +153,7 @@ export default function DocumentStatusPage() {
                       </div>
 
                       {/* Progress bar */}
-                      <div style={{ height: '6px', background: '#F3F4F6', borderRadius: '3px', overflow: 'hidden', marginBottom: '10px' }}>
+                      <div style={{ height: '6px', background: 'var(--color-surface)', borderRadius: '3px', overflow: 'hidden', marginBottom: '10px' }}>
                         <div style={{
                           height: '100%', borderRadius: '3px',
                           background: `linear-gradient(90deg, ${cfg.color}, ${cfg.color}99)`,
@@ -171,8 +171,8 @@ export default function DocumentStatusPage() {
                             style={{
                               padding: '4px 24px 4px 8px', borderRadius: '6px',
                               fontSize: '0.6875rem', fontWeight: 600,
-                              background: '#F9FAFB', border: '1px solid #E5E7EB',
-                              color: '#374151', cursor: 'pointer',
+                              background: 'var(--color-surface)', border: '1px solid var(--color-border)',
+                              color: 'var(--color-text-secondary)', cursor: 'pointer',
                               appearance: 'none',
                               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none' stroke='%239CA3AF' viewBox='0 0 24 24' stroke-width='2'%3E%3Cpath stroke-linecap='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                               backgroundRepeat: 'no-repeat',
@@ -227,12 +227,12 @@ export default function DocumentStatusPage() {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               margin: '0 auto 20px',
             }}>
-              <svg width="28" height="28" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="1.5">
+              <svg width="28" height="28" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
               </svg>
             </div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#374151', marginBottom: '8px' }}>No Document Applications Yet</h2>
-            <p style={{ fontSize: '0.875rem', color: '#9CA3AF', maxWidth: '400px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-secondary)', marginBottom: '8px' }}>No Document Applications Yet</h2>
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', maxWidth: '400px', margin: '0 auto 24px', lineHeight: 1.6 }}>
               When you click "Apply for Document" on any scheme's required documents, your applications will appear here for tracking.
             </p>
             <Link to="/explore" className="btn-primary" style={{ display: 'inline-flex' }}>

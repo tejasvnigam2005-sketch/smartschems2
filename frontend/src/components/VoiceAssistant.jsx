@@ -141,7 +141,7 @@ export default function VoiceAssistant() {
           <span style={{ color: '#fff', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.5px' }}>{lang.toUpperCase()}</span>
         </button>
         {showLang && (
-          <div style={{ position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: '8px', background: '#fff', borderRadius: '14px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', overflow: 'auto', maxHeight: '260px', minWidth: '130px', zIndex: 10 }}>
+          <div style={{ position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: '8px', background: 'var(--color-card)', borderRadius: '14px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', overflow: 'auto', maxHeight: '260px', minWidth: '130px', zIndex: 10 }}>
             {Object.entries(LANG_MAP).map(([code, { label }]) => (
               <button key={code} onClick={() => { setLang(code); setShowLang(false); }} style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', padding: '10px 16px', border: 'none', background: lang === code ? '#EEF2FF' : '#fff', color: lang === code ? '#4F46E5' : '#374151', fontSize: '0.8125rem', fontWeight: lang === code ? 600 : 400, cursor: 'pointer', textAlign: 'left', transition: 'background 0.15s' }}
                 onMouseOver={e => e.currentTarget.style.background = '#F5F3FF'}

@@ -10,7 +10,7 @@ export default function ComparisonTable({ schemes, schemeType }) {
   const medals = ['#1', '#2', '#3'];
 
   return (
-    <div style={{ overflowX: 'auto', borderRadius: '16px', border: '1px solid #E5E7EB' }}>
+    <div style={{ overflowX: 'auto', borderRadius: '16px', border: '1px solid var(--color-border)' }}>
       <table className="comparison-table">
         <thead>
           <tr>
@@ -25,7 +25,7 @@ export default function ComparisonTable({ schemes, schemeType }) {
         <tbody>
           {schemes.map((scheme, idx) => (
             <tr key={scheme._id || idx}>
-              <td style={{ fontWeight: 600, color: '#374151' }}>
+              <td style={{ fontWeight: 600, color: 'var(--color-text-secondary)' }}>
                 <span style={{ marginRight: '6px' }}>{medals[idx] || ''}</span>
                 {scheme.name}
               </td>
@@ -41,7 +41,7 @@ export default function ComparisonTable({ schemes, schemeType }) {
               <td>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {scheme.benefits?.slice(0, 2).map((b, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', color: '#6B7280' }}>
+                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', color: 'var(--color-text-secondary)' }}>
                       <svg style={{ width: '12px', height: '12px', marginTop: '2px', flexShrink: 0, color: '#0B6E4F' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
@@ -53,7 +53,7 @@ export default function ComparisonTable({ schemes, schemeType }) {
               <td>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {scheme.eligibility?.slice(0, 2).map((e, i) => (
-                    <div key={i} style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>• {e}</div>
+                    <div key={i} style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>• {e}</div>
                   ))}
                 </div>
               </td>

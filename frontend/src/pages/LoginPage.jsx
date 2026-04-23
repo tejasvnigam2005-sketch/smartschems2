@@ -44,8 +44,8 @@ export default function LoginPage() {
 
   const inputStyle = {
     width: '100%', padding: '12px 16px', borderRadius: '10px',
-    border: '1.5px solid #E5E7EB', fontSize: '0.875rem', color: '#111827',
-    outline: 'none', transition: 'all 0.2s ease', background: '#FAFAFA',
+    border: '1.5px solid var(--color-border)', fontSize: '0.875rem', color: 'var(--color-text-primary)',
+    outline: 'none', transition: 'all 0.2s ease', background: 'var(--color-surface)',
   };
 
   return (
@@ -66,10 +66,10 @@ export default function LoginPage() {
           }}>
             S
           </div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.3px' }}>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.3px' }}>
             Welcome back
           </h1>
-          <p style={{ fontSize: '0.8125rem', color: '#9CA3AF', marginTop: '6px' }}>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', marginTop: '6px' }}>
             Login to access your saved schemes & preferences
           </p>
         </div>
@@ -79,9 +79,9 @@ export default function LoginPage() {
           onSubmit={handleSubmit}
           className="animate-fade-up delay-1"
           style={{
-            background: '#fff', borderRadius: '16px',
+            background: 'var(--color-card)', borderRadius: '16px',
             boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-            padding: '28px', border: '1px solid #F3F4F6',
+            padding: '28px', border: '1px solid var(--color-border-light)',
           }}
         >
           {error && (
@@ -101,7 +101,7 @@ export default function LoginPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             {/* Email */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px' }}>
                 Email Address
               </label>
               <input
@@ -117,7 +117,7 @@ export default function LoginPage() {
             {/* Password */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151' }}>
+                <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
                   Password
                 </label>
                 <Link to="/forgot-password" style={{
@@ -139,7 +139,7 @@ export default function LoginPage() {
                 <button type="button" onClick={() => setShowPassword(!showPassword)} tabIndex={-1}
                   style={{
                     position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-                    background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF',
+                    background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)',
                     padding: '4px', display: 'flex', alignItems: 'center',
                   }}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
@@ -196,11 +196,11 @@ export default function LoginPage() {
           {/* Divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0' }}>
             <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }} />
-            <span style={{ fontSize: '0.75rem', color: '#9CA3AF', fontWeight: 500 }}>or</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>or</span>
             <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }} />
           </div>
 
-          <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: '#6B7280' }}>
+          <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--color-text-secondary)' }}>
             Don't have an account?{' '}
             <Link to="/signup" style={{ color: '#0B6E4F', fontWeight: 600, textDecoration: 'none' }}>Sign Up</Link>
           </p>

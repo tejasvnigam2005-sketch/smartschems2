@@ -10,7 +10,7 @@ function SchemeCard({ scheme, index }) {
   const color = isBiz ? '#0B6E4F' : '#3B82F6';
 
   return (
-    <div style={{ background: '#fff', borderRadius: '16px', border: '1px solid #F3F4F6', boxShadow: '0 2px 12px rgba(0,0,0,0.04)', overflow: 'hidden', transition: 'all 0.3s', animation: `cardIn 0.4s ease ${index * 0.06}s both` }}
+    <div style={{ background: 'var(--color-card)', borderRadius: '16px', border: '1px solid var(--color-border-light)', boxShadow: '0 2px 12px rgba(0,0,0,0.04)', overflow: 'hidden', transition: 'all 0.3s', animation: `cardIn 0.4s ease ${index * 0.06}s both` }}
       onMouseOver={e => e.currentTarget.style.boxShadow = '0 6px 24px rgba(0,0,0,0.08)'}
       onMouseOut={e => e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.04)'}>
       <div style={{ padding: '24px' }}>
@@ -21,9 +21,9 @@ function SchemeCard({ scheme, index }) {
               <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: color, background: `${color}10`, padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 {isBiz ? '🏢 Business' : '🎓 Education'}
               </span>
-              {scheme.ministry && <span style={{ fontSize: '0.6875rem', color: '#9CA3AF', padding: '3px 8px', borderRadius: '6px', background: '#F9FAFB' }}>{scheme.ministry}</span>}
+              {scheme.ministry && <span style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', padding: '3px 8px', borderRadius: '6px', background: 'var(--color-surface)' }}>{scheme.ministry}</span>}
             </div>
-            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#111827', lineHeight: 1.4, margin: 0 }}>{scheme.name}</h3>
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.4, margin: 0 }}>{scheme.name}</h3>
           </div>
           <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: `linear-gradient(135deg, ${color}15, ${color}08)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <span style={{ fontSize: '1rem', fontWeight: 800, color: color }}>{scheme.relevanceScore}%</span>
@@ -31,11 +31,11 @@ function SchemeCard({ scheme, index }) {
         </div>
 
         {/* Score bar */}
-        <div style={{ height: '4px', borderRadius: '2px', background: '#F3F4F6', marginBottom: '12px' }}>
+        <div style={{ height: '4px', borderRadius: '2px', background: 'var(--color-surface)', marginBottom: '12px' }}>
           <div style={{ height: '100%', borderRadius: '2px', background: `linear-gradient(90deg, ${color}, ${color}AA)`, width: `${scheme.relevanceScore}%`, transition: 'width 0.8s ease' }} />
         </div>
 
-        <p style={{ fontSize: '0.8125rem', color: '#6B7280', lineHeight: 1.6, margin: '0 0 16px' }}>
+        <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, margin: '0 0 16px' }}>
           {scheme.description?.slice(0, 150)}{scheme.description?.length > 150 ? '…' : ''}
         </p>
 
@@ -61,17 +61,17 @@ function SchemeCard({ scheme, index }) {
           <div style={{ animation: 'cardIn 0.3s ease' }}>
             {scheme.eligibility?.length > 0 && (
               <div style={{ marginBottom: '14px' }}>
-                <h4 style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>Eligibility</h4>
+                <h4 style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px' }}>Eligibility</h4>
                 <ul style={{ margin: 0, paddingLeft: '18px' }}>
-                  {scheme.eligibility.map((e, i) => <li key={i} style={{ fontSize: '0.75rem', color: '#6B7280', lineHeight: 1.6 }}>{e}</li>)}
+                  {scheme.eligibility.map((e, i) => <li key={i} style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{e}</li>)}
                 </ul>
               </div>
             )}
             {scheme.application_process?.length > 0 && (
               <div style={{ marginBottom: '14px' }}>
-                <h4 style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>How to Apply</h4>
+                <h4 style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px' }}>How to Apply</h4>
                 <ol style={{ margin: 0, paddingLeft: '18px' }}>
-                  {scheme.application_process.map((s, i) => <li key={i} style={{ fontSize: '0.75rem', color: '#6B7280', lineHeight: 1.6 }}>{s}</li>)}
+                  {scheme.application_process.map((s, i) => <li key={i} style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{s}</li>)}
                 </ol>
               </div>
             )}
@@ -120,15 +120,15 @@ export default function EligibleSchemesPage() {
   const eduCount = schemes.filter(s => s.schemeType === 'education').length;
 
   return (
-    <div style={{ paddingTop: '64px', minHeight: '100vh', background: '#F9FAFB' }}>
+    <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-surface)' }}>
       {/* Hero */}
-      <section style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #fff 60%, #EFF6FF 100%)', padding: '48px 0 40px', borderBottom: '1px solid #F3F4F6' }}>
+      <section style={{ background: 'linear-gradient(135deg, #F0FDF4 0%, #fff 60%, #EFF6FF 100%)', padding: '48px 0 40px', borderBottom: '1px solid var(--color-border-light)' }}>
         <div className="container" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🎯</div>
-          <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: '#111827', marginBottom: '8px' }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: 'var(--color-text-primary)', marginBottom: '8px' }}>
             Your Eligible Schemes
           </h1>
-          <p style={{ fontSize: '0.9375rem', color: '#6B7280', maxWidth: '500px', margin: '0 auto' }}>
+          <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', maxWidth: '500px', margin: '0 auto' }}>
             Based on your profile, we found <strong style={{ color: '#0B6E4F' }}>{schemes.length} schemes</strong> you may qualify for.
           </p>
 
@@ -163,7 +163,7 @@ export default function EligibleSchemesPage() {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0' }}>
             <div style={{ width: '40px', height: '40px', border: '3px solid #E5E7EB', borderTopColor: '#0B6E4F', borderRadius: '50%', animation: 'spin 0.7s linear infinite', margin: '0 auto 16px' }} />
-            <p style={{ color: '#9CA3AF', fontSize: '0.875rem' }}>Finding your eligible schemes…</p>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Finding your eligible schemes…</p>
           </div>
         ) : error ? (
           <div style={{ textAlign: 'center', padding: '60px 0' }}>
@@ -173,8 +173,8 @@ export default function EligibleSchemesPage() {
         ) : filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 0' }}>
             <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🔍</div>
-            <h3 style={{ color: '#374151', fontWeight: 600 }}>No matching schemes found</h3>
-            <p style={{ color: '#9CA3AF', fontSize: '0.875rem' }}>Try adjusting your profile or explore all schemes.</p>
+            <h3 style={{ color: 'var(--color-text-secondary)', fontWeight: 600 }}>No matching schemes found</h3>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Try adjusting your profile or explore all schemes.</p>
             <Link to="/explore" style={{ display: 'inline-block', marginTop: '16px', padding: '10px 24px', borderRadius: '10px', background: '#0B6E4F', color: '#fff', fontWeight: 600, textDecoration: 'none' }}>Explore All Schemes</Link>
           </div>
         ) : (
@@ -186,8 +186,8 @@ export default function EligibleSchemesPage() {
         {/* CTA */}
         {!loading && schemes.length > 0 && !user && (
           <div style={{ maxWidth: '720px', margin: '32px auto 0', padding: '24px', borderRadius: '16px', background: 'linear-gradient(135deg, #F0FDF4, #EFF6FF)', border: '1px solid #D1FAE5', textAlign: 'center' }}>
-            <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#111827', marginBottom: '4px' }}>💡 Save your profile for personalized updates</p>
-            <p style={{ fontSize: '0.8125rem', color: '#6B7280', marginBottom: '16px' }}>Create an account to track applications and get notified about new schemes.</p>
+            <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '4px' }}>💡 Save your profile for personalized updates</p>
+            <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginBottom: '16px' }}>Create an account to track applications and get notified about new schemes.</p>
             <Link to="/signup" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 24px', borderRadius: '10px', background: 'linear-gradient(135deg, #0B6E4F, #10B981)', color: '#fff', fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none', boxShadow: '0 4px 12px rgba(11,110,79,0.2)' }}>
               Sign Up Free →
             </Link>
@@ -205,4 +205,4 @@ export default function EligibleSchemesPage() {
   );
 }
 
-const chipS = { fontSize: '0.75rem', fontWeight: 500, color: '#374151', background: '#fff', border: '1px solid #E5E7EB', padding: '5px 12px', borderRadius: '8px' };
+const chipS = { fontSize: '0.75rem', fontWeight: 500, color: 'var(--color-text-secondary)', background: 'var(--color-card)', border: '1px solid var(--color-border)', padding: '5px 12px', borderRadius: '8px' };

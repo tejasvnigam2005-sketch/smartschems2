@@ -52,9 +52,9 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
         {/* Header row */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827', lineHeight: 1.4, marginBottom: '4px' }}>{scheme.name}</h3>
+            <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.4, marginBottom: '4px' }}>{scheme.name}</h3>
             {scheme.ministry && (
-              <p style={{ fontSize: '0.6875rem', fontWeight: 500, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{scheme.ministry}</p>
+              <p style={{ fontSize: '0.6875rem', fontWeight: 500, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{scheme.ministry}</p>
             )}
           </div>
           {scheme.relevanceScore !== undefined && (
@@ -62,13 +62,13 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
               <div className={`score-badge ${scoreClass(scheme.relevanceScore)}`}>
                 {scheme.relevanceScore}
               </div>
-              <p style={{ fontSize: '0.625rem', color: '#9CA3AF', marginTop: '4px', fontWeight: 500 }}>{scoreLabel(scheme.relevanceScore)}</p>
+              <p style={{ fontSize: '0.625rem', color: 'var(--color-text-muted)', marginTop: '4px', fontWeight: 500 }}>{scoreLabel(scheme.relevanceScore)}</p>
             </div>
           )}
         </div>
 
         {/* Description */}
-        <p style={{ fontSize: '0.8125rem', color: '#6B7280', lineHeight: 1.7, marginBottom: '16px' }}>{scheme.description}</p>
+        <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: '16px' }}>{scheme.description}</p>
 
         {/* Quick info chips */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
@@ -86,7 +86,7 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
           {scheme.website && (
             <a href={scheme.website} target="_blank" rel="noopener noreferrer" style={{
               padding: '5px 12px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 600,
-              background: '#F3F4F6', color: '#4B5563', textDecoration: 'none',
+              background: 'var(--color-surface)', color: 'var(--color-text-secondary)', textDecoration: 'none',
               transition: 'all 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '4px',
             }}>
               {t('scheme.website')}
@@ -99,14 +99,14 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
 
         {/* Benefits */}
         <div style={{ marginBottom: '16px' }}>
-          <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>{t('scheme.benefits')}</p>
+          <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>{t('scheme.benefits')}</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             {scheme.benefits?.slice(0, expanded ? undefined : 3).map((b, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                 <svg style={{ width: '14px', height: '14px', marginTop: '2px', flexShrink: 0, color: '#0B6E4F' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                <span style={{ fontSize: '0.8125rem', color: '#4B5563', lineHeight: 1.5 }}>{b}</span>
+                <span style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>{b}</span>
               </div>
             ))}
           </div>
@@ -116,18 +116,18 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
         {expanded && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', animation: 'fade-in 0.25s ease both' }}>
             <div>
-              <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>{t('scheme.eligibility')}</p>
+              <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>{t('scheme.eligibility')}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {scheme.eligibility?.map((e, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                     <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#0B6E4F', marginTop: '7px', flexShrink: 0 }} />
-                    <span style={{ fontSize: '0.8125rem', color: '#4B5563', lineHeight: 1.5 }}>{e}</span>
+                    <span style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>{e}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div>
-              <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>{t('scheme.howToApply')}</p>
+              <p style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>{t('scheme.howToApply')}</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {scheme.applicationProcess?.map((step, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
@@ -139,7 +139,7 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
                     }}>
                       {i + 1}
                     </span>
-                    <span style={{ fontSize: '0.8125rem', color: '#4B5563', lineHeight: 1.5 }}>{step}</span>
+                    <span style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>{step}</span>
                   </div>
                 ))}
               </div>
@@ -162,7 +162,7 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {scheme.requiredDocuments.map((doc, i) => (
                     <div key={i} style={{
-                      background: '#fff',
+                      background: 'var(--color-card)',
                       border: '1px solid rgba(11,110,79,0.08)',
                       borderRadius: '10px',
                       padding: '12px 14px',
@@ -172,10 +172,10 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
                         <svg style={{ width: '14px', height: '14px', flexShrink: 0, color: '#0B6E4F' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#111827' }}>{doc.name}</span>
+                        <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>{doc.name}</span>
                       </div>
                       {doc.description && (
-                        <p style={{ fontSize: '0.75rem', color: '#6B7280', lineHeight: 1.6, margin: '0 0 8px 22px' }}>{doc.description}</p>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, margin: '0 0 8px 22px' }}>{doc.description}</p>
                       )}
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginLeft: '22px' }}>
                         <span style={{
@@ -241,7 +241,7 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
                             display: 'inline-flex', alignItems: 'center', gap: '4px',
                             padding: '5px 12px', borderRadius: '8px',
                             fontSize: '0.6875rem', fontWeight: 500,
-                            background: '#F3F4F6', color: '#9CA3AF',
+                            background: 'var(--color-surface)', color: 'var(--color-text-muted)',
                           }}>
                             <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -261,7 +261,7 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
         {/* Footer */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #F3F4F6',
+          marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--color-border-light)',
           flexWrap: 'wrap', gap: '8px',
         }}>
           <button

@@ -10,7 +10,7 @@ export default function ProfilePage() {
       <div style={{
         minHeight: '100vh', paddingTop: '64px',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: '#fff',
+        background: 'var(--color-card)',
       }}>
         <div className="animate-fade-up" style={{ textAlign: 'center' }}>
           <div style={{
@@ -21,8 +21,8 @@ export default function ProfilePage() {
           }}>
             <svg width="24" height="24" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
           </div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827', marginBottom: '6px' }}>Login Required</h2>
-          <p style={{ fontSize: '0.875rem', color: '#9CA3AF', marginBottom: '24px' }}>Please login to view your profile</p>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-text-primary)', marginBottom: '6px' }}>Login Required</h2>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '24px' }}>Please login to view your profile</p>
           <Link to="/login" className="btn-primary">Login</Link>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function ProfilePage() {
   const history = user.searchHistory || [];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff', paddingTop: '64px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-card)', paddingTop: '64px' }}>
       <div style={{ maxWidth: '700px', margin: '0 auto', padding: '32px 24px 56px' }}>
         {/* Profile Header */}
         <div className="card-static animate-fade-up" style={{ overflow: 'hidden', marginBottom: '24px', borderRadius: '20px' }}>
@@ -62,8 +62,8 @@ export default function ProfilePage() {
                 {user.name?.[0]?.toUpperCase()}
               </div>
               <div style={{ paddingBottom: '2px' }}>
-                <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827' }}>{user.name}</h1>
-                <p style={{ fontSize: '0.8125rem', color: '#9CA3AF' }}>{user.email}</p>
+                <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>{user.name}</h1>
+                <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>{user.email}</p>
               </div>
             </div>
 
@@ -84,7 +84,7 @@ export default function ProfilePage() {
 
         {/* Preferences */}
         <div className="card-static animate-fade-up delay-1" style={{ padding: '24px', marginBottom: '24px', borderRadius: '20px' }}>
-          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
               <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
               <circle cx="12" cy="12" r="3" />
@@ -94,32 +94,32 @@ export default function ProfilePage() {
           {hasPrefs ? (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               {pref.category && (
-                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Category</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px', textTransform: 'capitalize' }}>{pref.category}</p>
+                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Category</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px', textTransform: 'capitalize' }}>{pref.category}</p>
                 </div>
               )}
               {pref.state && (
-                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>State</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px', textTransform: 'capitalize' }}>{pref.state}</p>
+                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>State</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px', textTransform: 'capitalize' }}>{pref.state}</p>
                 </div>
               )}
               {pref.age && (
-                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Age</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px' }}>{pref.age}</p>
+                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Age</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px' }}>{pref.age}</p>
                 </div>
               )}
               {pref.income && (
-                <div style={{ background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '1px' }}>Income</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginTop: '2px' }}>₹{pref.income?.toLocaleString()}</p>
+                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
+                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Income</p>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px' }}>₹{pref.income?.toLocaleString()}</p>
                 </div>
               )}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '24px 0', color: '#D1D5DB' }}>
+            <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--color-text-muted)' }}>
               <p style={{ fontSize: '1.5rem', marginBottom: '4px' }}><svg width="24" height="24" fill="none" stroke="#D1D5DB" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" /></svg></p>
               <p style={{ fontSize: '0.8125rem' }}>No preferences saved yet</p>
             </div>
@@ -128,7 +128,7 @@ export default function ProfilePage() {
 
         {/* Search History */}
         <div className="card-static animate-fade-up delay-2" style={{ padding: '24px', marginBottom: '32px', borderRadius: '20px' }}>
-          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
               <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -139,7 +139,7 @@ export default function ProfilePage() {
               {history.slice(-10).reverse().map((s, i) => (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: '#F9FAFB', borderRadius: '12px', padding: '14px 16px',
+                  background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px',
                   transition: 'all 0.2s ease',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -150,8 +150,8 @@ export default function ProfilePage() {
                       }
                     </span>
                     <div>
-                      <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151', textTransform: 'capitalize' }}>{s.category} Search</p>
-                      <p style={{ fontSize: '0.6875rem', color: '#9CA3AF' }}>
+                      <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', textTransform: 'capitalize' }}>{s.category} Search</p>
+                      <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
                         {new Date(s.searchedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </div>
@@ -167,7 +167,7 @@ export default function ProfilePage() {
               ))}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '24px 0', color: '#D1D5DB' }}>
+            <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--color-text-muted)' }}>
               <p style={{ fontSize: '1.5rem', marginBottom: '4px' }}><svg width="24" height="24" fill="none" stroke="#D1D5DB" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg></p>
               <p style={{ fontSize: '0.8125rem' }}>No searches yet</p>
             </div>

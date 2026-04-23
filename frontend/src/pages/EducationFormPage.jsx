@@ -26,7 +26,7 @@ export default function EducationFormPage() {
   };
 
   return (
-    <div style={{ paddingTop: '64px', minHeight: '100vh', background: '#fff' }}>
+    <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-card)' }}>
       {/* Hero */}
       <div style={{
         background: 'linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 50%, #F9FAFB 100%)',
@@ -34,8 +34,8 @@ export default function EducationFormPage() {
         borderBottom: '1px solid rgba(11,110,79,0.06)',
       }}>
         <div className="container animate-fade-up" style={{ textAlign: 'center' }}>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px', marginBottom: '8px' }}>Education Schemes</h1>
-          <p style={{ fontSize: '0.9375rem', color: '#6B7280', maxWidth: '400px', margin: '0 auto' }}>Tell us about your studies to get personalized recommendations</p>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px', marginBottom: '8px' }}>Education Schemes</h1>
+          <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', maxWidth: '400px', margin: '0 auto' }}>Tell us about your studies to get personalized recommendations</p>
         </div>
       </div>
 

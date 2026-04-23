@@ -12,7 +12,7 @@ const updates = [
 
 export default function UpdatesPage() {
   return (
-    <div style={{ paddingTop: '64px', minHeight: '100vh', background: '#fff' }}>
+    <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-card)' }}>
       {/* Hero */}
       <div style={{
         background: 'linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 50%, #F9FAFB 100%)',
@@ -20,8 +20,8 @@ export default function UpdatesPage() {
         borderBottom: '1px solid rgba(11,110,79,0.06)',
       }}>
         <div className="container animate-fade-up" style={{ textAlign: 'center' }}>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px', marginBottom: '8px' }}>Latest Updates</h1>
-          <p style={{ fontSize: '0.9375rem', color: '#6B7280' }}>Recent changes to government schemes</p>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px', marginBottom: '8px' }}>Latest Updates</h1>
+          <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)' }}>Recent changes to government schemes</p>
         </div>
       </div>
 
@@ -64,17 +64,17 @@ export default function UpdatesPage() {
                   }}>
                     {u.type}
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>{u.date}</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{u.date}</span>
                 </div>
-                <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>{u.title}</h3>
-                <p style={{ fontSize: '0.8125rem', color: '#6B7280', lineHeight: 1.6 }}>{u.desc}</p>
+                <h3 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>{u.title}</h3>
+                <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{u.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '40px' }} className="animate-fade-up delay-4">
-          <p style={{ fontSize: '0.875rem', color: '#9CA3AF', marginBottom: '16px' }}>Want to find schemes matching your profile?</p>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '16px' }}>Want to find schemes matching your profile?</p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/business" className="btn-primary">Business Schemes</Link>
             <Link to="/education" className="btn-outline">Education Schemes</Link>

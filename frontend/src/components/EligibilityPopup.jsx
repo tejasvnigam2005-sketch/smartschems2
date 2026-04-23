@@ -68,7 +68,7 @@ export default function EligibilityPopup({ isOpen, onClose }) {
     return true;
   };
 
-  const inputStyle = { width: '100%', padding: '14px 16px', borderRadius: '12px', border: '1.5px solid #E5E7EB', fontSize: '1rem', color: '#111827', outline: 'none', background: '#FAFAFA', transition: 'border 0.2s' };
+  const inputStyle = { width: '100%', padding: '14px 16px', borderRadius: '12px', border: '1.5px solid var(--color-border)', fontSize: '1rem', color: 'var(--color-text-primary)', outline: 'none', background: 'var(--color-surface)', transition: 'border 0.2s' };
   const chipStyle = (sel) => ({ display: 'flex', alignItems: 'center', gap: '10px', padding: '14px 18px', borderRadius: '12px', border: `2px solid ${sel ? '#0B6E4F' : '#E5E7EB'}`, background: sel ? 'rgba(11,110,79,0.04)' : '#fff', cursor: 'pointer', transition: 'all 0.2s', fontSize: '0.9375rem', fontWeight: sel ? 600 : 500, color: sel ? '#0B6E4F' : '#374151', width: '100%' });
 
   const renderStep = () => {
@@ -84,10 +84,10 @@ export default function EligibilityPopup({ isOpen, onClose }) {
     if (k === 'income') return (
       <div>
         <div style={{ position: 'relative' }}>
-          <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#9CA3AF', fontWeight: 600 }}>₹</span>
+          <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', fontWeight: 600 }}>₹</span>
           <input type="number" placeholder="e.g. 500000" value={data.income} onChange={e => set('income', e.target.value)} min={0} style={{ ...inputStyle, paddingLeft: '36px' }} onFocus={e => e.target.style.borderColor = '#10B981'} onBlur={e => e.target.style.borderColor = '#E5E7EB'} autoFocus />
         </div>
-        <p style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '8px' }}>Enter annual family income in rupees</p>
+        <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '8px' }}>Enter annual family income in rupees</p>
       </div>
     );
     if (k === 'state') return (
@@ -117,7 +117,7 @@ export default function EligibilityPopup({ isOpen, onClose }) {
     if (k === 'extra') return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <div>
-          <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px', display: 'block' }}>Gender</label>
+          <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px', display: 'block' }}>Gender</label>
           <div style={{ display: 'flex', gap: '8px' }}>
             {['Male', 'Female', 'Other'].map(g => (
               <button key={g} type="button" onClick={() => set('gender', g.toLowerCase())} style={{ ...chipStyle(data.gender === g.toLowerCase()), justifyContent: 'center' }}>{g}</button>
@@ -125,16 +125,16 @@ export default function EligibilityPopup({ isOpen, onClose }) {
           </div>
         </div>
         <div>
-          <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px', display: 'block' }}>Area</label>
+          <label style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px', display: 'block' }}>Area</label>
           <div style={{ display: 'flex', gap: '8px' }}>
             {['Rural', 'Urban'].map(a => (
               <button key={a} type="button" onClick={() => set('area', a.toLowerCase())} style={{ ...chipStyle(data.area === a.toLowerCase()), justifyContent: 'center' }}>{a}</button>
             ))}
           </div>
         </div>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderRadius: '12px', background: '#F9FAFB', cursor: 'pointer', border: '1px solid #E5E7EB' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 16px', borderRadius: '12px', background: 'var(--color-surface)', cursor: 'pointer', border: '1px solid var(--color-border)' }}>
           <input type="checkbox" checked={data.disability} onChange={e => set('disability', e.target.checked)} style={{ width: '18px', height: '18px', accentColor: '#0B6E4F' }} />
-          <span style={{ fontSize: '0.875rem', color: '#374151' }}>Person with disability (PwD)</span>
+          <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>Person with disability (PwD)</span>
         </label>
       </div>
     );
@@ -144,17 +144,17 @@ export default function EligibilityPopup({ isOpen, onClose }) {
   // Save prompt screen
   if (showSave) return (
     <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', animation: 'eqFade 0.25s ease' }}>
-      <div onClick={e => e.stopPropagation()} style={{ background: '#fff', borderRadius: '20px', width: '100%', maxWidth: '420px', padding: '36px 32px', textAlign: 'center', boxShadow: '0 24px 48px rgba(0,0,0,0.12)', animation: 'eqSlide 0.3s ease' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: 'var(--color-card)', borderRadius: '20px', width: '100%', maxWidth: '420px', padding: '36px 32px', textAlign: 'center', boxShadow: '0 24px 48px rgba(0,0,0,0.12)', animation: 'eqSlide 0.3s ease' }}>
         <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'linear-gradient(135deg, #10B981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', boxShadow: '0 6px 20px rgba(16,185,129,0.3)' }}>
           <svg width="28" height="28" fill="none" stroke="#fff" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
-        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '8px' }}>Profile Complete!</h3>
-        <p style={{ fontSize: '0.875rem', color: '#6B7280', lineHeight: 1.6, marginBottom: '28px' }}>Save your profile to get <strong style={{ color: '#0B6E4F' }}>personalized scheme updates</strong> and track your applications.</p>
+        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '8px' }}>Profile Complete!</h3>
+        <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: '28px' }}>Save your profile to get <strong style={{ color: '#0B6E4F' }}>personalized scheme updates</strong> and track your applications.</p>
         <button onClick={() => { onClose(); navigate('/login'); }} style={{ width: '100%', padding: '14px', borderRadius: '12px', border: 'none', background: 'linear-gradient(135deg, #0B6E4F, #10B981)', color: '#fff', fontWeight: 600, fontSize: '0.9375rem', cursor: 'pointer', marginBottom: '12px', boxShadow: '0 4px 12px rgba(11,110,79,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" /></svg>
           Login / Sign Up
         </button>
-        <button onClick={goResults} style={{ width: '100%', padding: '14px', borderRadius: '12px', border: '1.5px solid #E5E7EB', background: '#fff', color: '#6B7280', fontWeight: 500, fontSize: '0.875rem', cursor: 'pointer' }}>
+        <button onClick={goResults} style={{ width: '100%', padding: '14px', borderRadius: '12px', border: '1.5px solid var(--color-border)', background: 'var(--color-card)', color: 'var(--color-text-secondary)', fontWeight: 500, fontSize: '0.875rem', cursor: 'pointer' }}>
           Continue as Guest →
         </button>
       </div>
@@ -164,13 +164,13 @@ export default function EligibilityPopup({ isOpen, onClose }) {
 
   return (
     <div onClick={onClose} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', animation: 'eqFade 0.25s ease' }}>
-      <div onClick={e => e.stopPropagation()} style={{ background: '#fff', borderRadius: '20px', width: '100%', maxWidth: '480px', overflow: 'hidden', boxShadow: '0 24px 48px rgba(0,0,0,0.12)', animation: 'eqSlide 0.3s ease' }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: 'var(--color-card)', borderRadius: '20px', width: '100%', maxWidth: '480px', overflow: 'hidden', boxShadow: '0 24px 48px rgba(0,0,0,0.12)', animation: 'eqSlide 0.3s ease' }}>
 
         {/* Progress Bar */}
         <div style={{ padding: '20px 28px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#0B6E4F' }}>Step {step + 1} of {STEPS.length}</span>
-            <span style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>{pct}% complete</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{pct}% complete</span>
           </div>
           <div style={{ height: '4px', borderRadius: '2px', background: '#E5E7EB' }}>
             <div style={{ height: '100%', borderRadius: '2px', background: 'linear-gradient(90deg, #0B6E4F, #10B981)', width: `${pct}%`, transition: 'width 0.4s ease' }} />
@@ -180,8 +180,8 @@ export default function EligibilityPopup({ isOpen, onClose }) {
         {/* Header */}
         <div style={{ padding: '24px 28px 0', textAlign: 'center' }}>
           <div style={{ fontSize: '2rem', marginBottom: '8px' }}>{STEPS[step]?.icon}</div>
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>{STEPS[step]?.title}</h3>
-          <p style={{ fontSize: '0.8125rem', color: '#9CA3AF', marginBottom: '0' }}>{STEPS[step]?.sub}</p>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>{STEPS[step]?.title}</h3>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', marginBottom: '0' }}>{STEPS[step]?.sub}</p>
         </div>
 
         {/* Content */}
@@ -192,7 +192,7 @@ export default function EligibilityPopup({ isOpen, onClose }) {
         {/* Actions */}
         <div style={{ padding: '20px 28px 24px', display: 'flex', gap: '10px', alignItems: 'center' }}>
           {step > 0 && (
-            <button onClick={back} style={{ padding: '12px 20px', borderRadius: '12px', border: '1.5px solid #E5E7EB', background: '#fff', color: '#6B7280', fontWeight: 500, fontSize: '0.875rem', cursor: 'pointer', transition: 'all 0.2s' }}>
+            <button onClick={back} style={{ padding: '12px 20px', borderRadius: '12px', border: '1.5px solid var(--color-border)', background: 'var(--color-card)', color: 'var(--color-text-secondary)', fontWeight: 500, fontSize: '0.875rem', cursor: 'pointer', transition: 'all 0.2s' }}>
               ← Back
             </button>
           )}
@@ -203,7 +203,7 @@ export default function EligibilityPopup({ isOpen, onClose }) {
 
         {/* Skip */}
         <div style={{ padding: '0 28px 20px', textAlign: 'center' }}>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#9CA3AF', fontSize: '0.8125rem', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.8125rem', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
             Continue without saving
           </button>
         </div>

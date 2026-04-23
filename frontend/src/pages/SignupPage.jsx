@@ -127,16 +127,16 @@ export default function SignupPage() {
   const inputStyle = (fieldName) => ({
     width: '100%', padding: '12px 16px', borderRadius: '10px',
     border: `1.5px solid ${fieldErrors[fieldName] ? '#EF4444' : '#E5E7EB'}`,
-    fontSize: '0.875rem', color: '#111827',
+    fontSize: '0.875rem', color: 'var(--color-text-primary)',
     outline: 'none', transition: 'all 0.2s ease',
-    background: '#FAFAFA',
+    background: 'var(--color-surface)',
   });
 
   const EyeIcon = ({ show, onClick }) => (
     <button type="button" onClick={onClick} tabIndex={-1}
       style={{
         position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
-        background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF',
+        background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)',
         padding: '4px', display: 'flex', alignItems: 'center',
       }}
       aria-label={show ? 'Hide password' : 'Show password'}
@@ -172,13 +172,13 @@ export default function SignupPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
           </div>
-          <h2 style={{ fontSize: '1.375rem', fontWeight: 800, color: '#111827', marginBottom: '8px' }}>
+          <h2 style={{ fontSize: '1.375rem', fontWeight: 800, color: 'var(--color-text-primary)', marginBottom: '8px' }}>
             🎉 Account Created!
           </h2>
-          <p style={{ fontSize: '0.875rem', color: '#6B7280', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
             Welcome to SmartSchemes! Redirecting you to login…
           </p>
-          <p style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '8px' }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '8px' }}>
             Please sign in with your new credentials.
           </p>
         </div>
@@ -204,10 +204,10 @@ export default function SignupPage() {
           }}>
             S
           </div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.3px' }}>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.3px' }}>
             Create Account
           </h1>
-          <p style={{ fontSize: '0.8125rem', color: '#9CA3AF', marginTop: '6px' }}>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', marginTop: '6px' }}>
             Join SmartSchemes to discover government schemes
           </p>
         </div>
@@ -217,9 +217,9 @@ export default function SignupPage() {
           onSubmit={handleSubmit}
           className="animate-fade-up delay-1"
           style={{
-            background: '#fff', borderRadius: '16px',
+            background: 'var(--color-card)', borderRadius: '16px',
             boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-            padding: '28px', border: '1px solid #F3F4F6',
+            padding: '28px', border: '1px solid var(--color-border-light)',
           }}
         >
           {error && (
@@ -239,7 +239,7 @@ export default function SignupPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             {/* Full Name */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px' }}>
                 Full Name <span style={{ color: '#EF4444' }}>*</span>
               </label>
               <input
@@ -255,7 +255,7 @@ export default function SignupPage() {
 
             {/* Email */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px' }}>
                 Email Address <span style={{ color: '#EF4444' }}>*</span>
               </label>
               <input
@@ -271,7 +271,7 @@ export default function SignupPage() {
 
             {/* Password */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px' }}>
                 Password <span style={{ color: '#EF4444' }}>*</span>
               </label>
               <div style={{ position: 'relative' }}>
@@ -291,7 +291,7 @@ export default function SignupPage() {
 
             {/* Confirm Password */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '6px' }}>
                 Confirm Password <span style={{ color: '#EF4444' }}>*</span>
               </label>
               <div style={{ position: 'relative' }}>
@@ -327,7 +327,7 @@ export default function SignupPage() {
                   accentColor: '#0B6E4F', cursor: 'pointer', flexShrink: 0,
                 }}
               />
-              <span style={{ fontSize: '0.8125rem', lineHeight: 1.6, color: '#4B5563' }}>
+              <span style={{ fontSize: '0.8125rem', lineHeight: 1.6, color: 'var(--color-text-secondary)' }}>
                 I have read and agree to the{' '}
                 <button type="button" onClick={() => setShowTerms(true)}
                   style={{ color: '#0B6E4F', fontWeight: 600, textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0 }}>
@@ -338,7 +338,7 @@ export default function SignupPage() {
                   style={{ color: '#0B6E4F', fontWeight: 600, textDecoration: 'underline', background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0 }}>
                   Privacy Policy
                 </button>.
-                <span style={{ display: 'block', fontSize: '0.75rem', color: '#9CA3AF', marginTop: '2px' }}>
+                <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
                   By creating an account, you consent to data processing as described in our Privacy Policy.
                 </span>
               </span>
@@ -392,7 +392,7 @@ export default function SignupPage() {
           </button>
 
           {/* Footer text */}
-          <p style={{ textAlign: 'center', fontSize: '0.75rem', color: '#9CA3AF', marginTop: '16px', lineHeight: 1.5 }}>
+          <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '16px', lineHeight: 1.5 }}>
             By creating an account, you agree to our{' '}
             <button type="button" onClick={() => setShowTerms(true)}
               style={{ color: '#0B6E4F', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: 0, textDecoration: 'underline' }}>
@@ -407,11 +407,11 @@ export default function SignupPage() {
           {/* Divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0' }}>
             <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }} />
-            <span style={{ fontSize: '0.75rem', color: '#9CA3AF', fontWeight: 500 }}>or</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>or</span>
             <div style={{ flex: 1, height: '1px', background: '#E5E7EB' }} />
           </div>
 
-          <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: '#6B7280' }}>
+          <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--color-text-secondary)' }}>
             Already have an account?{' '}
             <Link to="/login" style={{ color: '#0B6E4F', fontWeight: 600, textDecoration: 'none' }}>Login</Link>
           </p>

@@ -417,7 +417,7 @@ export default function SubscriptionPage() {
                 <Link to="/explore" style={{
                   display: 'inline-flex', alignItems: 'center', gap: '8px',
                   padding: '13px 28px', borderRadius: '14px',
-                  background: '#fff', color: '#0B6E4F',
+                  background: 'var(--color-card)', color: '#0B6E4F',
                   fontWeight: 700, fontSize: '0.9375rem',
                   textDecoration: 'none', transition: 'all 0.25s ease',
                 }}

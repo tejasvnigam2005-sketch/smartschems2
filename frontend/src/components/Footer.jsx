@@ -91,7 +91,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div style={{
-          borderTop: '1px solid #F3F4F6',
+          borderTop: '1px solid var(--color-border-light)',
           paddingTop: '20px',
           display: 'flex',
           alignItems: 'center',
@@ -99,12 +99,12 @@ export default function Footer() {
           flexWrap: 'wrap',
           gap: '8px',
         }}>
-          <p style={{ fontSize: '0.6875rem', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             {t('footer.copyright')}
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' }} />
-            <span style={{ fontSize: '0.6875rem', color: '#9CA3AF' }}>{t('footer.systemStatus')}</span>
+            <span style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>{t('footer.systemStatus')}</span>
           </div>
         </div>
       </div>

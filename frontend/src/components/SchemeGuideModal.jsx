@@ -41,7 +41,7 @@ export default function SchemeGuideModal({ scheme, schemeType, onClose }) {
           position: 'fixed', top: 0, right: 0, bottom: 0,
           width: '100%', maxWidth: '540px',
           zIndex: 101,
-          background: '#fff',
+          background: 'var(--color-card)',
           boxShadow: '-8px 0 40px rgba(0,0,0,0.12)',
           display: 'flex', flexDirection: 'column',
           animation: 'slide-in-right 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
@@ -50,7 +50,7 @@ export default function SchemeGuideModal({ scheme, schemeType, onClose }) {
         {/* Header */}
         <div style={{
           padding: '24px 24px 20px',
-          borderBottom: '1px solid #F3F4F6',
+          borderBottom: '1px solid var(--color-border-light)',
           flexShrink: 0,
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
@@ -65,7 +65,7 @@ export default function SchemeGuideModal({ scheme, schemeType, onClose }) {
                 </span>
               </div>
               <h2 style={{
-                fontSize: '1rem', fontWeight: 800, color: '#111827',
+                fontSize: '1rem', fontWeight: 800, color: 'var(--color-text-primary)',
                 lineHeight: 1.3, margin: 0,
                 display: '-webkit-box', WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical', overflow: 'hidden',
@@ -77,10 +77,10 @@ export default function SchemeGuideModal({ scheme, schemeType, onClose }) {
               onClick={onClose}
               style={{
                 width: '36px', height: '36px', borderRadius: '10px',
-                background: '#F3F4F6', border: 'none', cursor: 'pointer',
+                background: 'var(--color-surface)', border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 flexShrink: 0, transition: 'background 0.2s ease',
-                color: '#6B7280',
+                color: 'var(--color-text-secondary)',
               }}
               onMouseEnter={e => e.currentTarget.style.background = '#E5E7EB'}
               onMouseLeave={e => e.currentTarget.style.background = '#F3F4F6'}
@@ -94,7 +94,7 @@ export default function SchemeGuideModal({ scheme, schemeType, onClose }) {
           {/* Tabs */}
           <div style={{
             display: 'flex', gap: '4px',
-            background: '#F3F4F6', borderRadius: '10px',
+            background: 'var(--color-surface)', borderRadius: '10px',
             padding: '4px', marginTop: '20px',
           }}>
             {[
@@ -155,11 +155,11 @@ export default function SchemeGuideModal({ scheme, schemeType, onClose }) {
         {/* Footer */}
         <div style={{
           padding: '16px 24px',
-          borderTop: '1px solid #F3F4F6',
+          borderTop: '1px solid var(--color-border-light)',
           flexShrink: 0,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
-          <p style={{ fontSize: '0.75rem', color: '#9CA3AF', margin: 0 }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0 }}>
             Progress auto-saved locally
           </p>
           {scheme.website && (

@@ -49,7 +49,7 @@ export default function DocumentChecklist({ schemeType, schemeId }) {
     return (
       <div style={{ padding: '20px', textAlign: 'center' }}>
         <div className="spinner" style={{ borderTopColor: '#0B6E4F', margin: '0 auto 10px' }} />
-        <p style={{ fontSize: '0.875rem', color: '#6B7280' }}>Loading checklist...</p>
+        <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>Loading checklist...</p>
       </div>
     );
   }
@@ -69,7 +69,7 @@ export default function DocumentChecklist({ schemeType, schemeId }) {
   return (
     <div className="checklist-container animate-fade-in">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <svg width="18" height="18" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -80,7 +80,7 @@ export default function DocumentChecklist({ schemeType, schemeId }) {
         </span>
       </div>
 
-      <div style={{ background: '#F3F4F6', height: '6px', borderRadius: '3px', marginBottom: '20px', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--color-surface)', height: '6px', borderRadius: '3px', marginBottom: '20px', overflow: 'hidden' }}>
         <div style={{ height: '100%', width: `${progress}%`, background: progress === 100 ? '#10B981' : '#0B6E4F', transition: 'width 0.3s ease' }} />
       </div>
 
@@ -96,8 +96,8 @@ export default function DocumentChecklist({ schemeType, schemeId }) {
                 <p style={{ fontSize: '0.875rem', fontWeight: 600, color: isChecked ? '#6B7280' : '#111827', transition: 'color 0.2s', textDecoration: isChecked ? 'line-through' : 'none', marginBottom: '4px' }}>
                   {doc.name}
                 </p>
-                <p style={{ fontSize: '0.75rem', color: '#6B7280', marginBottom: '6px', lineHeight: 1.4 }}>{doc.description}</p>
-                <div style={{ display: 'flex', gap: '12px', fontSize: '0.6875rem', color: '#9CA3AF' }}>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', marginBottom: '6px', lineHeight: 1.4 }}>{doc.description}</p>
+                <div style={{ display: 'flex', gap: '12px', fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     {doc.estimatedTime}

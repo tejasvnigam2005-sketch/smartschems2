@@ -45,7 +45,7 @@ export default function ExploreSchemesPage() {
   };
 
   return (
-    <div style={{ paddingTop: '64px', minHeight: '100vh', background: '#fff', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-card)', position: 'relative', overflow: 'hidden' }}>
 
       {/* ── Indian Flag Animated Background ── */}
       <div className="flag-bg" aria-hidden="true">
@@ -101,10 +101,10 @@ export default function ExploreSchemesPage() {
         position: 'relative', zIndex: 2,
       }}>
         <div className="container animate-fade-up" style={{ textAlign: 'center' }}>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px', marginBottom: '8px' }}>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px', marginBottom: '8px' }}>
             {t('explore.title')}
           </h1>
-          <p style={{ fontSize: '0.9375rem', color: '#6B7280', maxWidth: '440px', margin: '0 auto 20px' }}>
+          <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', maxWidth: '440px', margin: '0 auto 20px' }}>
             {t('explore.subtitle')}
           </p>
           <img src="/images/explore-hero.png" alt="Discover schemes for education, business, and more"
@@ -121,7 +121,7 @@ export default function ExploreSchemesPage() {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '560px', margin: '0 auto', padding: '32px 24px 0' }}>
         <div className="animate-fade-up" style={{
           display: 'flex', gap: '4px',
-          background: '#F3F4F6',
+          background: 'var(--color-surface)',
           borderRadius: '14px',
           padding: '4px',
           marginBottom: '28px',
@@ -178,7 +178,7 @@ export default function ExploreSchemesPage() {
         {/* ── Business Form ── */}
         <div style={{ display: activeTab === 'business' ? 'block' : 'none' }}>
           <form onSubmit={submitBusiness} className="card-static animate-fade-up" style={{ padding: '32px 28px', borderRadius: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F3F4F6' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid var(--color-border-light)' }}>
               <div style={{
                 width: '36px', height: '36px', borderRadius: '10px',
                 background: 'rgba(11,110,79,0.06)',
@@ -187,8 +187,8 @@ export default function ExploreSchemesPage() {
                 <svg width="18" height="18" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
               </div>
               <div>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#111827' }}>{t('explore.businessDetails')}</h2>
-                <p style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>{t('explore.businessDetailsDesc')}</p>
+                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{t('explore.businessDetails')}</h2>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('explore.businessDetailsDesc')}</p>
               </div>
             </div>
 
@@ -240,7 +240,7 @@ export default function ExploreSchemesPage() {
         {/* ── Education Form ── */}
         <div style={{ display: activeTab === 'education' ? 'block' : 'none' }}>
           <form onSubmit={submitEducation} className="card-static animate-fade-up" style={{ padding: '32px 28px', borderRadius: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #F3F4F6' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid var(--color-border-light)' }}>
               <div style={{
                 width: '36px', height: '36px', borderRadius: '10px',
                 background: 'rgba(11,110,79,0.06)',
@@ -249,8 +249,8 @@ export default function ExploreSchemesPage() {
                 <svg width="18" height="18" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342" /></svg>
               </div>
               <div>
-                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#111827' }}>{t('explore.educationDetails')}</h2>
-                <p style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>{t('explore.educationDetailsDesc')}</p>
+                <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{t('explore.educationDetails')}</h2>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{t('explore.educationDetailsDesc')}</p>
               </div>
             </div>
 

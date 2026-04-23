@@ -72,7 +72,7 @@ export default function HowItWorksPage() {
   const sectionRef = useScrollReveal();
 
   return (
-    <div style={{ paddingTop: '64px', minHeight: '100vh', background: '#fff', position: 'relative', overflow: 'hidden' }} ref={sectionRef}>
+    <div style={{ paddingTop: '64px', minHeight: '100vh', background: 'var(--color-card)', position: 'relative', overflow: 'hidden' }} ref={sectionRef}>
 
       {/* Animated background particles */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
@@ -111,10 +111,10 @@ export default function HowItWorksPage() {
         position: 'relative', zIndex: 1,
       }}>
         <div className="container animate-fade-up" style={{ textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 800, color: '#111827', letterSpacing: '-0.5px', marginBottom: '12px' }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.5px', marginBottom: '12px' }}>
             From Your Profile to<br />Perfect Scheme Match
           </h1>
-          <p style={{ fontSize: '0.9375rem', color: '#6B7280', maxWidth: '480px', margin: '0 auto 24px', lineHeight: 1.7 }}>
+          <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', maxWidth: '480px', margin: '0 auto 24px', lineHeight: 1.7 }}>
             A transparent, 5-step process that finds the best government schemes for you — in seconds.
           </p>
           <img src="/images/how-it-works-hero.png" alt="SmartSchemes workflow pipeline"
@@ -189,10 +189,10 @@ export default function HowItWorksPage() {
                 {/* Content card */}
                 <div style={{
                   flex: 1,
-                  background: '#FAFAFA',
+                  background: 'var(--color-surface)',
                   borderRadius: '16px',
                   padding: '20px 24px',
-                  border: '1px solid #F3F4F6',
+                  border: '1px solid var(--color-border-light)',
                   transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
                   cursor: 'default',
                 }}
@@ -208,8 +208,8 @@ export default function HowItWorksPage() {
                     </span>
                     <div style={{ flex: 1, height: '1px', background: `${step.color}15` }} />
                   </div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#111827', marginBottom: '6px' }}>{step.title}</h3>
-                  <p style={{ fontSize: '0.8125rem', color: '#6B7280', lineHeight: 1.6 }}>{step.desc}</p>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '6px' }}>{step.title}</h3>
+                  <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -309,7 +309,7 @@ export default function HowItWorksPage() {
       {/* ── Tech Stack ── */}
       <section style={{ padding: '0 0 80px' }}>
         <div className="container" style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2 className="scroll-reveal" style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827', marginBottom: '24px', textAlign: 'center' }}>
+          <h2 className="scroll-reveal" style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-text-primary)', marginBottom: '24px', textAlign: 'center' }}>
             Built With Trust
           </h2>
           <div className="scroll-reveal" style={{
@@ -319,10 +319,10 @@ export default function HowItWorksPage() {
           }}>
             {techStack.map((tech, i) => (
               <div key={i} style={{
-                background: '#FAFAFA',
+                background: 'var(--color-surface)',
                 borderRadius: '16px',
                 padding: '20px',
-                border: '1px solid #F3F4F6',
+                border: '1px solid var(--color-border-light)',
                 textAlign: 'center',
                 transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
               }}
@@ -334,8 +334,8 @@ export default function HowItWorksPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d={tech.svgPath} />
                   </svg>
                 </div>
-                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>{tech.label}</h4>
-                <p style={{ fontSize: '0.75rem', color: '#9CA3AF', lineHeight: 1.5 }}>{tech.desc}</p>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>{tech.label}</h4>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>{tech.desc}</p>
               </div>
             ))}
           </div>
@@ -345,8 +345,8 @@ export default function HowItWorksPage() {
       {/* ── CTA ── */}
       <section className="scroll-reveal" style={{ padding: '0 0 80px' }}>
         <div className="container" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '1.375rem', fontWeight: 800, color: '#111827', marginBottom: '10px' }}>Ready to Find Your Schemes?</h2>
-          <p style={{ fontSize: '0.875rem', color: '#9CA3AF', marginBottom: '24px' }}>It takes less than 60 seconds.</p>
+          <h2 style={{ fontSize: '1.375rem', fontWeight: 800, color: 'var(--color-text-primary)', marginBottom: '10px' }}>Ready to Find Your Schemes?</h2>
+          <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '24px' }}>It takes less than 60 seconds.</p>
           <Link to="/explore" className="btn-primary" style={{ padding: '14px 32px' }}>
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
               <circle cx="11" cy="11" r="8" />
