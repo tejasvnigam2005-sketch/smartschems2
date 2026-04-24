@@ -83,6 +83,13 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'Category and filters are required' });
     }
 
+    // Normalize filter values to lowercase for consistent DB matching
+    if (filters.businessType) filters.businessType = filters.businessType.toLowerCase();
+    if (filters.state) filters.state = filters.state.toLowerCase();
+    if (filters.educationLevel) filters.educationLevel = filters.educationLevel.toLowerCase();
+    if (filters.category) filters.category = filters.category.toLowerCase();
+    if (filters.fieldOfStudy) filters.fieldOfStudy = filters.fieldOfStudy.toLowerCase();
+
     let schemes = [];
     let scoredSchemes = [];
 
