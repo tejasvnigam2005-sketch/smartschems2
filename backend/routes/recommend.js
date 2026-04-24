@@ -73,6 +73,10 @@ function computeEducationRelevance(scheme, filters) {
 // ─── POST /api/recommend ────────────────────────────────────────────
 router.post('/', async (req, res) => {
   try {
+    if (!supabase) {
+      return res.status(503).json({ message: 'Database not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
+    }
+
     const { category, filters } = req.body;
 
     if (!category || !filters) {
@@ -150,6 +154,11 @@ router.post('/', async (req, res) => {
 router.post('/eligibility', async (req, res) => {
   try {
     const { age, income, state, category, occupation, gender, area, disability } = req.body;
+
+    if (!supabase) {
+      return res.status(503).json({ message: 'Database not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
+    }
+
     const numAge = Number(age) || 25;
     const numIncome = Number(income) || 0;
     const stateVal = (state || '').toLowerCase();

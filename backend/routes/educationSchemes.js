@@ -2,6 +2,11 @@ const express = require('express');
 const supabase = require('../config/supabase');
 const router = express.Router();
 
+router.use((req, res, next) => {
+  if (!supabase) return res.status(503).json({ message: 'Database not configured.' });
+  next();
+});
+
 // GET /api/education-schemes
 router.get('/', async (req, res) => {
   try {

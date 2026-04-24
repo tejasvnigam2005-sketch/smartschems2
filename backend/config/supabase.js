@@ -8,8 +8,12 @@ if (!supabaseUrl || !supabaseServiceKey) {
 }
 
 // Service role client — bypasses RLS for backend operations
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: { autoRefreshToken: false, persistSession: false }
-});
+// Returns null if credentials are missing so routes can handle gracefully
+const supabase =
+  supabaseUrl && supabaseServiceKey
+    ? createClient(supabaseUrl, supabaseServiceKey, {
+        auth: { autoRefreshToken: false, persistSession: false }
+      })
+    : null;
 
 module.exports = supabase;

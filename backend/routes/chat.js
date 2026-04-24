@@ -3,6 +3,11 @@ const supabase = require('../config/supabase');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const router = express.Router();
 
+router.use((req, res, next) => {
+  if (!supabase) return res.status(503).json({ message: 'Database not configured.' });
+  next();
+});
+
 // Initialize Gemini
 let genAI = null;
 let model = null;

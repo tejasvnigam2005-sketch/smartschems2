@@ -2,6 +2,14 @@ const express = require('express');
 const supabase = require('../config/supabase');
 const router = express.Router();
 
+// Guard: all auth routes require Supabase
+router.use((req, res, next) => {
+  if (!supabase) {
+    return res.status(503).json({ message: 'Authentication service not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
+  }
+  next();
+});
+
 // POST /api/auth/signup
 router.post('/signup', async (req, res) => {
   try {
