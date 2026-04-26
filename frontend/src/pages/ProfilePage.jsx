@@ -82,61 +82,88 @@ export default function ProfilePage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-card)', paddingTop: '64px' }}>
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '32px 24px 56px' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px 80px' }}>
+        
         {/* Profile Header */}
-        <div className="card-static animate-fade-up" style={{ overflow: 'hidden', marginBottom: '24px', borderRadius: '20px' }}>
+        <div className="card-static animate-fade-up" style={{ 
+          overflow: 'hidden', 
+          marginBottom: '32px', 
+          borderRadius: '24px',
+          boxShadow: '0 12px 40px rgba(0,0,0,0.06)'
+        }}>
           <div style={{
-            height: '100px',
+            height: '140px',
             background: 'linear-gradient(135deg, #0B6E4F, #10B981, #34D399)',
             position: 'relative',
           }}>
+            {/* Background pattern */}
             <div style={{
-              position: 'absolute', top: '10%', right: '10%',
-              width: '80px', height: '80px', borderRadius: '50%',
-              background: 'rgba(255,255,255,0.08)',
+              position: 'absolute', inset: 0,
+              backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
+              backgroundSize: '24px 24px'
+            }} />
+            <div style={{
+              position: 'absolute', top: '-20%', right: '5%',
+              width: '180px', height: '180px', borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
             }} />
           </div>
-          <div style={{ padding: '0 24px 24px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginTop: '-32px', marginBottom: '20px' }}>
-              <div style={{
-                width: '64px', height: '64px', borderRadius: '18px',
-                background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#fff', fontSize: '1.5rem', fontWeight: 800,
-                border: '3px solid #fff',
-                boxShadow: '0 4px 12px rgba(11,110,79,0.2)',
-              }}>
-                {user.name?.[0]?.toUpperCase()}
+          
+          <div style={{ padding: '0 32px 32px', position: 'relative' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginTop: '-48px', marginBottom: '28px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '20px' }}>
+                <div style={{
+                  width: '96px', height: '96px', borderRadius: '24px',
+                  background: 'var(--color-card)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '6px',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                }}>
+                  <div style={{
+                    width: '100%', height: '100%', borderRadius: '18px',
+                    background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#fff', fontSize: '2.5rem', fontWeight: 800,
+                  }}>
+                    {user.name?.[0]?.toUpperCase()}
+                  </div>
+                </div>
+                <div style={{ paddingBottom: '8px' }}>
+                  <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-text-primary)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>{user.name}</h1>
+                  <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-muted)', marginTop: '4px' }}>{user.email}</p>
+                </div>
               </div>
-              <div style={{ paddingBottom: '2px', flex: 1 }}>
-                <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>{user.name}</h1>
-                <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>{user.email}</p>
-              </div>
+
               <button onClick={handleSignOut} style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
                 padding: '10px 20px', borderRadius: '12px',
-                background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.15)',
-                color: '#DC2626', fontSize: '0.8125rem', fontWeight: 600,
+                background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)',
+                color: '#DC2626', fontSize: '0.875rem', fontWeight: 650,
                 cursor: 'pointer', transition: 'all 0.2s',
+                marginBottom: '8px'
               }}
-                onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.15)'; }}
-                onMouseOut={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; }}
+                onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.12)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                onMouseOut={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.06)'; e.currentTarget.style.transform = 'none'; }}
+                onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.98)'; }}
               >
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                 </svg>
                 Sign Out
               </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-              <div style={{ background: 'rgba(11,110,79,0.04)', borderRadius: '14px', padding: '14px 16px' }}>
-                <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#0B6E4F', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Account</p>
-                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0B6E4F' }}>Free Plan</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+              <div style={{ background: 'var(--color-surface)', borderRadius: '16px', padding: '16px 20px', border: '1px solid var(--color-border-light)' }}>
+                <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#0B6E4F', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Account Status</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 0 3px rgba(16,185,129,0.2)' }} />
+                  <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>Free Plan</p>
+                </div>
               </div>
-              <div style={{ background: 'rgba(139,92,246,0.04)', borderRadius: '14px', padding: '14px 16px' }}>
-                <p style={{ fontSize: '0.625rem', fontWeight: 600, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Joined</p>
-                <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#7C3AED' }}>
+              <div style={{ background: 'var(--color-surface)', borderRadius: '16px', padding: '16px 20px', border: '1px solid var(--color-border-light)' }}>
+                <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Member Since</p>
+                <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
                   {new Date(user.createdAt || Date.now()).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
                 </p>
               </div>
@@ -145,172 +172,218 @@ export default function ProfilePage() {
         </div>
 
         {/* Preferences */}
-        <div className="card-static animate-fade-up delay-1" style={{ padding: '24px', marginBottom: '24px', borderRadius: '20px' }}>
-          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
-              <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-            Saved Preferences
-          </h2>
+        <div className="card-static animate-fade-up delay-1" style={{ padding: '28px', marginBottom: '32px', borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'rgba(11,110,79,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="20" height="20" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </div>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>Saved Preferences</h2>
+          </div>
+
           {hasPrefs ? (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
               {pref.category && (
-                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Category</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px', textTransform: 'capitalize' }}>{pref.category}</p>
+                <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-light)', borderRadius: '16px', padding: '16px 20px', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor='rgba(11,110,79,0.3)'} onMouseOut={e => e.currentTarget.style.borderColor='var(--color-border-light)'}>
+                  <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Category</p>
+                  <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginTop: '4px', textTransform: 'capitalize' }}>{pref.category}</p>
                 </div>
               )}
               {pref.state && (
-                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>State</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px', textTransform: 'capitalize' }}>{pref.state}</p>
+                <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-light)', borderRadius: '16px', padding: '16px 20px', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor='rgba(11,110,79,0.3)'} onMouseOut={e => e.currentTarget.style.borderColor='var(--color-border-light)'}>
+                  <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>State</p>
+                  <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginTop: '4px', textTransform: 'capitalize' }}>{pref.state}</p>
                 </div>
               )}
               {pref.age && (
-                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Age</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px' }}>{pref.age}</p>
+                <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-light)', borderRadius: '16px', padding: '16px 20px', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor='rgba(11,110,79,0.3)'} onMouseOut={e => e.currentTarget.style.borderColor='var(--color-border-light)'}>
+                  <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Age</p>
+                  <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginTop: '4px' }}>{pref.age} years</p>
                 </div>
               )}
               {pref.income && (
-                <div style={{ background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px' }}>
-                  <p style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Income</p>
-                  <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginTop: '2px' }}>₹{pref.income?.toLocaleString()}</p>
+                <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-light)', borderRadius: '16px', padding: '16px 20px', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor='rgba(11,110,79,0.3)'} onMouseOut={e => e.currentTarget.style.borderColor='var(--color-border-light)'}>
+                  <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Income</p>
+                  <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginTop: '4px' }}>₹{pref.income?.toLocaleString()}</p>
                 </div>
               )}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--color-text-muted)' }}>
-              <p style={{ fontSize: '1.5rem', marginBottom: '4px' }}><svg width="24" height="24" fill="none" stroke="#D1D5DB" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" /></svg></p>
-              <p style={{ fontSize: '0.8125rem' }}>No preferences saved yet</p>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--color-text-muted)', background: 'var(--color-surface)', borderRadius: '16px', border: '1px dashed var(--color-border)' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--color-card)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" /></svg>
+              </div>
+              <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '4px' }}>No Preferences Saved</p>
+              <p style={{ fontSize: '0.8125rem' }}>Update your preferences to get better recommendations.</p>
             </div>
           )}
         </div>
 
         {/* DigiLocker Section */}
-        <div className="card-static animate-fade-up delay-2" style={{ overflow: 'hidden', marginBottom: '24px', borderRadius: '20px' }}>
+        <div className="card-static animate-fade-up delay-2" style={{ overflow: 'hidden', marginBottom: '32px', borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
           <div style={{
-            padding: '20px 24px',
-            background: 'linear-gradient(135deg, rgba(26,86,219,0.06), rgba(59,130,246,0.04))',
+            padding: '28px 32px',
+            background: 'linear-gradient(135deg, rgba(26,86,219,0.08) 0%, rgba(59,130,246,0.02) 100%)',
             borderBottom: '1px solid var(--color-border-light)',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            flexWrap: 'wrap', gap: '12px',
+            flexWrap: 'wrap', gap: '16px',
+            position: 'relative'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {/* Background design elements */}
+            <div style={{ position: 'absolute', right: '0', top: '0', bottom: '0', width: '200px', background: 'radial-gradient(circle at right, rgba(59,130,246,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', zIndex: 1 }}>
               <div style={{
-                width: '36px', height: '36px', borderRadius: '10px',
+                width: '48px', height: '48px', borderRadius: '14px',
                 background: 'linear-gradient(135deg, #1a56db, #3b82f6)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 8px 16px rgba(26,86,219,0.2)'
               }}>
-                <svg width="18" height="18" fill="none" stroke="#fff" viewBox="0 0 24 24" strokeWidth="2">
+                <svg width="22" height="22" fill="none" stroke="#fff" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                 </svg>
               </div>
               <div>
-                <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', margin: 0 }}>DigiLocker</h2>
-                <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', margin: 0 }}>Fetch & save official documents to your profile</p>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-text-primary)', margin: '0 0 2px' }}>DigiLocker Integration</h2>
+                <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', margin: 0 }}>Securely fetch & save official documents to your profile</p>
               </div>
             </div>
+            
             {!digiLockerConnected ? (
               <button onClick={handleConnectDigiLocker} style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                padding: '9px 18px', borderRadius: '10px',
+                display: 'flex', alignItems: 'center', gap: '10px',
+                padding: '12px 24px', borderRadius: '14px',
                 background: 'linear-gradient(135deg, #1a56db, #3b82f6)',
                 border: 'none', color: '#fff',
-                fontSize: '0.75rem', fontWeight: 650,
-                cursor: 'pointer', boxShadow: '0 4px 12px rgba(26,86,219,0.3)',
-                transition: 'all 0.2s', whiteSpace: 'nowrap',
-              }}>
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                fontSize: '0.875rem', fontWeight: 700,
+                cursor: 'pointer', boxShadow: '0 6px 16px rgba(26,86,219,0.3)',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)', whiteSpace: 'nowrap',
+                position: 'relative', zIndex: 1
+              }}
+                onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(26,86,219,0.4)'; }}
+                onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(26,86,219,0.3)'; }}
+                onMouseDown={e => { e.currentTarget.style.transform = 'scale(0.98)'; }}
+              >
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.193-9.193a4.5 4.5 0 010 6.364l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757" />
                 </svg>
                 Connect DigiLocker
               </button>
             ) : (
               <div style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                padding: '6px 14px', borderRadius: '8px',
-                background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)',
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '8px 16px', borderRadius: '10px',
+                background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)',
+                position: 'relative', zIndex: 1
               }}>
-                <svg width="14" height="14" fill="none" stroke="#10B981" viewBox="0 0 24 24" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#10B981' }}>Connected</span>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 0 3px rgba(16,185,129,0.2)' }} />
+                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#10B981' }}>Connected</span>
               </div>
             )}
           </div>
 
-          <div style={{ padding: '20px 24px' }}>
+          <div style={{ padding: '32px' }}>
             {!digiLockerConnected ? (
-              <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--color-text-muted)' }}>
-                <svg width="40" height="40" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="1" style={{ margin: '0 auto 12px', opacity: 0.4 }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                </svg>
-                <p style={{ fontSize: '0.8125rem', fontWeight: 600, marginBottom: '2px' }}>Connect DigiLocker to get started</p>
-                <p style={{ fontSize: '0.6875rem' }}>Your documents will appear here once connected.</p>
+              <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--color-text-muted)' }}>
+                <div style={{ 
+                  width: '64px', height: '64px', borderRadius: '50%', 
+                  background: 'var(--color-surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                  margin: '0 auto 16px', border: '1px solid var(--color-border-light)' 
+                }}>
+                  <svg width="28" height="28" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" strokeWidth="1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                  </svg>
+                </div>
+                <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '4px' }}>Connect to View Documents</p>
+                <p style={{ fontSize: '0.875rem', maxWidth: '300px', margin: '0 auto' }}>Your verified documents will appear here once you authorize DigiLocker.</p>
               </div>
             ) : (
               <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <span style={{ fontSize: '0.625rem', fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>Available Documents</span>
-                  <span style={{ fontSize: '0.625rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>{savedDocs.length} / {DIGILOCKER_DOCS.length} saved</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '20px' }}>
+                  <div>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--color-text-muted)' }}>Available Documents</span>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: '4px' }}>Fetch required documents for scheme applications.</p>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '4px 12px', background: 'var(--color-surface)', borderRadius: '100px', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border-light)' }}>
+                    {savedDocs.length} / {DIGILOCKER_DOCS.length} saved
+                  </span>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
                   {DIGILOCKER_DOCS.map(doc => {
                     const isSaved = savedDocs.includes(doc.id);
                     const isLoading = connectingId === doc.id;
                     return (
                       <div key={doc.id} style={{
-                        display: 'flex', alignItems: 'center', gap: '12px',
-                        padding: '12px 14px', borderRadius: '12px',
-                        background: isSaved ? 'rgba(16,185,129,0.05)' : 'var(--color-surface)',
-                        border: `1px solid ${isSaved ? 'rgba(16,185,129,0.15)' : 'var(--color-border-light)'}`,
-                        transition: 'all 0.2s',
-                      }}>
-                        <div style={{
-                          width: '34px', height: '34px', borderRadius: '9px',
-                          background: isSaved ? 'rgba(16,185,129,0.1)' : 'rgba(11,110,79,0.06)',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                        }}>
-                          <svg width="16" height="16" fill="none" stroke={isSaved ? '#10B981' : 'var(--color-text-muted)'} viewBox="0 0 24 24" strokeWidth="1.5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d={doc.icon} />
-                          </svg>
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-primary)', margin: '0 0 1px' }}>{doc.name}</p>
-                          <p style={{ fontSize: '0.625rem', color: 'var(--color-text-muted)', margin: 0 }}>{doc.issuer}</p>
-                        </div>
-                        {isSaved ? (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.625rem', fontWeight: 600, color: '#10B981' }}>
-                              <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                              Saved
-                            </span>
-                            <button onClick={() => handleRemoveDocument(doc.id)} style={{
-                              width: '26px', height: '26px', borderRadius: '7px',
-                              background: 'rgba(239,68,68,0.08)', border: 'none',
-                              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            }}>
-                              <svg width="11" height="11" fill="none" stroke="#DC2626" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
-                            </button>
-                          </div>
-                        ) : (
-                          <button onClick={() => handleFetchDocument(doc.id)} disabled={isLoading} style={{
-                            display: 'flex', alignItems: 'center', gap: '5px',
-                            padding: '6px 12px', borderRadius: '8px',
-                            background: isLoading ? 'var(--color-surface)' : 'rgba(11,110,79,0.08)',
-                            border: `1px solid ${isLoading ? 'var(--color-border)' : 'rgba(11,110,79,0.15)'}`,
-                            color: '#0B6E4F', fontSize: '0.6875rem', fontWeight: 600,
-                            cursor: isLoading ? 'not-allowed' : 'pointer', transition: 'all 0.2s',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px',
+                        padding: '16px', borderRadius: '16px',
+                        background: isSaved ? 'linear-gradient(to right, rgba(16,185,129,0.05), transparent)' : 'var(--color-surface)',
+                        border: `1px solid ${isSaved ? 'rgba(16,185,129,0.2)' : 'var(--color-border-light)'}`,
+                        transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                        onMouseOver={e => { if(!isSaved && !isLoading) e.currentTarget.style.borderColor='rgba(59,130,246,0.3)'; }}
+                        onMouseOut={e => { if(!isSaved && !isLoading) e.currentTarget.style.borderColor='var(--color-border-light)'; }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
+                          <div style={{
+                            width: '44px', height: '44px', borderRadius: '12px',
+                            background: isSaved ? 'rgba(16,185,129,0.1)' : 'var(--color-card)',
+                            border: `1px solid ${isSaved ? 'rgba(16,185,129,0.2)' : 'var(--color-border)'}`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                           }}>
-                            {isLoading ? (
-                              <><div style={{ width: '11px', height: '11px', border: '2px solid rgba(11,110,79,0.2)', borderTopColor: '#0B6E4F', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} />Fetching…</>
-                            ) : (
-                              <><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>Fetch</>
-                            )}
-                          </button>
-                        )}
+                            <svg width="20" height="20" fill="none" stroke={isSaved ? '#10B981' : '#6B7280'} viewBox="0 0 24 24" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d={doc.icon} />
+                            </svg>
+                          </div>
+                          <div style={{ minWidth: 0 }}>
+                            <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{doc.name}</p>
+                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{doc.issuer}</p>
+                          </div>
+                        </div>
+                        
+                        <div style={{ flexShrink: 0 }}>
+                          {isSaved ? (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 700, color: '#10B981', padding: '4px 8px', background: 'rgba(16,185,129,0.1)', borderRadius: '8px' }}>
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                                Saved
+                              </span>
+                              <button onClick={() => handleRemoveDocument(doc.id)} style={{
+                                width: '32px', height: '32px', borderRadius: '8px',
+                                background: 'rgba(239,68,68,0.08)', border: 'none',
+                                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                transition: 'background 0.2s'
+                              }}
+                                onMouseOver={e=>e.currentTarget.style.background='rgba(239,68,68,0.15)'}
+                                onMouseOut={e=>e.currentTarget.style.background='rgba(239,68,68,0.08)'}
+                                title="Remove document"
+                              >
+                                <svg width="14" height="14" fill="none" stroke="#DC2626" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                              </button>
+                            </div>
+                          ) : (
+                            <button onClick={() => handleFetchDocument(doc.id)} disabled={isLoading} style={{
+                              display: 'flex', alignItems: 'center', gap: '6px',
+                              padding: '8px 16px', borderRadius: '10px',
+                              background: isLoading ? 'var(--color-surface)' : '#fff',
+                              border: `1px solid ${isLoading ? 'var(--color-border)' : '#D1D5DB'}`,
+                              color: isLoading ? 'var(--color-text-muted)' : 'var(--color-text-primary)', 
+                              fontSize: '0.8125rem', fontWeight: 650,
+                              cursor: isLoading ? 'not-allowed' : 'pointer', transition: 'all 0.2s',
+                              boxShadow: isLoading ? 'none' : '0 2px 4px rgba(0,0,0,0.02)'
+                            }}
+                              onMouseOver={e=>{if(!isLoading) { e.currentTarget.style.borderColor='#3B82F6'; e.currentTarget.style.color='#3B82F6'; }}}
+                              onMouseOut={e=>{if(!isLoading) { e.currentTarget.style.borderColor='#D1D5DB'; e.currentTarget.style.color='var(--color-text-primary)'; }}}
+                            >
+                              {isLoading ? (
+                                <><div style={{ width: '14px', height: '14px', border: '2px solid rgba(0,0,0,0.1)', borderTopColor: '#3B82F6', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }} />Fetching</>
+                              ) : (
+                                <><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>Fetch</>
+                              )}
+                            </button>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -321,39 +394,51 @@ export default function ProfilePage() {
         </div>
 
         {/* Search History */}
-        <div className="card-static animate-fade-up delay-3" style={{ padding: '24px', marginBottom: '32px', borderRadius: '20px' }}>
-          <h2 style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="2">
-              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Past Searches
-          </h2>
+        <div className="card-static animate-fade-up delay-3" style={{ padding: '28px', marginBottom: '32px', borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'rgba(59,130,246,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="20" height="20" fill="none" stroke="#3B82F6" viewBox="0 0 24 24" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>Past Searches</h2>
+          </div>
+
           {history.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {history.slice(-10).reverse().map((s, i) => (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+              {history.slice(-6).reverse().map((s, i) => (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: 'var(--color-surface)', borderRadius: '12px', padding: '14px 16px',
-                  transition: 'all 0.2s ease',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ display: 'flex' }}>
+                  background: 'var(--color-surface)', borderRadius: '16px', padding: '16px 20px',
+                  border: '1px solid var(--color-border-light)',
+                  transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)', cursor: 'pointer'
+                }}
+                  onMouseOver={e => { e.currentTarget.style.borderColor='rgba(59,130,246,0.3)'; e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,0.04)'; }}
+                  onMouseOut={e => { e.currentTarget.style.borderColor='var(--color-border-light)'; e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='none'; }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div style={{ 
+                      width: '40px', height: '40px', borderRadius: '10px', 
+                      background: 'var(--color-card)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      border: '1px solid var(--color-border)'
+                    }}>
                       {s.category === 'business'
-                        ? <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                        : <svg width="16" height="16" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347" /></svg>
+                        ? <svg width="20" height="20" fill="none" stroke="#0B6E4F" viewBox="0 0 24 24" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        : <svg width="20" height="20" fill="none" stroke="#3B82F6" viewBox="0 0 24 24" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347" /></svg>
                       }
-                    </span>
+                    </div>
                     <div>
-                      <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', textTransform: 'capitalize' }}>{s.category} Search</p>
-                      <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
+                      <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)', textTransform: 'capitalize', margin: '0 0 2px' }}>{s.category} Search</p>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0 }}>
                         {new Date(s.searchedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                     </div>
                   </div>
                   <span style={{
-                    padding: '4px 10px', borderRadius: '8px',
-                    fontSize: '0.75rem', fontWeight: 600,
-                    background: 'rgba(11,110,79,0.06)', color: '#0B6E4F',
+                    padding: '4px 12px', borderRadius: '100px',
+                    fontSize: '0.75rem', fontWeight: 700,
+                    background: 'var(--color-card)', color: 'var(--color-text-secondary)',
+                    border: '1px solid var(--color-border)'
                   }}>
                     {s.results?.length || 0} results
                   </span>
@@ -361,9 +446,12 @@ export default function ProfilePage() {
               ))}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--color-text-muted)' }}>
-              <p style={{ fontSize: '1.5rem', marginBottom: '4px' }}><svg width="24" height="24" fill="none" stroke="#D1D5DB" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg></p>
-              <p style={{ fontSize: '0.8125rem' }}>No searches yet</p>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--color-text-muted)', background: 'var(--color-surface)', borderRadius: '16px', border: '1px dashed var(--color-border)' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--color-card)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+              </div>
+              <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '4px' }}>No Searches Yet</p>
+              <p style={{ fontSize: '0.8125rem' }}>Your search history will appear here.</p>
             </div>
           )}
         </div>
