@@ -640,10 +640,17 @@ export default function LandingPage() {
               </button>
             </div>
             {/* Video */}
-            <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10', background: '#000' }}>
-              <img src="/images/walkthrough.webp" alt="SmartSchemes walkthrough tutorial"
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: '#000' }}>
+              <video
+                src="/demo-video.mp4"
+                controls
+                autoPlay
+                playsInline
+                muted
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
+              >
+                Your browser does not support the video tag.
+              </video>
             </div>
             {/* Footer */}
             <div style={{
