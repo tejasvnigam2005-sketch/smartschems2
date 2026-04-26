@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage, LANGUAGE_OPTIONS } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -17,6 +17,13 @@ export default function Sidebar({ isOpen, onClose }) {
   const { t, lang, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { user, logoutUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    onClose();
+    await logoutUser();
+    navigate('/');
+  };
 
   const labels = {
     '/': t('nav.home'),
@@ -145,23 +152,44 @@ export default function Sidebar({ isOpen, onClose }) {
 
           {/* Auth */}
           {user ? (
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: '10px',
-              padding: '10px 12px', borderRadius: '12px',
-              background: 'var(--color-surface)',
-            }}>
-              <div style={{
-                width: '32px', height: '32px', borderRadius: '8px',
-                background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#fff', fontSize: '0.75rem', fontWeight: 700, flexShrink: 0,
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <Link to="/profile" onClick={onClose} style={{
+                display: 'flex', alignItems: 'center', gap: '10px',
+                padding: '10px 12px', borderRadius: '12px',
+                background: 'var(--color-surface)',
+                textDecoration: 'none', transition: 'all 0.2s',
               }}>
-                {(user.name || user.email || '?')[0].toUpperCase()}
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name || 'User'}</p>
-                <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', margin: 0 }}>{user.email}</p>
-              </div>
+                <div style={{
+                  width: '32px', height: '32px', borderRadius: '8px',
+                  background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: '#fff', fontSize: '0.75rem', fontWeight: 700, flexShrink: 0,
+                }}>
+                  {(user.name || user.email || '?')[0].toUpperCase()}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-primary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name || 'User'}</p>
+                  <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', margin: 0 }}>{user.email}</p>
+                </div>
+                <svg width="14" height="14" fill="none" stroke="var(--color-text-muted)" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </Link>
+              <button onClick={handleSignOut} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                padding: '10px', borderRadius: '12px',
+                background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)',
+                color: '#DC2626', fontSize: '0.8125rem', fontWeight: 600,
+                cursor: 'pointer', transition: 'all 0.2s',
+              }}
+                onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.12)'; }}
+                onMouseOut={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.06)'; }}
+              >
+                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+                Sign Out
+              </button>
             </div>
           ) : (
             <Link to="/login" onClick={onClose} style={{

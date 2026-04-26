@@ -16,6 +16,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EligibleSchemesPage from './pages/EligibleSchemesPage';
 import DocumentStatusPage from './pages/DocumentStatusPage';
 import SubscriptionPage from './pages/SubscriptionPage';
+import ProfilePage from './pages/ProfilePage';
 import { DashboardProvider } from './context/DashboardContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
@@ -48,6 +49,7 @@ export default function App() {
                 <Route path="/eligible-schemes" element={<EligibleSchemesPage />} />
                 <Route path="/document-status" element={<DocumentStatusPage />} />
                 <Route path="/subscription" element={<SubscriptionPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
               </Routes>
             </PageTransition>
             <ChatBot />

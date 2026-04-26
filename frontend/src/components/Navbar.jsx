@@ -154,7 +154,7 @@ export default function Navbar() {
               {/* Auth button (compact) */}
               {!authLoading && (
                 user ? (
-                  <Link to="/dashboard" style={{
+                  <Link to="/profile" style={{
                     width: '36px', height: '36px', borderRadius: '10px',
                     background: 'linear-gradient(135deg, #0B6E4F, #10B981)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
