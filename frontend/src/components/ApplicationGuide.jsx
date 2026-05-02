@@ -30,7 +30,6 @@ export default function ApplicationGuide({ schemeType, schemeId }) {
         }
       } catch (err) {
         setError('Failed to load application guide.');
-        console.error(err);
       } finally {
         setLoading(false);
       }

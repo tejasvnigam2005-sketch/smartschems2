@@ -1,101 +1,101 @@
-const express = require('express');
+// Auth controller — handles signup, login, profile retrieval, and preference updates.
+// All business logic extracted from routes/auth.js; uses Supabase for identity.
+
 const supabase = require('../config/supabase');
-const router = express.Router();
+const logger = require('../utils/logger');
+const {
+  sendSuccess,
+  sendCreated,
+  sendBadRequest,
+  sendUnauthorized,
+  sendServiceUnavailable,
+} = require('../utils/responseHelper');
 
-// Guard: all auth routes require Supabase
-router.use((req, res, next) => {
-  if (!supabase) {
-    return res.status(503).json({ message: 'Authentication service not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.' });
-  }
-  next();
-});
-
-// POST /api/auth/signup
-router.post('/signup', async (req, res) => {
+async function signup(req, res, next) {
   try {
+    if (!supabase) {
+      return sendServiceUnavailable(res, 'Authentication service not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.');
+    }
+
     const { name, email, password, acceptedTerms } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required' });
+      return sendBadRequest(res, 'Name, email, and password are required');
     }
     if (name.length < 2) {
-      return res.status(400).json({ message: 'Name must be at least 2 characters' });
+      return sendBadRequest(res, 'Name must be at least 2 characters');
     }
     if (password.length < 8) {
-      return res.status(400).json({ message: 'Password must be at least 8 characters' });
+      return sendBadRequest(res, 'Password must be at least 8 characters');
     }
     if (!acceptedTerms) {
-      return res.status(400).json({ message: 'You must accept the Terms & Conditions' });
+      return sendBadRequest(res, 'You must accept the Terms & Conditions');
     }
 
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
-      user_metadata: { name }
+      user_metadata: { name },
     });
 
     if (error) {
       if (error.message.includes('already') || error.message.includes('unique')) {
-        return res.status(400).json({ message: 'An account with this email already exists' });
+        return sendBadRequest(res, 'An account with this email already exists');
       }
       throw error;
     }
 
-    // Store consent in profiles table
-    await supabase.from('profiles').update({
-      accepted_terms: true,
-      accepted_at: new Date().toISOString()
-    }).eq('id', data.user.id);
+    await supabase
+      .from('profiles')
+      .update({ accepted_terms: true, accepted_at: new Date().toISOString() })
+      .eq('id', data.user.id);
 
-    // Sign in to get a session token
     const { data: signInData, error: loginError } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     });
 
     if (loginError) throw loginError;
 
-    res.status(201).json({
+    return sendCreated(res, {
       token: signInData.session.access_token,
       user: {
         id: signInData.user.id,
         name: signInData.user.user_metadata?.name || name,
-        email: signInData.user.email
-      }
-    });
+        email: signInData.user.email,
+      },
+    }, 'Account created successfully');
   } catch (error) {
-    console.error('Signup error:', error);
-    res.status(500).json({ message: 'Server error during signup', error: error.message });
+    next(error);
   }
-});
+}
 
-// POST /api/auth/login
-router.post('/login', async (req, res) => {
+async function login(req, res, next) {
   try {
+    if (!supabase) {
+      return sendServiceUnavailable(res, 'Authentication service not configured');
+    }
+
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+      return sendBadRequest(res, 'Email and password are required');
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return sendUnauthorized(res, 'Invalid email or password');
     }
 
-    // Get profile data
     const { data: profile } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', data.user.id)
       .single();
 
-    res.json({
+    return sendSuccess(res, {
       token: data.session.access_token,
       user: {
         id: data.user.id,
@@ -105,25 +105,31 @@ router.post('/login', async (req, res) => {
           category: profile?.pref_category || '',
           state: profile?.pref_state || '',
           age: profile?.pref_age || null,
-          income: profile?.pref_income || null
+          income: profile?.pref_income || null,
         },
-        searchHistory: profile?.search_history || []
-      }
-    });
+        searchHistory: profile?.search_history || [],
+      },
+    }, 'Login successful');
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error during login' });
+    next(error);
   }
-});
+}
 
-// GET /api/auth/me — Get current user (requires Supabase JWT)
-router.get('/me', async (req, res) => {
+async function getMe(req, res, next) {
   try {
+    if (!supabase) {
+      return sendServiceUnavailable(res, 'Authentication service not configured');
+    }
+
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (!token) return res.status(401).json({ message: 'No token provided' });
+    if (!token) {
+      return sendUnauthorized(res, 'No token provided');
+    }
 
     const { data: { user }, error } = await supabase.auth.getUser(token);
-    if (error || !user) return res.status(401).json({ message: 'Invalid or expired token' });
+    if (error || !user) {
+      return sendUnauthorized(res, 'Invalid or expired token');
+    }
 
     const { data: profile } = await supabase
       .from('profiles')
@@ -131,7 +137,7 @@ router.get('/me', async (req, res) => {
       .eq('id', user.id)
       .single();
 
-    res.json({
+    return sendSuccess(res, {
       id: user.id,
       name: profile?.name || user.user_metadata?.name || '',
       email: user.email,
@@ -147,21 +153,28 @@ router.get('/me', async (req, res) => {
       },
       hasCompletedProfile: !!(profile?.pref_age && profile?.pref_state),
       searchHistory: profile?.search_history || [],
-      savedSchemes: profile?.saved_schemes || []
-    });
+      savedSchemes: profile?.saved_schemes || [],
+    }, 'Profile retrieved');
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    next(error);
   }
-});
+}
 
-// PUT /api/auth/preferences — Update preferences
-router.put('/preferences', async (req, res) => {
+async function updatePreferences(req, res, next) {
   try {
+    if (!supabase) {
+      return sendServiceUnavailable(res, 'Authentication service not configured');
+    }
+
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (!token) return res.status(401).json({ message: 'No token provided' });
+    if (!token) {
+      return sendUnauthorized(res, 'No token provided');
+    }
 
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    if (authError || !user) return res.status(401).json({ message: 'Invalid token' });
+    if (authError || !user) {
+      return sendUnauthorized(res, 'Invalid token');
+    }
 
     const updateData = {};
     if (req.body.category !== undefined) updateData.pref_category = req.body.category;
@@ -180,16 +193,14 @@ router.put('/preferences', async (req, res) => {
       .select()
       .single();
 
-    if (error) {
-      console.error('Preferences update error:', error);
-      throw error;
-    }
-    console.log('✅ Preferences saved for user:', user.id, updateData);
-    res.json(data);
-  } catch (error) {
-    console.error('Preferences endpoint error:', error.message || error);
-    res.status(500).json({ message: 'Server error', detail: error.message });
-  }
-});
+    if (error) throw error;
 
-module.exports = router;
+    logger.info('Auth', 'Preferences updated', { userId: user.id });
+
+    return sendSuccess(res, data, 'Preferences updated');
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { signup, login, getMe, updatePreferences };

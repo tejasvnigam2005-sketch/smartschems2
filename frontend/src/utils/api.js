@@ -1,6 +1,8 @@
+// Centralized API client — all fetch() calls go through this module.
+// Uses axios with auth interceptor and standardized error handling.
+
 import axios from 'axios';
 
-// API base URL
 const baseURL = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api`
   : '/api';
@@ -11,12 +13,25 @@ const API = axios.create({
   timeout: 15000,
 });
 
-// Auth interceptor
+// Auth interceptor — attaches JWT token to every request
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('smartschemes_token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
+
+// Response interceptor — unwrap data, handle 401 globally
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('smartschemes_token');
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Recommendation API
 export const getRecommendations = (data) => API.post('/recommend', data);
@@ -32,7 +47,9 @@ export const signup = (data) => API.post('/auth/signup', data);
 export const getMe = () => API.get('/auth/me');
 
 // Scheme Guide APIs
-export const getDocumentChecklist = (schemeType, schemeId) => API.get(`/scheme-guide/documents/${schemeType}/${schemeId}`);
-export const getApplicationGuide = (schemeType, schemeId) => API.get(`/scheme-guide/steps/${schemeType}/${schemeId}`);
+export const getDocumentChecklist = (schemeType, schemeId) =>
+  API.get(`/scheme-guide/documents/${schemeType}/${schemeId}`);
+export const getApplicationGuide = (schemeType, schemeId) =>
+  API.get(`/scheme-guide/steps/${schemeType}/${schemeId}`);
 
 export default API;

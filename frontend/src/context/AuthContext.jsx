@@ -1,3 +1,6 @@
+// Auth context — manages user session, profile fetching, and questionnaire sync.
+// Uses Supabase for session management and the backend API for profile data.
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../utils/supabase';
 import { getMe } from '../utils/api';
@@ -48,16 +51,14 @@ export function AuthProvider({ children }) {
   const fetchProfile = async () => {
     try {
       const res = await getMe();
-      const userData = res.data;
+      const userData = res.data?.data || res.data;
       setUser(userData);
 
-      // If user doesn't have a completed profile but there's questionnaire data, sync it
       if (!userData.hasCompletedProfile) {
         await syncPendingData();
-        // Re-fetch to get updated preferences
         try {
           const updated = await getMe();
-          setUser(updated.data);
+          setUser(updated.data?.data || updated.data);
         } catch { /* ignore */ }
       }
     } catch {
@@ -70,12 +71,10 @@ export function AuthProvider({ children }) {
   const loginUser = async (data) => {
     if (data.token) localStorage.setItem('smartschemes_token', data.token);
     setUser(data.user);
-    // Sync pending questionnaire data after login
     await syncPendingData();
-    // Re-fetch profile with synced data
     try {
       const res = await getMe();
-      setUser(res.data);
+      setUser(res.data?.data || res.data);
     } catch { /* ignore */ }
   };
 
@@ -84,9 +83,7 @@ export function AuthProvider({ children }) {
     if (!pending) return;
     try {
       const qData = JSON.parse(pending);
-      // Only sync if there's actual data
       if (!qData.age && !qData.state) return;
-      console.log('[Auth] Syncing questionnaire data to profile:', qData);
       await API.put('/auth/preferences', {
         age: qData.age || null,
         income: qData.income || null,
@@ -97,10 +94,9 @@ export function AuthProvider({ children }) {
         area: qData.area || '',
         disability: !!qData.disability,
       });
-      console.log('[Auth] Questionnaire data synced successfully');
       localStorage.removeItem('ss_eligibility');
-    } catch (err) {
-      console.error('[Auth] Failed to sync questionnaire data:', err);
+    } catch {
+      // Silently fail — will retry on next login
     }
   };
 

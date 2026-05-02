@@ -24,7 +24,6 @@ export default function DocumentChecklist({ schemeType, schemeId }) {
         }
       } catch (err) {
         setError('Failed to load document checklist.');
-        console.error(err);
       } finally {
         setLoading(false);
       }
