@@ -22,10 +22,8 @@ export function AuthProvider({ children }) {
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       if (s) {
-        localStorage.setItem('smartschemes_token', s.access_token);
         fetchProfile();
       } else {
-        localStorage.removeItem('smartschemes_token');
         setLoading(false);
       }
     });
@@ -34,12 +32,10 @@ export function AuthProvider({ children }) {
       async (event, s) => {
         setSession(s);
         if (s) {
-          localStorage.setItem('smartschemes_token', s.access_token);
           if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
             fetchProfile();
           }
         } else {
-          localStorage.removeItem('smartschemes_token');
           setUser(null);
         }
       }
@@ -69,7 +65,6 @@ export function AuthProvider({ children }) {
   };
 
   const loginUser = async (data) => {
-    if (data.token) localStorage.setItem('smartschemes_token', data.token);
     setUser(data.user);
     await syncPendingData();
     try {
@@ -102,7 +97,6 @@ export function AuthProvider({ children }) {
 
   const logoutUser = async () => {
     if (supabase) await supabase.auth.signOut();
-    localStorage.removeItem('smartschemes_token');
     setSession(null);
     setUser(null);
   };

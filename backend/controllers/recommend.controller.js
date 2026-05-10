@@ -6,6 +6,7 @@ const logger = require('../utils/logger');
 const { computeBusinessRelevance, computeEducationRelevance } = require('../utils/relevanceEngine');
 const { getRequiredDocuments } = require('../utils/documentHelper');
 const { sendSuccess, sendBadRequest, sendServiceUnavailable } = require('../utils/responseHelper');
+const { eligibilitySchema, formatZodError } = require('../validators/schemas');
 
 async function recommend(req, res, next) {
   try {
@@ -83,11 +84,16 @@ async function checkEligibility(req, res, next) {
       return sendServiceUnavailable(res, 'Database not configured');
     }
 
-    const { age, income, state, category, occupation, gender, area, disability } = req.body;
+    const parsed = eligibilitySchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
+    }
 
-    const numAge = Number(age) || 25;
-    const numIncome = Number(income) || 0;
-    const stateVal = (state || '').toLowerCase();
+    const { age, income, state, category, occupation, gender, area, disability } = parsed.data;
+
+    const numAge = age;
+    const numIncome = income;
+    const stateVal = state.toLowerCase();
 
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (token) {

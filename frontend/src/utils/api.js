@@ -11,24 +11,13 @@ const API = axios.create({
   baseURL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 15000,
+  withCredentials: true,
 });
 
-// Auth interceptor — attaches JWT token to every request
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('smartschemes_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Response interceptor — unwrap data, handle 401 globally
+// Response interceptor — handle errors globally
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('smartschemes_token');
-    }
     return Promise.reject(error);
   }
 );

@@ -10,8 +10,7 @@ async function authMiddleware(req, res, next) {
       return sendServiceUnavailable(res, 'Authentication service not configured');
     }
 
-    const authHeader = req.header('Authorization');
-    const token = authHeader?.replace('Bearer ', '');
+    const token = req.cookies?.ss_token || req.header('Authorization')?.replace('Bearer ', '');
 
     if (!token) {
       return sendUnauthorized(res, 'No token provided');

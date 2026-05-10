@@ -4,6 +4,7 @@
 const supabase = require('../config/supabase');
 const logger = require('../utils/logger');
 const { sendSuccess, sendBadRequest, sendServiceUnavailable } = require('../utils/responseHelper');
+const { chatSchema, formatZodError } = require('../validators/schemas');
 
 let genAI = null;
 let model = null;
@@ -103,10 +104,12 @@ async function chat(req, res, next) {
       return sendServiceUnavailable(res, 'Database not configured');
     }
 
-    const { message, language = 'en', userProfile } = req.body;
-    if (!message?.trim()) {
-      return sendBadRequest(res, 'Message is required');
+    const parsed = chatSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
     }
+
+    const { message, language, userProfile } = parsed.data;
 
     logger.debug('Chat', 'Incoming message', { message, language });
     let response = { text: '', suggestions: [], schemes: [] };

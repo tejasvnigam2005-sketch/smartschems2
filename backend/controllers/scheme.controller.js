@@ -2,7 +2,8 @@
 // All business logic extracted from routes/businessSchemes.js and educationSchemes.js.
 
 const supabase = require('../config/supabase');
-const { sendSuccess, sendNotFound, sendServiceUnavailable } = require('../utils/responseHelper');
+const { sendSuccess, sendBadRequest, sendNotFound, sendServiceUnavailable } = require('../utils/responseHelper');
+const { paginationSchema, formatZodError } = require('../validators/schemas');
 
 async function getBusinessSchemes(req, res, next) {
   try {
@@ -10,9 +11,13 @@ async function getBusinessSchemes(req, res, next) {
       return sendServiceUnavailable(res, 'Database not configured');
     }
 
-    const { businessType, state, page = 1, limit = 10 } = req.query;
-    const pageNum = Number(page);
-    const limitNum = Number(limit);
+    const parsed = paginationSchema.safeParse(req.query);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
+    }
+
+    const { businessType, state } = req.query;
+    const { page: pageNum, limit: limitNum } = parsed.data;
     const offset = (pageNum - 1) * limitNum;
 
     let query = supabase
@@ -69,9 +74,13 @@ async function getEducationSchemes(req, res, next) {
       return sendServiceUnavailable(res, 'Database not configured');
     }
 
-    const { educationLevel, category, state, page = 1, limit = 10 } = req.query;
-    const pageNum = Number(page);
-    const limitNum = Number(limit);
+    const parsed = paginationSchema.safeParse(req.query);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
+    }
+
+    const { educationLevel, category, state } = req.query;
+    const { page: pageNum, limit: limitNum } = parsed.data;
     const offset = (pageNum - 1) * limitNum;
 
     let query = supabase

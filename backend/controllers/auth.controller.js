@@ -10,6 +10,14 @@ const {
   sendUnauthorized,
   sendServiceUnavailable,
 } = require('../utils/responseHelper');
+const { signupSchema, loginSchema, formatZodError } = require('../validators/schemas');
+
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'strict',
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+};
 
 async function signup(req, res, next) {
   try {
@@ -17,20 +25,12 @@ async function signup(req, res, next) {
       return sendServiceUnavailable(res, 'Authentication service not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.');
     }
 
-    const { name, email, password, acceptedTerms } = req.body;
+    const parsed = signupSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
+    }
 
-    if (!name || !email || !password) {
-      return sendBadRequest(res, 'Name, email, and password are required');
-    }
-    if (name.length < 2) {
-      return sendBadRequest(res, 'Name must be at least 2 characters');
-    }
-    if (password.length < 8) {
-      return sendBadRequest(res, 'Password must be at least 8 characters');
-    }
-    if (!acceptedTerms) {
-      return sendBadRequest(res, 'You must accept the Terms & Conditions');
-    }
+    const { name, email, password } = parsed.data;
 
     const { data, error } = await supabase.auth.admin.createUser({
       email,
@@ -58,8 +58,9 @@ async function signup(req, res, next) {
 
     if (loginError) throw loginError;
 
+    res.cookie('ss_token', signInData.session.access_token, COOKIE_OPTIONS);
+
     return sendCreated(res, {
-      token: signInData.session.access_token,
       user: {
         id: signInData.user.id,
         name: signInData.user.user_metadata?.name || name,
@@ -77,11 +78,12 @@ async function login(req, res, next) {
       return sendServiceUnavailable(res, 'Authentication service not configured');
     }
 
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return sendBadRequest(res, 'Email and password are required');
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
     }
+
+    const { email, password } = parsed.data;
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -95,8 +97,9 @@ async function login(req, res, next) {
       .eq('id', data.user.id)
       .single();
 
+    res.cookie('ss_token', data.session.access_token, COOKIE_OPTIONS);
+
     return sendSuccess(res, {
-      token: data.session.access_token,
       user: {
         id: data.user.id,
         name: profile?.name || data.user.user_metadata?.name || '',
@@ -121,7 +124,7 @@ async function getMe(req, res, next) {
       return sendServiceUnavailable(res, 'Authentication service not configured');
     }
 
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const token = req.cookies?.ss_token || req.header('Authorization')?.replace('Bearer ', '');
     if (!token) {
       return sendUnauthorized(res, 'No token provided');
     }
@@ -137,24 +140,26 @@ async function getMe(req, res, next) {
       .eq('id', user.id)
       .single();
 
-    return sendSuccess(res, {
+    const safeProfile = {
       id: user.id,
-      name: profile?.name || user.user_metadata?.name || '',
+      name: profile ? profile.name : (user.user_metadata ? user.user_metadata.name || '' : ''),
       email: user.email,
       preferences: {
-        category: profile?.pref_category || '',
-        state: profile?.pref_state || '',
-        age: profile?.pref_age || null,
-        income: profile?.pref_income || null,
-        occupation: profile?.pref_occupation || '',
-        gender: profile?.pref_gender || '',
-        area: profile?.pref_area || '',
-        disability: profile?.pref_disability || false,
+        age: profile ? profile.pref_age || null : null,
+        state: profile ? profile.pref_state || '' : '',
+        category: profile ? profile.pref_category || '' : '',
+        income: profile ? profile.pref_income || null : null,
+        occupation: profile ? profile.pref_occupation || '' : '',
+        gender: profile ? profile.pref_gender || '' : '',
+        area: profile ? profile.pref_area || '' : '',
+        disability: profile ? profile.pref_disability || false : false,
       },
-      hasCompletedProfile: !!(profile?.pref_age && profile?.pref_state),
-      searchHistory: profile?.search_history || [],
-      savedSchemes: profile?.saved_schemes || [],
-    }, 'Profile retrieved');
+      hasCompletedProfile: !!(profile && profile.pref_age && profile.pref_state),
+      searchHistory: profile ? profile.search_history || [] : [],
+      savedSchemes: profile ? profile.saved_schemes || [] : [],
+    };
+
+    return sendSuccess(res, safeProfile, 'Profile retrieved');
   } catch (error) {
     next(error);
   }
@@ -166,7 +171,7 @@ async function updatePreferences(req, res, next) {
       return sendServiceUnavailable(res, 'Authentication service not configured');
     }
 
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const token = req.cookies?.ss_token || req.header('Authorization')?.replace('Bearer ', '');
     if (!token) {
       return sendUnauthorized(res, 'No token provided');
     }
@@ -197,7 +202,18 @@ async function updatePreferences(req, res, next) {
 
     logger.info('Auth', 'Preferences updated', { userId: user.id });
 
-    return sendSuccess(res, data, 'Preferences updated');
+    const safePrefs = {
+      pref_age: data.pref_age || null,
+      pref_state: data.pref_state || '',
+      pref_category: data.pref_category || '',
+      pref_income: data.pref_income || null,
+      pref_occupation: data.pref_occupation || '',
+      pref_gender: data.pref_gender || '',
+      pref_area: data.pref_area || '',
+      pref_disability: data.pref_disability || false,
+    };
+
+    return sendSuccess(res, safePrefs, 'Preferences updated');
   } catch (error) {
     next(error);
   }
