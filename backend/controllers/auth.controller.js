@@ -46,25 +46,22 @@ async function signup(req, res, next) {
       throw error;
     }
 
-    await supabase
-      .from('profiles')
-      .update({ accepted_terms: true, accepted_at: new Date().toISOString() })
-      .eq('id', data.user.id);
+    // Update accepted_terms (best-effort, don't fail signup if this errors)
+    try {
+      await supabase
+        .from('profiles')
+        .update({ accepted_terms: true, accepted_at: new Date().toISOString() })
+        .eq('id', data.user.id);
+    } catch (profileErr) {
+      logger.warn('Auth', 'Failed to update profile terms', { error: profileErr.message });
+    }
 
-    const { data: signInData, error: loginError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (loginError) throw loginError;
-
-    res.cookie('ss_token', signInData.session.access_token, COOKIE_OPTIONS);
-
+    // Return user data — frontend will auto-sign-in via its own Supabase client
     return sendCreated(res, {
       user: {
-        id: signInData.user.id,
-        name: signInData.user.user_metadata?.name || name,
-        email: signInData.user.email,
+        id: data.user.id,
+        name: data.user.user_metadata?.name || name,
+        email: data.user.email,
       },
     }, 'Account created successfully');
   } catch (error) {
