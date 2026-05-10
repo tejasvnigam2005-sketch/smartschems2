@@ -6,7 +6,7 @@ const logger = require('../utils/logger');
 const { computeBusinessRelevance, computeEducationRelevance } = require('../utils/relevanceEngine');
 const { getRequiredDocuments } = require('../utils/documentHelper');
 const { sendSuccess, sendBadRequest, sendServiceUnavailable } = require('../utils/responseHelper');
-const { eligibilitySchema, formatZodError } = require('../validators/schemas');
+const { eligibilitySchema, recommendSchema, formatZodError } = require('../validators/schemas');
 
 async function recommend(req, res, next) {
   try {
@@ -14,11 +14,12 @@ async function recommend(req, res, next) {
       return sendServiceUnavailable(res, 'Database not configured');
     }
 
-    const { category, filters } = req.body;
-
-    if (!category || !filters) {
-      return sendBadRequest(res, 'Category and filters are required');
+    const parsed = recommendSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
     }
+
+    const { category, filters } = parsed.data;
 
     if (filters.businessType) filters.businessType = filters.businessType.toLowerCase();
     if (filters.state) filters.state = filters.state.toLowerCase();

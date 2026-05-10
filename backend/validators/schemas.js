@@ -51,6 +51,24 @@ const eligibilitySchema = z.object({
   disability: z.boolean().optional(),
 });
 
+// ── Recommend schema ─────────────────────────
+const recommendSchema = z.object({
+  category: z.enum(['business', 'education'], {
+    errorMap: () => ({ message: 'Category must be "business" or "education"' }),
+  }),
+  filters: z.object({
+    businessType: z.string().max(50).optional(),
+    educationLevel: z.string().max(50).optional(),
+    category: z.string().max(50).optional(),
+    fieldOfStudy: z.string().max(50).optional(),
+    state: z.string().max(100).optional(),
+    income: z.number().min(0).optional(),
+    age: z.number().int().min(1).max(120).optional(),
+    investment: z.number().min(0).optional(),
+    keywords: z.string().max(200).optional(),
+  }),
+});
+
 // ── Pagination schema (query params come as strings) ─
 const paginationSchema = z.object({
   page: z.coerce.number().int().min(1, 'Page must be at least 1').optional().default(1),
@@ -63,5 +81,6 @@ module.exports = {
   loginSchema,
   chatSchema,
   eligibilitySchema,
+  recommendSchema,
   paginationSchema,
 };
