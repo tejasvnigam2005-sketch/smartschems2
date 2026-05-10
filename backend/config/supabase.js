@@ -2,6 +2,7 @@
 // Returns null gracefully if credentials are missing so routes can handle it.
 
 const { createClient } = require('@supabase/supabase-js');
+const fetch = require('cross-fetch');
 const logger = require('../utils/logger');
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -15,6 +16,7 @@ const supabase =
   supabaseUrl && supabaseServiceKey
     ? createClient(supabaseUrl, supabaseServiceKey, {
         auth: { autoRefreshToken: false, persistSession: false },
+        global: { fetch },
       })
     : null;
 
