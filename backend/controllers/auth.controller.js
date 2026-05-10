@@ -65,7 +65,19 @@ async function signup(req, res, next) {
       },
     }, 'Account created successfully');
   } catch (error) {
-    next(error);
+    logger.error('Auth', 'Signup failed', { 
+      message: error.message, 
+      code: error.code,
+      status: error.status,
+      name: error.name,
+    });
+    // Return detailed error for debugging
+    return res.status(500).json({
+      success: false,
+      message: 'Server error during signup',
+      error: error.message || 'Unknown error',
+      code: error.code || null,
+    });
   }
 }
 
