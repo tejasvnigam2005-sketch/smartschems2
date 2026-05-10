@@ -219,4 +219,24 @@ async function updatePreferences(req, res, next) {
   }
 }
 
-module.exports = { signup, login, getMe, updatePreferences };
+async function logout(req, res, next) {
+  try {
+    const token = req.cookies?.ss_token || req.header('Authorization')?.replace('Bearer ', '');
+
+    if (token && supabase) {
+      try {
+        await supabase.auth.signOut();
+      } catch (signOutErr) {
+        logger.warn('Auth', 'Supabase signOut failed', { error: signOutErr.message });
+      }
+    }
+
+    res.clearCookie('ss_token', { httpOnly: true, secure: true, sameSite: 'strict' });
+
+    return sendSuccess(res, null, 'Logged out successfully');
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { signup, login, getMe, updatePreferences, logout };

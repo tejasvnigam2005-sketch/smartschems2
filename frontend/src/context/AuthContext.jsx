@@ -97,6 +97,9 @@ export function AuthProvider({ children }) {
 
   const logoutUser = async () => {
     if (supabase) await supabase.auth.signOut();
+    try {
+      await API.post('/auth/logout');
+    } catch { /* ignore — cookie may already be expired */ }
     setSession(null);
     setUser(null);
   };
