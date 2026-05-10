@@ -65,19 +65,12 @@ async function signup(req, res, next) {
       },
     }, 'Account created successfully');
   } catch (error) {
-    logger.error('Auth', 'Signup failed', { 
-      message: error.message, 
-      code: error.code,
-      status: error.status,
-      name: error.name,
-    });
-    // Return detailed error for debugging
-    return res.status(500).json({
-      success: false,
-      message: 'Server error during signup',
-      error: error.message || 'Unknown error',
-      code: error.code || null,
-    });
+    logger.error('Auth', 'Signup failed', { message: error.message, code: error.code });
+    // Detect Supabase connection / DNS failures (project may be paused)
+    if (error.message && (error.message.includes('fetch failed') || error.message.includes('ENOTFOUND') || error.message.includes('getaddrinfo'))) {
+      return sendServiceUnavailable(res, 'Authentication service is temporarily unavailable. The database may be paused — please try again in a few minutes.');
+    }
+    next(error);
   }
 }
 
@@ -123,6 +116,9 @@ async function login(req, res, next) {
       },
     }, 'Login successful');
   } catch (error) {
+    if (error.message && (error.message.includes('fetch failed') || error.message.includes('ENOTFOUND') || error.message.includes('getaddrinfo'))) {
+      return sendServiceUnavailable(res, 'Authentication service is temporarily unavailable. The database may be paused — please try again in a few minutes.');
+    }
     next(error);
   }
 }
