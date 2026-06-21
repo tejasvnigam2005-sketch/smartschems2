@@ -8,7 +8,7 @@ const { computeBusinessRelevance, computeEducationRelevance } = require('../util
 const { getRequiredDocuments } = require('../utils/documentHelper');
 const { sendSuccess, sendBadRequest, sendServiceUnavailable } = require('../utils/responseHelper');
 const { eligibilitySchema, recommendSchema, formatZodError } = require('../validators/schemas');
-const { businessSchemes: localBusinessSchemes, educationSchemes: localEducationSchemes } = require('../data/seed');
+const { businessSchemes: localBusinessSchemes, educationSchemes: localEducationSchemes } = require('../data/schemes');
 
 // Normalize camelCase seed data to snake_case matching Supabase column names
 function normalizeScheme(s) {
