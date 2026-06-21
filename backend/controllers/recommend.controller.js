@@ -1,5 +1,6 @@
 // Recommend controller — handles scheme recommendation and eligibility scoring.
 // Uses the relevance engine and document helper utilities.
+// Falls back to local seed data when Supabase is unavailable.
 
 const supabase = require('../config/supabase');
 const logger = require('../utils/logger');
@@ -7,13 +8,45 @@ const { computeBusinessRelevance, computeEducationRelevance } = require('../util
 const { getRequiredDocuments } = require('../utils/documentHelper');
 const { sendSuccess, sendBadRequest, sendServiceUnavailable } = require('../utils/responseHelper');
 const { eligibilitySchema, recommendSchema, formatZodError } = require('../validators/schemas');
+const { businessSchemes: localBusinessSchemes, educationSchemes: localEducationSchemes } = require('../data/seed');
+
+// Normalize camelCase seed data to snake_case matching Supabase column names
+function normalizeScheme(s) {
+  // If already has snake_case keys (from Supabase), return as-is
+  if ('min_age' in s) return s;
+  return {
+    ...s,
+    min_age: s.minAge,
+    max_age: s.maxAge,
+    min_income: s.minIncome,
+    max_income: s.maxIncome,
+    business_type: s.businessType || [],
+    min_investment: s.minInvestment,
+    max_investment: s.maxInvestment,
+    education_level: s.educationLevel || [],
+    field_of_study: s.fieldOfStudy || [],
+    scholarship_amount: s.scholarshipAmount || '',
+    funding_amount: s.fundingAmount || '',
+    application_process: s.applicationProcess || [],
+    is_active: true,
+  };
+}
+
+// Helper: fetch schemes from Supabase, fall back to local seed data
+async function fetchSchemes(table, localData) {
+  if (!supabase) return localData.map(normalizeScheme);
+  try {
+    const { data, error } = await supabase.from(table).select('*').eq('is_active', true);
+    if (error) throw error;
+    return data && data.length > 0 ? data : localData.map(normalizeScheme);
+  } catch (err) {
+    logger.warn('Recommend', `Supabase unavailable for ${table}, using local data`, { error: err.message });
+    return localData.map(normalizeScheme);
+  }
+}
 
 async function recommend(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
-    }
-
     const parsed = recommendSchema.safeParse(req.body);
     if (!parsed.success) {
       return sendBadRequest(res, formatZodError(parsed.error));
@@ -30,31 +63,14 @@ async function recommend(req, res, next) {
     let scoredSchemes = [];
 
     if (category === 'business') {
-      let query = supabase.from('business_schemes').select('*').eq('is_active', true);
-      if (filters.businessType) query = query.contains('business_type', [filters.businessType]);
-      if (filters.income) {
-        query = query.lte('min_income', Number(filters.income)).gte('max_income', Number(filters.income));
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-
-      scoredSchemes = (data || []).map((scheme) => ({
+      const schemes = await fetchSchemes('business_schemes', localBusinessSchemes);
+      scoredSchemes = schemes.map((scheme) => ({
         ...scheme,
         relevanceScore: computeBusinessRelevance(scheme, filters),
       }));
     } else if (category === 'education') {
-      let query = supabase.from('education_schemes').select('*').eq('is_active', true);
-      if (filters.educationLevel) query = query.contains('education_level', [filters.educationLevel]);
-      if (filters.category) query = query.contains('category', [filters.category]);
-      if (filters.income) {
-        query = query.lte('min_income', Number(filters.income)).gte('max_income', Number(filters.income));
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-
-      scoredSchemes = (data || []).map((scheme) => ({
+      const schemes = await fetchSchemes('education_schemes', localEducationSchemes);
+      scoredSchemes = schemes.map((scheme) => ({
         ...scheme,
         relevanceScore: computeEducationRelevance(scheme, filters),
       }));
@@ -81,10 +97,6 @@ async function recommend(req, res, next) {
 
 async function checkEligibility(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
-    }
-
     const parsed = eligibilitySchema.safeParse(req.body);
     if (!parsed.success) {
       return sendBadRequest(res, formatZodError(parsed.error));
@@ -96,8 +108,9 @@ async function checkEligibility(req, res, next) {
     const numIncome = income;
     const stateVal = state.toLowerCase();
 
+    // Optionally save preferences if user is authenticated
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (token) {
+    if (token && supabase) {
       try {
         const { data: { user } } = await supabase.auth.getUser(token);
         if (user) {
@@ -119,46 +132,42 @@ async function checkEligibility(req, res, next) {
 
     const results = [];
 
-    const { data: bizData } = await supabase.from('business_schemes').select('*').eq('is_active', true);
-    if (bizData) {
-      for (const s of bizData) {
-        const score = computeBusinessRelevance(s, {
-          age: numAge,
-          income: numIncome,
-          state: stateVal,
-          businessType: occupation === 'business' ? 'startup' : occupation || 'all',
-          investment: numIncome * 0.1,
+    const bizData = await fetchSchemes('business_schemes', localBusinessSchemes);
+    for (const s of bizData) {
+      const score = computeBusinessRelevance(s, {
+        age: numAge,
+        income: numIncome,
+        state: stateVal,
+        businessType: occupation === 'business' ? 'startup' : occupation || 'all',
+        investment: numIncome * 0.1,
+      });
+      if (score >= 20) {
+        results.push({
+          ...s,
+          relevanceScore: score,
+          schemeType: 'business',
+          requiredDocuments: getRequiredDocuments(s, 'business'),
         });
-        if (score >= 20) {
-          results.push({
-            ...s,
-            relevanceScore: score,
-            schemeType: 'business',
-            requiredDocuments: getRequiredDocuments(s, 'business'),
-          });
-        }
       }
     }
 
-    const { data: eduData } = await supabase.from('education_schemes').select('*').eq('is_active', true);
-    if (eduData) {
-      for (const s of eduData) {
-        const score = computeEducationRelevance(s, {
-          age: numAge,
-          income: numIncome,
-          state: stateVal,
-          category: category || 'all',
-          educationLevel: numAge < 18 ? 'school' : numAge < 25 ? 'undergraduate' : 'postgraduate',
-          fieldOfStudy: 'all',
+    const eduData = await fetchSchemes('education_schemes', localEducationSchemes);
+    for (const s of eduData) {
+      const score = computeEducationRelevance(s, {
+        age: numAge,
+        income: numIncome,
+        state: stateVal,
+        category: category || 'all',
+        educationLevel: numAge < 18 ? 'school' : numAge < 25 ? 'undergraduate' : 'postgraduate',
+        fieldOfStudy: 'all',
+      });
+      if (score >= 20) {
+        results.push({
+          ...s,
+          relevanceScore: score,
+          schemeType: 'education',
+          requiredDocuments: getRequiredDocuments(s, 'education'),
         });
-        if (score >= 20) {
-          results.push({
-            ...s,
-            relevanceScore: score,
-            schemeType: 'education',
-            requiredDocuments: getRequiredDocuments(s, 'education'),
-          });
-        }
       }
     }
 
