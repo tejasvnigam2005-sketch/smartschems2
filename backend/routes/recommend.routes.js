@@ -3,10 +3,9 @@
 
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middlewares/auth.middleware');
 const recommendController = require('../controllers/recommend.controller');
 
-router.post('/', authMiddleware, recommendController.recommend);
-router.post('/eligibility', authMiddleware, recommendController.checkEligibility);
+router.post('/', recommendController.recommend);
+router.post('/eligibility', recommendController.checkEligibility);
 
 module.exports = router;
