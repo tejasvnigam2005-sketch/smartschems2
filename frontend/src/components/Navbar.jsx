@@ -41,7 +41,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', h);
   }, []);
 
-  useEffect(() => { setSidebarOpen(false); }, [location.pathname]);
+  const [prevPathname, setPrevPathname] = useState(location.pathname);
+  if (location.pathname !== prevPathname) {
+    setPrevPathname(location.pathname);
+    setSidebarOpen(false);
+  }
 
   const btnBg = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F3F4F6';
 

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signup } from '../utils/api';
-import { useAuth } from '../context/AuthContext';
 import TermsModal from '../components/auth/TermsModal';
 import PrivacyModal from '../components/auth/PrivacyModal';
 
@@ -41,7 +40,6 @@ function PasswordStrength({ password }) {
 
 export default function SignupPage() {
   const navigate = useNavigate();
-  const { loginUser } = useAuth();
   const nameRef = useRef(null);
 
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });

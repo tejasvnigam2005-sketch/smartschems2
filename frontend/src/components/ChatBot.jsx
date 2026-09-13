@@ -49,42 +49,46 @@ export default function ChatBot() {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [msgs, loading]);
 
-  useEffect(() => {
-    if (open && msgs.length === 0) {
-      addBot(isHi
-        ? '🙏 नमस्ते! मैं SmartSchemes AI सहायक हूँ।\n\nमैं आपकी मदद कर सकता हूँ:\n• योजनाएं खोजें\n• पात्रता जांचें\n• आवेदन प्रक्रिया बताएं'
-        : '👋 Hi! I\'m your SmartSchemes Assistant.\n\nI can help you:\n• Find eligible schemes\n• Check eligibility\n• Guide you through applications',
-        ['🎯 Guide me to schemes', 'Find schemes', 'How to apply', 'Documents needed']);
-    }
-  }, [open]);
-
-  const addBot = (text, suggestions, schemes) => {
-    setMsgs(p => [...p, { role: 'bot', text, suggestions, schemes, time: new Date() }]);
-    speak(text);
-  };
-
-  const speak = (text) => {
+  const speak = useCallback((text) => {
     try {
-      const clean = text.replace(/[*#_🏛️💰📋✅🎁🎯📄🔍😔🤖👋🙏😊❌🎂📍💼\n]/g, ' ').replace(/\s+/g, ' ');
+      const clean = text.replace(/[*#_\n]/g, ' ').replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '').replace(/\s+/g, ' ');
       const u = new SpeechSynthesisUtterance(clean);
       u.lang = LANGS.find(l => l.code === lang)?.speech || 'en-IN';
       u.rate = 0.9;
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(u);
-    } catch {}
-  };
+    } catch {
+      // SpeechSynthesis may not be supported or allowed
+    }
+  }, [lang]);
+
+  const addBot = useCallback((text, suggestions, schemes) => {
+    setMsgs(p => [...p, { role: 'bot', text, suggestions, schemes, time: new Date() }]);
+    speak(text);
+  }, [speak]);
+
+  const hasGreetedRef = useRef(false);
+  useEffect(() => {
+    if (open && !hasGreetedRef.current) {
+      hasGreetedRef.current = true;
+      addBot(isHi
+        ? '🙏 नमस्ते! मैं SmartSchemes AI सहायक हूँ।\n\nमैं आपकी मदद कर सकता हूँ:\n• योजनाएं खोजें\n• पात्रता जांचें\n• आवेदन प्रक्रिया बताएं'
+        : '👋 Hi! I\'m your SmartSchemes Assistant.\n\nI can help you:\n• Find eligible schemes\n• Check eligibility\n• Guide you through applications',
+        ['🎯 Guide me to schemes', 'Find schemes', 'How to apply', 'Documents needed']);
+    }
+  }, [open, isHi, addBot]);
 
   // ── Guide Mode: ask questions one by one ──
-  const startGuide = () => {
+  const startGuide = useCallback(() => {
     setGuideMode(true);
     setGuideStep(0);
     setGuideData({});
     const step = GUIDE_STEPS[0];
     addBot(isHi ? `🎯 चलिए शुरू करते हैं!\n\n${step.qHi}` : `🎯 Let's find the best schemes for you!\n\n${step.q}`,
       step.options || []);
-  };
+  }, [isHi, addBot]);
 
-  const handleGuideAnswer = async (answer) => {
+  const handleGuideAnswer = useCallback(async (answer) => {
     const step = GUIDE_STEPS[guideStep];
     const newData = { ...guideData, [step.key]: answer };
     setGuideData(newData);
@@ -101,7 +105,8 @@ export default function ChatBot() {
       localStorage.setItem('ss_eligibility', JSON.stringify(newData));
       try {
         const res = await API.post('/recommend/eligibility', newData);
-        const schemes = res.data.results || [];
+        const payload = res.data?.data || res.data;
+        const schemes = payload.results || [];
         const top3 = schemes.slice(0, 3);
         const list = top3.map((s, i) => `${i + 1}. **${s.name}**\n   💰 ${s.funding_amount || 'Varies'}`).join('\n\n');
         addBot(
@@ -117,7 +122,7 @@ export default function ChatBot() {
         setLoading(false);
       }
     }
-  };
+  }, [guideStep, guideData, isHi, addBot]);
 
   // ── Regular chat send ──
   const send = useCallback(async (text) => {
@@ -152,13 +157,14 @@ export default function ChatBot() {
     setLoading(true);
     try {
       const res = await API.post('/chat', { message: t, language: lang, userProfile: user?.preferences || null });
-      addBot(res.data.text, res.data.suggestions, res.data.schemes);
+      const payload = res.data?.data || res.data;
+      addBot(payload.text, payload.suggestions, payload.schemes);
     } catch {
       addBot('❌ Sorry, something went wrong.');
     } finally {
       setLoading(false);
     }
-  }, [lang, user, guideMode, guideStep, guideData]);
+  }, [lang, user, guideMode, startGuide, navigate, handleGuideAnswer, addBot]);
 
   // ── Voice ──
   const toggleVoice = () => {

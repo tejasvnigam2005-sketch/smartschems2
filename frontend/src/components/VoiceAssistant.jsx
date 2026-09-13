@@ -28,6 +28,28 @@ export default function VoiceAssistant() {
   const recRef = useRef(null);
   const doneRef = useRef(false);
 
+  const processQuery = useCallback(async (text) => {
+    setPhase('thinking');
+    try {
+      const res = await API.post('/chat', { message: text, language: lang, userProfile: user?.preferences || null });
+      const payload = res.data?.data || res.data;
+      const raw = payload.text || 'Sorry, I could not understand.';
+      const clean = raw.replace(/\*\*/g, '').replace(/[\p{Extended_Pictographic}\uFE0F]/gu, '').replace(/\n/g, '. ');
+      setResponse(raw);
+      setPhase('speaking');
+
+      const utterance = new SpeechSynthesisUtterance(clean);
+      utterance.lang = LANG_MAP[lang]?.speech || 'en-IN';
+      utterance.rate = 0.9;
+      utterance.onerror = () => { setPhase('done'); };
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      setResponse('Sorry, something went wrong.');
+      setPhase('done');
+    }
+  }, [lang, user]);
+
   const doListen = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { setTextMode(true); setPhase('listening'); return; }
@@ -60,7 +82,7 @@ export default function VoiceAssistant() {
       recRef.current = r;
       r.start();
     } catch { setTextMode(true); setPhase('listening'); }
-  }, [lang, textMode]);
+  }, [lang, textMode, processQuery]);
 
   const startListening = () => {
     window.speechSynthesis.cancel();
@@ -68,34 +90,6 @@ export default function VoiceAssistant() {
     setResponse('');
     setTranscript('');
     doListen();
-  };
-
-  const processQuery = async (text) => {
-    setPhase('thinking');
-    try {
-      const res = await API.post('/chat', { message: text, language: lang, userProfile: user?.preferences || null });
-      const raw = res.data.text || 'Sorry, I could not understand.';
-      const clean = raw.replace(/\*\*/g, '').replace(/[🏛️💰📋✅🎁🎯📄🔍😔🤖👋🙏😊❌🎂📍💼]/g, '').replace(/\n/g, '. ');
-      setResponse(raw);
-      setPhase('speaking');
-
-      const u = new SpeechSynthesisUtterance(clean);
-      u.lang = LANG_MAP[lang]?.speech || 'en-IN';
-      u.rate = 0.9;
-      // Auto-restart listening after speaking ends
-      u.onend = () => {
-        setPhase('listening');
-        setTranscript('');
-        doneRef.current = false;
-        setTimeout(() => doListen(), 400);
-      };
-      u.onerror = () => { setPhase('done'); };
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(u);
-    } catch {
-      setResponse('Sorry, something went wrong.');
-      setPhase('done');
-    }
   };
 
   const handleTextSubmit = () => {
@@ -240,4 +234,3 @@ export default function VoiceAssistant() {
   </>);
 }
 
-const LANGS_FLAG = { en: '🇬🇧', hi: '🇮🇳', ta: '🇮🇳', te: '🇮🇳', bn: '🇮🇳', mr: '🇮🇳', gu: '🇮🇳', kn: '🇮🇳', ml: '🇮🇳', pa: '🇮🇳' };

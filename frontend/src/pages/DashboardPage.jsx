@@ -65,7 +65,7 @@ export default function DashboardPage() {
             {recentlyViewed.length > 0 ? (
               <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '8px', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
                 {recentlyViewed.map((scheme, idx) => (
-                  <Link key={`recent-${scheme._id}`} to="/explore" style={{
+                  <Link key={`recent-${scheme.id || scheme._id || idx}`} to="/explore" style={{
                     minWidth: '260px', maxWidth: '300px', scrollSnapAlign: 'start', textDecoration: 'none',
                     background: 'var(--color-surface)', border: '1px solid var(--color-border-light)',
                     borderRadius: '14px', padding: '16px', display: 'flex', alignItems: 'center', gap: '14px',
@@ -152,7 +152,7 @@ export default function DashboardPage() {
             {savedSchemes.length > 0 ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 340px), 1fr))', gap: '20px' }}>
                 {savedSchemes.map((scheme, idx) => (
-                  <SchemeCard key={`saved-${scheme._id}`} scheme={scheme} index={idx} schemeType={scheme.type || 'business'} />
+                  <SchemeCard key={`saved-${scheme.id || scheme._id || idx}`} scheme={scheme} index={idx} schemeType={scheme.type || 'business'} />
                 ))}
               </div>
             ) : (

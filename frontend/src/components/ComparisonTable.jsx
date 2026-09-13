@@ -1,6 +1,6 @@
 import { useLanguage } from '../context/LanguageContext';
 
-export default function ComparisonTable({ schemes, schemeType }) {
+export default function ComparisonTable({ schemes }) {
   const { t } = useLanguage();
   if (!schemes || schemes.length === 0) return null;
 

@@ -19,7 +19,7 @@ export default function BusinessFormPage() {
     setError('');
     try {
       const res = await getRecommendations({ category: 'business', filters: { age: +f.age, income: +f.income, businessType: f.businessType, investment: +f.investment, state: f.state } });
-      navigate('/results', { state: { data: res.data, category: 'business' } });
+      navigate('/results', { state: { data: res.data?.data || res.data, category: 'business' } });
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to get recommendations. Try again.');
     } finally { setLoading(false); }

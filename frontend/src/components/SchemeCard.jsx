@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TTS from '../utils/tts';
 import SchemeGuideModal from './SchemeGuideModal';
 import { useLanguage } from '../context/LanguageContext';
@@ -11,13 +11,14 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
   
   const { t, lang } = useLanguage();
   const { saveScheme, removeSavedScheme, isSaved, addRecentlyViewed } = useDashboard();
-  const saved = scheme._id ? isSaved(scheme._id) : false;
+  const schemeId = scheme?.id || scheme?._id;
+  const saved = schemeId ? isSaved(schemeId) : false;
 
   // Track view only when user expands the card (not on mount — avoids infinite loop in Dashboard)
   const handleExpand = () => {
     const next = !expanded;
     setExpanded(next);
-    if (next && scheme && (scheme._id || scheme.id)) {
+    if (next && scheme && schemeId) {
       addRecentlyViewed({ ...scheme, type: schemeType });
     }
   };
@@ -219,7 +220,9 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
                                   apps.push({ docName: doc.name, applyUrl: doc.applyUrl, appliedAt: new Date().toISOString(), status: 'applied', estimatedTime: doc.estimatedTime });
                                   localStorage.setItem('ss_doc_applications', JSON.stringify(apps));
                                 }
-                              } catch {}
+                              } catch {
+                                // Ignore storage error
+                              }
                             }}
                             style={{
                               display: 'inline-flex', alignItems: 'center', gap: '5px',
@@ -277,8 +280,8 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-            {/* Apply Guide button — only shown when scheme has a DB id */}
-            {scheme._id && (
+            {/* Apply Guide button — shown when scheme has an id */}
+            {schemeId && (
               <button
                 onClick={() => setGuideOpen(true)}
                 className="scheme-guide-btn"
@@ -291,10 +294,10 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
               </button>
             )}
             
-            {scheme._id && (
+            {schemeId && (
               <button
                 onClick={() => {
-                  if (saved) removeSavedScheme(scheme._id);
+                  if (saved) removeSavedScheme(schemeId);
                   else saveScheme({ ...scheme, type: schemeType });
                 }}
                 style={{
@@ -329,7 +332,7 @@ export default function SchemeCard({ scheme, index = 0, schemeType = 'business' 
     </div>
 
     {/* Scheme Guide Modal */}
-    {guideOpen && scheme._id && (
+    {guideOpen && schemeId && (
       <SchemeGuideModal
         scheme={scheme}
         schemeType={schemeType}

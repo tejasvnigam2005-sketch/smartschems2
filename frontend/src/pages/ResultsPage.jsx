@@ -23,7 +23,9 @@ export default function ResultsPage() {
     );
   }
 
-  const schemes = data.results || [];
+  const payload = data?.data || data || {};
+  const schemes = payload.results || [];
+  const totalMatches = payload.totalMatches ?? schemes.length;
   const isBiz = category === 'business';
 
   return (
@@ -39,7 +41,7 @@ export default function ResultsPage() {
             {isBiz ? t('results.businessRec') : t('results.educationRec')}
           </h1>
           <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
-            {t('results.rankedBy')} · {data.totalMatches} {t('results.matched')} · Top {schemes.length}
+            {t('results.rankedBy')} · {totalMatches} {t('results.matched')} · Top {schemes.length}
           </p>
         </div>
       </div>
@@ -69,7 +71,7 @@ export default function ResultsPage() {
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 480px), 1fr))', gap: '20px' }}>
               {schemes.map((scheme, idx) => (
-                <SchemeCard key={scheme._id || idx} scheme={scheme} index={idx} schemeType={category} />
+                <SchemeCard key={scheme.id || scheme._id || idx} scheme={scheme} index={idx} schemeType={category} />
               ))}
             </div>
           </div>

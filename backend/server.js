@@ -11,7 +11,7 @@ const logger = require('./utils/logger');
 const errorMiddleware = require('./middlewares/error.middleware');
 
 dotenv.config();
-if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production';
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 
 logger.info('Server', `Environment: ${process.env.NODE_ENV}`);
 
@@ -24,10 +24,13 @@ app.use(helmet());
 app.use(cookieParser());
 
 // ── CORS ─────────────────────────────────────
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+const defaultOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'];
+const envOrigins = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
+
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])];
 
 if (process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);

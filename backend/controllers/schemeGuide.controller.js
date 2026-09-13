@@ -8,8 +8,8 @@ const {
   sendSuccess,
   sendBadRequest,
   sendNotFound,
-  sendServiceUnavailable,
 } = require('../utils/responseHelper');
+const { businessSchemes: localBusinessSchemes, educationSchemes: localEducationSchemes } = require('../data/schemes');
 
 function resolveTable(schemeType) {
   if (schemeType === 'business') return 'business_schemes';
@@ -17,12 +17,16 @@ function resolveTable(schemeType) {
   return null;
 }
 
+function findLocalScheme(schemeType, id) {
+  const list = schemeType === 'business' ? localBusinessSchemes : localEducationSchemes;
+  return list.find((s) => {
+    const slug = s.name ? s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : '';
+    return s.id === id || s._id === id || slug === id || s.name === id;
+  });
+}
+
 async function getDocumentChecklist(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
-    }
-
     const { schemeType, id } = req.params;
     const table = resolveTable(schemeType);
 
@@ -30,15 +34,28 @@ async function getDocumentChecklist(req, res, next) {
       return sendBadRequest(res, 'Invalid scheme type. Use "business" or "education"');
     }
 
-    const { data: scheme, error } = await supabase.from(table).select('*').eq('id', id).single();
-    if (error || !scheme) {
+    let scheme = null;
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from(table).select('*').eq('id', id).single();
+        if (!error && data) scheme = data;
+      } catch {
+        // Fall back to local
+      }
+    }
+
+    if (!scheme) {
+      scheme = findLocalScheme(schemeType, id);
+    }
+
+    if (!scheme) {
       return sendNotFound(res, 'Scheme not found');
     }
 
     const documents = getRequiredDocuments(scheme, schemeType);
 
     return sendSuccess(res, {
-      schemeId: scheme.id,
+      schemeId: scheme.id || id,
       schemeName: scheme.name,
       schemeType,
       documents,
@@ -51,10 +68,6 @@ async function getDocumentChecklist(req, res, next) {
 
 async function getApplicationSteps(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
-    }
-
     const { schemeType, id } = req.params;
     const table = resolveTable(schemeType);
 
@@ -62,15 +75,28 @@ async function getApplicationSteps(req, res, next) {
       return sendBadRequest(res, 'Invalid scheme type. Use "business" or "education"');
     }
 
-    const { data: scheme, error } = await supabase.from(table).select('*').eq('id', id).single();
-    if (error || !scheme) {
+    let scheme = null;
+    if (supabase) {
+      try {
+        const { data, error } = await supabase.from(table).select('*').eq('id', id).single();
+        if (!error && data) scheme = data;
+      } catch {
+        // Fall back to local
+      }
+    }
+
+    if (!scheme) {
+      scheme = findLocalScheme(schemeType, id);
+    }
+
+    if (!scheme) {
       return sendNotFound(res, 'Scheme not found');
     }
 
     const steps = getApplicationGuide(scheme);
 
     return sendSuccess(res, {
-      schemeId: scheme.id,
+      schemeId: scheme.id || id,
       schemeName: scheme.name,
       schemeType,
       website: scheme.website || '',
