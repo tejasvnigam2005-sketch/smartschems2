@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -36,9 +36,15 @@ export default function EligibilityPopup({ isOpen, onClose }) {
   const [data, setData] = useState({ age: '', income: '', state: '', category: '', occupation: '', gender: '', disability: false, area: '' });
   const [showSave, setShowSave] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) { setStep(0); setShowSave(false); setDir(1); }
-  }, [isOpen]);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    if (isOpen) {
+      setStep(0);
+      setShowSave(false);
+      setDir(1);
+    }
+  }
 
   const set = useCallback((k, v) => setData(d => ({ ...d, [k]: v })), []);
   const pct = Math.round((step / STEPS.length) * 100);

@@ -12,10 +12,12 @@ const {
 } = require('../utils/responseHelper');
 const { signupSchema, loginSchema, formatZodError } = require('../validators/schemas');
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: true,
-  sameSite: 'strict',
+  secure: isProd,
+  sameSite: isProd ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
@@ -102,6 +104,10 @@ async function login(req, res, next) {
     res.cookie('ss_token', data.session.access_token, COOKIE_OPTIONS);
 
     return sendSuccess(res, {
+      session: {
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+      },
       user: {
         id: data.user.id,
         name: profile?.name || data.user.user_metadata?.name || '',
@@ -236,7 +242,7 @@ async function logout(req, res, next) {
       }
     }
 
-    res.clearCookie('ss_token', { httpOnly: true, secure: true, sameSite: 'strict' });
+    res.clearCookie('ss_token', COOKIE_OPTIONS);
 
     return sendSuccess(res, null, 'Logged out successfully');
   } catch (error) {

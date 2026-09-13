@@ -1,4 +1,3 @@
-import { useState } from 'react';
 
 const TERMS_CONTENT = [
   { title: '1. Introduction', body: 'Welcome to SmartSchemes. These Terms & Conditions govern your use of our platform, which helps Indian citizens discover government schemes for business and education. By creating an account, you agree to be bound by these terms.' },

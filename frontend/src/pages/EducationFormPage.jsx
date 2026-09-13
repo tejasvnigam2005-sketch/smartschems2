@@ -19,7 +19,7 @@ export default function EducationFormPage() {
     setError('');
     try {
       const res = await getRecommendations({ category: 'education', filters: { age: +f.age, educationLevel: f.educationLevel, category: f.category, income: +f.income, fieldOfStudy: f.fieldOfStudy, state: f.state } });
-      navigate('/results', { state: { data: res.data, category: 'education' } });
+      navigate('/results', { state: { data: res.data?.data || res.data, category: 'education' } });
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to get recommendations. Try again.');
     } finally { setLoading(false); }

@@ -7,7 +7,7 @@ export function DashboardProvider({ children }) {
     try {
       const item = localStorage.getItem('smartschemes_saved');
       return item ? JSON.parse(item) : [];
-    } catch (e) {
+    } catch {
       return [];
     }
   });
@@ -16,7 +16,7 @@ export function DashboardProvider({ children }) {
     try {
       const item = localStorage.getItem('smartschemes_recent');
       return item ? JSON.parse(item) : [];
-    } catch (e) {
+    } catch {
       return [];
     }
   });
@@ -25,7 +25,7 @@ export function DashboardProvider({ children }) {
     try {
       const item = localStorage.getItem('smartschemes_progress');
       return item ? JSON.parse(item) : {};
-    } catch (e) {
+    } catch {
       return {};
     }
   });
@@ -43,24 +43,30 @@ export function DashboardProvider({ children }) {
     localStorage.setItem('smartschemes_progress', JSON.stringify(applicationProgress));
   }, [applicationProgress]);
 
+  const getId = (s) => (s ? s.id || s._id : null);
+
   // Saved Schemes API
   const saveScheme = (scheme) => {
+    const id = getId(scheme);
+    if (!id) return;
     setSavedSchemes(prev => {
-      if (prev.some(s => s._id === scheme._id)) return prev;
+      if (prev.some(s => getId(s) === id)) return prev;
       return [{ ...scheme, savedAt: new Date().toISOString() }, ...prev];
     });
   };
 
   const removeSavedScheme = (schemeId) => {
-    setSavedSchemes(prev => prev.filter(s => s._id !== schemeId));
+    setSavedSchemes(prev => prev.filter(s => getId(s) !== schemeId));
   };
 
-  const isSaved = (schemeId) => savedSchemes.some(s => s._id === schemeId);
+  const isSaved = (schemeId) => savedSchemes.some(s => getId(s) === schemeId);
 
   // Recently Viewed API
   const addRecentlyViewed = (scheme) => {
+    const id = getId(scheme);
+    if (!id) return;
     setRecentlyViewed(prev => {
-      const filtered = prev.filter(s => s._id !== scheme._id);
+      const filtered = prev.filter(s => getId(s) !== id);
       return [{ ...scheme, viewedAt: new Date().toISOString() }, ...filtered].slice(0, 10);
     });
   };

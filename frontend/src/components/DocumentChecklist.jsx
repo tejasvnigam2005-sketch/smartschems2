@@ -15,14 +15,15 @@ export default function DocumentChecklist({ schemeType, schemeId }) {
       setError(null);
       try {
         const res = await getDocumentChecklist(schemeType, schemeId);
-        setDocuments(res.data.documents || []);
+        const payload = res.data?.data || res.data;
+        setDocuments(payload.documents || []);
         
         // Load saved progress
         const saved = localStorage.getItem(storageKey);
         if (saved) {
           setCheckedItems(JSON.parse(saved));
         }
-      } catch (err) {
+      } catch {
         setError('Failed to load document checklist.');
       } finally {
         setLoading(false);

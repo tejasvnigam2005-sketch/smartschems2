@@ -97,23 +97,33 @@ export default function EligibleSchemesPage() {
   const [schemes, setSchemes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(() => {
+    try {
+      const raw = localStorage.getItem('ss_eligibility');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     const raw = localStorage.getItem('ss_eligibility');
     if (!raw) { navigate('/'); return; }
-    const data = JSON.parse(raw);
-    setProfile(data);
-
-    getEligibility(data)
-      .then(res => {
-        setSchemes(res.data.results || []);
-        setProfile(res.data.profile || data);
-      })
-      .catch(() => setError('Failed to fetch schemes. Please try again.'))
-      .finally(() => setLoading(false));
-  }, []);
+    try {
+      const data = JSON.parse(raw);
+      getEligibility(data)
+        .then(res => {
+          const payload = res.data?.data || res.data;
+          setSchemes(payload.results || []);
+          if (payload.profile) setProfile(payload.profile);
+        })
+        .catch(() => setError('Failed to fetch schemes. Please try again.'))
+        .finally(() => setLoading(false));
+    } catch {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const filtered = filter === 'all' ? schemes : schemes.filter(s => s.schemeType === filter);
   const bizCount = schemes.filter(s => s.schemeType === 'business').length;

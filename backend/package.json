@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "seed": "node data/seed.js"
+    "seed": "node data/seed.js",
+    "db:check": "node scripts/test_supabase.js",
+    "test:auth": "node scripts/test_auth.js"
   },
   "engines": {
     "node": ">=18.0.0"

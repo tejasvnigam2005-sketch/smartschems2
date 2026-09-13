@@ -18,7 +18,8 @@ function computeBusinessRelevance(scheme, filters) {
     score += Math.max(0, distanceRatio * 5);
   }
 
-  if (scheme.business_type.includes('all') || scheme.business_type.includes(filters.businessType)) {
+  const bizTypes = scheme.business_type || [];
+  if (bizTypes.includes('all') || bizTypes.includes(filters.businessType)) {
     score += 25;
   }
 
@@ -26,7 +27,8 @@ function computeBusinessRelevance(scheme, filters) {
     score += 15;
   }
 
-  if (scheme.states.includes('all') || scheme.states.includes(filters.state?.toLowerCase())) {
+  const bizStates = scheme.states || [];
+  if (bizStates.includes('all') || bizStates.includes(filters.state?.toLowerCase())) {
     score += 15;
   }
 
@@ -48,11 +50,13 @@ function computeEducationRelevance(scheme, filters) {
     score += 15;
   }
 
-  if (scheme.education_level.includes('all') || scheme.education_level.includes(filters.educationLevel)) {
+  const eduLevels = scheme.education_level || [];
+  if (eduLevels.includes('all') || eduLevels.includes(filters.educationLevel)) {
     score += 25;
   }
 
-  if (scheme.category.includes('all') || scheme.category.includes(filters.category)) {
+  const eduCategories = scheme.category || [];
+  if (eduCategories.includes('all') || eduCategories.includes(filters.category)) {
     score += 25;
   }
 
@@ -63,11 +67,13 @@ function computeEducationRelevance(scheme, filters) {
     score += Math.max(0, distanceRatio * 5);
   }
 
-  if (scheme.field_of_study.includes('all') || scheme.field_of_study.includes(filters.fieldOfStudy?.toLowerCase())) {
+  const fields = scheme.field_of_study || [];
+  if (fields.includes('all') || fields.includes(filters.fieldOfStudy?.toLowerCase())) {
     score += 10;
   }
 
-  if (scheme.states.includes('all') || scheme.states.includes(filters.state?.toLowerCase())) {
+  const eduStates = scheme.states || [];
+  if (eduStates.includes('all') || eduStates.includes(filters.state?.toLowerCase())) {
     score += 10;
   }
 

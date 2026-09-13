@@ -12,10 +12,12 @@ const { businessSchemes: localBusinessSchemes, educationSchemes: localEducationS
 
 // Normalize camelCase seed data to snake_case matching Supabase column names
 function normalizeScheme(s) {
-  // If already has snake_case keys (from Supabase), return as-is
-  if ('min_age' in s) return s;
+  const id = s.id || s._id || (s.name ? s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : undefined);
+  // If already has snake_case keys (from Supabase), ensure id exists and return as-is
+  if ('min_age' in s) return { ...s, id: s.id || id };
   return {
     ...s,
+    id,
     min_age: s.minAge,
     max_age: s.maxAge,
     min_income: s.minIncome,

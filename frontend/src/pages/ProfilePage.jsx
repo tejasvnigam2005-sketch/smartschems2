@@ -164,7 +164,7 @@ export default function ProfilePage() {
               <div style={{ background: 'var(--color-surface)', borderRadius: '16px', padding: '16px 20px', border: '1px solid var(--color-border-light)' }}>
                 <p style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Member Since</p>
                 <p style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
-                  {new Date(user.createdAt || Date.now()).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : 'Recently'}
                 </p>
               </div>
             </div>

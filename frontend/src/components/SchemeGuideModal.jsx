@@ -19,7 +19,7 @@ export default function SchemeGuideModal({ scheme, schemeType, onClose }) {
     };
   }, [onClose]);
 
-  const schemeId = scheme._id;
+  const schemeId = scheme.id || scheme._id;
 
   return (
     <>

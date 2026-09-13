@@ -1,4 +1,3 @@
-import { useState } from 'react';
 
 const PRIVACY_CONTENT = [
   { title: '1. Information We Collect', body: 'We collect information you provide directly: name, email address, and account preferences (age, income, state, category). We also collect usage data such as search history, saved schemes, and interaction patterns to improve our recommendations.' },

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const TOASTS = [
   { id: 1, type: 'new', title: 'PM Vishwakarma Yojana', desc: 'New scheme for artisans — up to ₹3 Lakh loan at 5% interest.', color: '#10B981', icon: 'M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z' },
@@ -15,10 +15,20 @@ export default function ToastNotifications() {
     } catch { return []; }
   });
 
+  const dismissToast = useCallback((id) => {
+    setVisible(prev => prev.filter(t => t.id !== id));
+    setDismissed(prev => {
+      const next = [...prev, id];
+      sessionStorage.setItem('ss_toasts_shown', JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
   useEffect(() => {
     const toShow = TOASTS.filter(t => !dismissed.includes(t.id));
     if (toShow.length === 0) return;
 
+    const timers = [];
     // Stagger the appearance
     toShow.forEach((toast, i) => {
       const showTimer = setTimeout(() => {
@@ -30,18 +40,11 @@ export default function ToastNotifications() {
         dismissToast(toast.id);
       }, 7500 + i * 2500);
 
-      return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
+      timers.push(showTimer, hideTimer);
     });
-  }, []);
 
-  const dismissToast = (id) => {
-    setVisible(prev => prev.filter(t => t.id !== id));
-    setDismissed(prev => {
-      const next = [...prev, id];
-      sessionStorage.setItem('ss_toasts_shown', JSON.stringify(next));
-      return next;
-    });
-  };
+    return () => { timers.forEach(clearTimeout); };
+  }, [dismissed, dismissToast]);
 
   if (visible.length === 0) return null;
 

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Footer from '../components/Footer';
 import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import EligibilityPopup from '../components/EligibilityPopup';
 
 const topSchemes = [
@@ -48,15 +49,11 @@ function useScrollReveal() {
   }, []);
   return ref;
 }
-import { useAuth } from '../context/AuthContext';
-
 export default function LandingPage() {
   const sectionRef = useScrollReveal();
   const navigate = useNavigate();
-  const [hoveredCard, setHoveredCard] = useState(null);
   const { t } = useLanguage();
   const { user } = useAuth();
-  const [zooming, setZooming] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
@@ -73,7 +70,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div style={{ paddingTop: '64px' }} ref={sectionRef} className={zooming ? 'page-zoom-out' : ''}>
+    <div style={{ paddingTop: '64px' }} ref={sectionRef}>
 
       {/* ── Hero Section ─────────────────── */}
       <section style={{
@@ -309,8 +306,6 @@ export default function LandingPage() {
               <div
                 key={i}
                 className="scheme-card"
-                onMouseEnter={() => setHoveredCard(i)}
-                onMouseLeave={() => setHoveredCard(null)}
                 style={{ animationDelay: `${i * 0.1}s` }}
               >
                 {/* Icon */}

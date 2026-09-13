@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { useLanguage } from '../context/LanguageContext';
 
 const plans = [
   {
@@ -86,7 +85,6 @@ const faqs = [
 ];
 
 export default function SubscriptionPage() {
-  const { t } = useLanguage();
   const [hoveredPlan, setHoveredPlan] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
   const [billingCycle, setBillingCycle] = useState('monthly');
@@ -183,7 +181,7 @@ export default function SubscriptionPage() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: '24px', maxWidth: '1000px', margin: '0 auto',
           }}>
-            {plans.map((plan, i) => {
+            {plans.map((plan) => {
               const isHovered = hoveredPlan === plan.id;
               const yearlyPrice = plan.price === '0' ? '0' : Math.round(plan.price * 12 * 0.8);
               const displayPrice = billingCycle === 'yearly' && plan.price !== '0' ? yearlyPrice : plan.price;

@@ -27,7 +27,7 @@ export default function ExploreSchemesPage() {
     setLoading(true); setError('');
     try {
       const res = await getRecommendations({ category: 'business', filters: { age: +biz.age, income: +biz.income, businessType: biz.businessType, investment: +biz.investment, state: biz.state } });
-      navigate('/results', { state: { data: res.data, category: 'business' } });
+      navigate('/results', { state: { data: res.data?.data || res.data, category: 'business' } });
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to get recommendations.');
     } finally { setLoading(false); }
@@ -38,7 +38,7 @@ export default function ExploreSchemesPage() {
     setLoading(true); setError('');
     try {
       const res = await getRecommendations({ category: 'education', filters: { age: +edu.age, educationLevel: edu.educationLevel, category: edu.category, income: +edu.income, fieldOfStudy: edu.fieldOfStudy, state: edu.state } });
-      navigate('/results', { state: { data: res.data, category: 'education' } });
+      navigate('/results', { state: { data: res.data?.data || res.data, category: 'education' } });
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to get recommendations.');
     } finally { setLoading(false); }

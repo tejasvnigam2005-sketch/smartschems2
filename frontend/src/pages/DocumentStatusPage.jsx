@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLanguage } from '../context/LanguageContext';
 
 const STATUS_CONFIG = {
   applied: { label: 'Applied', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)', icon: 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z' },
@@ -10,13 +9,9 @@ const STATUS_CONFIG = {
 };
 
 export default function DocumentStatusPage() {
-  const { t } = useLanguage();
-  const [apps, setApps] = useState([]);
-
-  useEffect(() => {
+  const [apps, setApps] = useState(() => {
     try {
       const stored = JSON.parse(localStorage.getItem('ss_doc_applications') || '[]');
-      // Simulate status progression based on time elapsed
       const updated = stored.map(app => {
         const elapsed = (Date.now() - new Date(app.appliedAt).getTime()) / (1000 * 60 * 60);
         let status = app.status;
@@ -25,10 +20,12 @@ export default function DocumentStatusPage() {
         else status = 'applied';
         return { ...app, status };
       });
-      setApps(updated);
       localStorage.setItem('ss_doc_applications', JSON.stringify(updated));
-    } catch {}
-  }, []);
+      return updated;
+    } catch {
+      return [];
+    }
+  });
 
   const updateStatus = (idx, newStatus) => {
     const updated = [...apps];

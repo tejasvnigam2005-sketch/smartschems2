@@ -18,9 +18,10 @@ export default function ApplicationGuide({ schemeType, schemeId }) {
       setError(null);
       try {
         const res = await getApplicationGuide(schemeType, schemeId);
-        setSteps(res.data.steps || []);
-        if (res.data.schemeName) {
-          setSchemeName(res.data.schemeName);
+        const payload = res.data?.data || res.data;
+        setSteps(payload.steps || []);
+        if (payload.schemeName) {
+          setSchemeName(payload.schemeName);
         }
         
         // Load saved progress
@@ -28,7 +29,7 @@ export default function ApplicationGuide({ schemeType, schemeId }) {
         if (saved) {
           setCurrentStep(parseInt(saved, 10));
         }
-      } catch (err) {
+      } catch {
         setError('Failed to load application guide.');
       } finally {
         setLoading(false);
@@ -45,7 +46,7 @@ export default function ApplicationGuide({ schemeType, schemeId }) {
     if (steps.length > 0) {
       updateProgress(schemeId, schemeName, currentStep, steps.length);
     }
-  }, [steps.length, currentStep, schemeId, schemeName]);
+  }, [steps.length, currentStep, schemeId, schemeName, updateProgress]);
 
   const goToStep = (index) => {
     if (index >= 0 && index <= steps.length) {
