@@ -1,7 +1,10 @@
 // SchemeGuide controller — handles document checklists and application step guides.
-// Uses documentHelper and schemeGuide utilities.
+// ┌─────────────────────────────────────────────────────────────┐
+// │  DATA SOURCE: MongoDB Atlas (Scheme) with local fallback    │
+// └─────────────────────────────────────────────────────────────┘
 
-const supabase = require('../config/supabase');
+const mongoose = require('mongoose');
+const Scheme = require('../models/Scheme');
 const { getRequiredDocuments } = require('../utils/documentHelper');
 const { getApplicationGuide } = require('../utils/schemeGuide');
 const {
@@ -10,12 +13,6 @@ const {
   sendNotFound,
 } = require('../utils/responseHelper');
 const { businessSchemes: localBusinessSchemes, educationSchemes: localEducationSchemes } = require('../data/schemes');
-
-function resolveTable(schemeType) {
-  if (schemeType === 'business') return 'business_schemes';
-  if (schemeType === 'education') return 'education_schemes';
-  return null;
-}
 
 function findLocalScheme(schemeType, id) {
   const list = schemeType === 'business' ? localBusinessSchemes : localEducationSchemes;
@@ -28,19 +25,18 @@ function findLocalScheme(schemeType, id) {
 async function getDocumentChecklist(req, res, next) {
   try {
     const { schemeType, id } = req.params;
-    const table = resolveTable(schemeType);
 
-    if (!table) {
+    if (!['business', 'education'].includes(schemeType)) {
       return sendBadRequest(res, 'Invalid scheme type. Use "business" or "education"');
     }
 
     let scheme = null;
-    if (supabase) {
-      try {
-        const { data, error } = await supabase.from(table).select('*').eq('id', id).single();
-        if (!error && data) scheme = data;
-      } catch {
-        // Fall back to local
+    if (mongoose.connection.readyState === 1) {
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        scheme = await Scheme.findById(id).lean();
+      }
+      if (!scheme) {
+        scheme = await Scheme.findOne({ $or: [{ slug: id }, { name: id }, { scheme_name: id }] }).lean();
       }
     }
 
@@ -52,11 +48,21 @@ async function getDocumentChecklist(req, res, next) {
       return sendNotFound(res, 'Scheme not found');
     }
 
-    const documents = getRequiredDocuments(scheme, schemeType);
+    let documents;
+    if (scheme.documents && typeof scheme.documents === 'string' && scheme.documents.trim()) {
+      documents = scheme.documents
+        .split(/[,;\n]+/)
+        .map((d) => d.trim())
+        .filter(Boolean);
+    } else if (Array.isArray(scheme.documentsRequired) && scheme.documentsRequired.length) {
+      documents = scheme.documentsRequired;
+    } else {
+      documents = getRequiredDocuments(scheme, schemeType);
+    }
 
     return sendSuccess(res, {
-      schemeId: scheme.id || id,
-      schemeName: scheme.name,
+      schemeId: scheme._id || scheme.id || id,
+      schemeName: scheme.scheme_name || scheme.name,
       schemeType,
       documents,
       totalDocuments: documents.length,
@@ -69,19 +75,18 @@ async function getDocumentChecklist(req, res, next) {
 async function getApplicationSteps(req, res, next) {
   try {
     const { schemeType, id } = req.params;
-    const table = resolveTable(schemeType);
 
-    if (!table) {
+    if (!['business', 'education'].includes(schemeType)) {
       return sendBadRequest(res, 'Invalid scheme type. Use "business" or "education"');
     }
 
     let scheme = null;
-    if (supabase) {
-      try {
-        const { data, error } = await supabase.from(table).select('*').eq('id', id).single();
-        if (!error && data) scheme = data;
-      } catch {
-        // Fall back to local
+    if (mongoose.connection.readyState === 1) {
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        scheme = await Scheme.findById(id).lean();
+      }
+      if (!scheme) {
+        scheme = await Scheme.findOne({ $or: [{ slug: id }, { name: id }, { scheme_name: id }] }).lean();
       }
     }
 
@@ -93,13 +98,24 @@ async function getApplicationSteps(req, res, next) {
       return sendNotFound(res, 'Scheme not found');
     }
 
-    const steps = getApplicationGuide(scheme);
+    let steps;
+    const rawApp = scheme.applicationProcess || scheme.application;
+    if (rawApp && typeof rawApp === 'string' && rawApp.trim()) {
+      const raw = rawApp.trim();
+      if (/step\s*\d/i.test(raw)) {
+        steps = raw.split(/step\s*\d+\s*:\s*/i).filter(Boolean).map((s) => s.trim());
+      } else {
+        steps = raw.split(/\.\s+/).filter(Boolean).map((s) => s.trim() + (s.endsWith('.') ? '' : '.'));
+      }
+    } else {
+      steps = getApplicationGuide(scheme);
+    }
 
     return sendSuccess(res, {
-      schemeId: scheme.id || id,
-      schemeName: scheme.name,
+      schemeId: scheme._id || scheme.id || id,
+      schemeName: scheme.scheme_name || scheme.name,
       schemeType,
-      website: scheme.website || '',
+      website: scheme.officialUrl || scheme.website || '',
       deadline: scheme.deadline || 'Ongoing',
       steps,
       totalSteps: steps.length,

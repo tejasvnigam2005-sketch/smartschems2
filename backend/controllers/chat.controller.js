@@ -1,7 +1,12 @@
 // Chat controller — handles AI chat with Gemini and rule-based fallback.
-// All business logic extracted from routes/chat.js.
+// ┌──────────────────────────────────────────────────┐
+// │  SCHEME DATA:   MongoDB Atlas  (Scheme collection)  │
+// │  Supabase is NOT used here.                         │
+// │  Auth is handled by the auth middleware in routes.  │
+// └──────────────────────────────────────────────────┘
 
-const supabase = require('../config/supabase');
+const mongoose = require('mongoose');
+const Scheme = require('../models/Scheme');
 const logger = require('../utils/logger');
 const { sendSuccess, sendBadRequest, sendServiceUnavailable } = require('../utils/responseHelper');
 const { chatSchema, formatZodError } = require('../validators/schemas');
@@ -22,11 +27,16 @@ try {
   logger.error('Chat', 'Failed to initialize Gemini', { error: initErr.message });
 }
 
+// Build scheme context from MongoDB Atlas for Gemini prompt
 async function getSchemeContext() {
-  const { data: biz } = await supabase.from('business_schemes').select('name, description, benefits, eligibility, application_process, funding_amount, ministry, website').eq('is_active', true).limit(8);
-  const { data: edu } = await supabase.from('education_schemes').select('name, description, benefits, eligibility, application_process, funding_amount, ministry, website').eq('is_active', true).limit(8);
-  const schemes = [...(biz || []), ...(edu || [])];
-  return schemes.map((s) => `- ${s.name}: ${s.description?.slice(0, 150)}. Funding: ${s.funding_amount || 'N/A'}. Ministry: ${s.ministry || 'N/A'}.`).join('\n');
+  const schemes = await Scheme.find()
+    .select('scheme_name details benefits schemeCategory level tags')
+    .limit(16)
+    .lean();
+
+  return schemes
+    .map((s) => `- ${s.scheme_name}: ${(s.details || '').slice(0, 150)}. Category: ${s.schemeCategory || 'N/A'}. Level: ${s.level || 'N/A'}.`)
+    .join('\n');
 }
 
 async function geminiChat(message, language, userProfile, schemeContext) {
@@ -53,7 +63,7 @@ ${schemeContext}`;
   return result.response.text();
 }
 
-async function ruleBasedChat(message, language, userProfile) {
+async function ruleBasedChat(message, language) {
   const lower = message.toLowerCase();
   const isHi = language === 'hi';
 
@@ -69,30 +79,30 @@ async function ruleBasedChat(message, language, userProfile) {
     return { text: isHi ? '📄 दस्तावेज़:\n• आधार कार्ड\n• पैन कार्ड\n• आय प्रमाण पत्र\n• बैंक पासबुक' : '📄 Common documents:\n• Aadhaar Card\n• PAN Card\n• Income Certificate\n• Bank Passbook\n\nAsk about a specific scheme!', suggestions: ['Find schemes', 'How to apply'] };
   }
 
+  // Search schemes by keyword in MongoDB Atlas
   const words = lower.split(/\s+/).filter((w) => w.length > 3);
   for (const word of words) {
-    const { data: biz } = await supabase.from('business_schemes').select('*').ilike('name', `%${word}%`).limit(1);
-    const { data: edu } = await supabase.from('education_schemes').select('*').ilike('name', `%${word}%`).limit(1);
-    const scheme = biz?.[0] || edu?.[0];
+    const scheme = await Scheme.findOne({
+      scheme_name: { $regex: word, $options: 'i' },
+    }).lean();
+
     if (scheme) {
       const isApply = ['apply', 'kaise', 'process', 'register', 'how'].some((p) => lower.includes(p));
       let text;
-      if (isApply && scheme.application_process?.length) {
-        text = '📋 **How to apply for ' + scheme.name + ':**\n\n' + scheme.application_process.map((s, i) => (i + 1) + '. ' + s).join('\n') + '\n\n🌐 Website: ' + (scheme.website || 'N/A');
+      if (isApply && scheme.application) {
+        text = '📋 **How to apply for ' + scheme.scheme_name + ':**\n\n' + scheme.application + '\n\n🌐 Documents: ' + (scheme.documents || 'N/A');
       } else {
-        text = '🏛️ **' + scheme.name + '**\n\n' + scheme.description + '\n\n💰 Funding: ' + (scheme.funding_amount || 'N/A') + '\n\n✅ Eligibility:\n' + (scheme.eligibility || []).map((e) => '• ' + e).join('\n') + '\n\n🎁 Benefits:\n' + (scheme.benefits || []).map((b) => '• ' + b).join('\n');
+        text = '🏛️ **' + scheme.scheme_name + '**\n\n' + (scheme.details || '').slice(0, 300) + '\n\n✅ Eligibility:\n' + (scheme.eligibility || 'N/A') + '\n\n🎁 Benefits:\n' + (scheme.benefits || 'N/A');
       }
-      return { text, schemes: [{ id: scheme.id, name: scheme.name, funding: scheme.funding_amount, website: scheme.website }], suggestions: ['How to apply', 'Documents needed', 'Find more schemes'] };
+      return { text, schemes: [{ id: scheme._id, name: scheme.scheme_name, category: scheme.schemeCategory }], suggestions: ['How to apply', 'Documents needed', 'Find more schemes'] };
     }
   }
 
-  const age = userProfile?.age || 25;
-  const { data: b } = await supabase.from('business_schemes').select('*').eq('is_active', true).lte('min_age', age).gte('max_age', age).limit(4);
-  const { data: e } = await supabase.from('education_schemes').select('*').eq('is_active', true).lte('min_age', age).gte('max_age', age).limit(4);
-  const all = [...(b || []), ...(e || [])].slice(0, 4);
+  // Fallback: show random schemes from MongoDB Atlas
+  const all = await Scheme.find().limit(4).lean();
   if (all.length > 0) {
-    const list = all.map((s, i) => (i + 1) + '. **' + s.name + '**\n   💰 ' + (s.funding_amount || 'Varies')).join('\n\n');
-    return { text: (isHi ? '🎯 ये योजनाएं आपके लिए:\n\n' : '🎯 Schemes for you:\n\n') + list, schemes: all.map((s) => ({ id: s.id, name: s.name, funding: s.funding_amount, website: s.website })), suggestions: all.slice(0, 2).map((s) => 'About ' + s.name.split('(')[0].trim()) };
+    const list = all.map((s, i) => (i + 1) + '. **' + s.scheme_name + '**\n   📂 ' + (s.schemeCategory || 'General')).join('\n\n');
+    return { text: (isHi ? '🎯 ये योजनाएं आपके लिए:\n\n' : '🎯 Schemes for you:\n\n') + list, schemes: all.map((s) => ({ id: s._id, name: s.scheme_name, category: s.schemeCategory })), suggestions: all.slice(0, 2).map((s) => 'About ' + s.scheme_name.split('(')[0].trim()) };
   }
 
   return { text: isHi ? '🤖 योजना का नाम बताएं या "Find schemes" कहें।' : '🤖 Tell me a scheme name or say "Find schemes for me"!', suggestions: ['Find schemes for me', 'How to apply', 'Documents needed'] };
@@ -100,8 +110,8 @@ async function ruleBasedChat(message, language, userProfile) {
 
 async function chat(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
+    if (mongoose.connection.readyState !== 1) {
+      return sendServiceUnavailable(res, 'Database not connected');
     }
 
     const parsed = chatSchema.safeParse(req.body);
@@ -122,10 +132,10 @@ async function chat(req, res, next) {
         response.suggestions = ['Find schemes', 'Check eligibility', 'Documents needed', 'How to apply'];
       } catch (aiErr) {
         logger.warn('Chat', 'Gemini error, falling back to rule-based', { error: aiErr.message?.slice(0, 100) });
-        response = await ruleBasedChat(message, language, userProfile);
+        response = await ruleBasedChat(message, language);
       }
     } else {
-      response = await ruleBasedChat(message, language, userProfile);
+      response = await ruleBasedChat(message, language);
     }
 
     return sendSuccess(res, response, 'Chat response generated');

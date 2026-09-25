@@ -14,9 +14,14 @@ const API = axios.create({
   withCredentials: true,
 });
 
-// Response interceptor — handle errors globally
+// Response interceptor — unwrap standard { success, data, message } response envelope
 API.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.data && response.data.success === true && response.data.hasOwnProperty('data')) {
+      response.data = response.data.data;
+    }
+    return response;
+  },
   (error) => {
     return Promise.reject(error);
   }

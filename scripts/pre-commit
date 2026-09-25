@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# ──────────────────────────────────────────────────────────────
+# pre-commit hook — Scans staged files for leaked secrets.
+# Zero dependencies: uses only grep + bash builtins.
+#
+# Detects:
+#   • AWS Access Key IDs         (AKIA[0-9A-Z]{16})
+#   • AWS Secret Access Keys     (40-char base64 following common assignment patterns)
+#   • Generic high-entropy keys  (long base64/hex tokens assigned to secret-like variables)
+#   • Private keys               (-----BEGIN .* PRIVATE KEY-----)
+#   • .env files being committed (should always be gitignored)
+#
+# Install:  bash scripts/install-hooks.sh
+# Bypass:   git commit --no-verify  (USE WITH CAUTION)
+# ──────────────────────────────────────────────────────────────
+set -euo pipefail
+
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+FOUND=0
+
+# ── 1. Block .env files (except .env.example) ────────────────
+ENV_FILES=$(git diff --cached --name-only | grep -E '\.env($|\.)' | grep -v '\.env\.example$' || true)
+if [ -n "$ENV_FILES" ]; then
+  echo -e "${RED}🚨  BLOCKED: .env file(s) staged for commit:${NC}"
+  echo "$ENV_FILES" | while read -r f; do echo "    $f"; done
+  FOUND=1
+fi
+
+# ── 2. Block private key files ────────────────────────────────
+KEY_FILES=$(git diff --cached --name-only | grep -iE '\.(pem|key|p12|pfx|jks|keystore)$' || true)
+if [ -n "$KEY_FILES" ]; then
+  echo -e "${RED}🚨  BLOCKED: Private key / certificate file(s) staged:${NC}"
+  echo "$KEY_FILES" | while read -r f; do echo "    $f"; done
+  FOUND=1
+fi
+
+# ── 3. Scan staged content for secret patterns ───────────────
+# Get staged diff content (only additions)
+STAGED_DIFF=$(git diff --cached --diff-filter=ACMR -U0 -- '*.js' '*.ts' '*.json' '*.yaml' '*.yml' '*.toml' '*.cfg' '*.conf' '*.sh' '*.md' 2>/dev/null || true)
+
+if [ -n "$STAGED_DIFF" ]; then
+
+  # AWS Access Key ID (starts with AKIA, 20 chars total)
+  if echo "$STAGED_DIFF" | grep -qE 'AKIA[0-9A-Z]{16}'; then
+    echo -e "${RED}🚨  BLOCKED: AWS Access Key ID pattern detected in staged changes.${NC}"
+    echo "$STAGED_DIFF" | grep -nE 'AKIA[0-9A-Z]{16}' | head -5 | while read -r line; do
+      echo -e "    ${YELLOW}$line${NC}"
+    done
+    FOUND=1
+  fi
+
+  # AWS Secret Access Key pattern (40-char base64 near key-like variable names)
+  if echo "$STAGED_DIFF" | grep -qiE '(secret.?access.?key|aws.?secret)[[:space:]]*[:=][[:space:]]*["\x27]?[A-Za-z0-9/+=]{40}'; then
+    echo -e "${RED}🚨  BLOCKED: AWS Secret Access Key pattern detected in staged changes.${NC}"
+    FOUND=1
+  fi
+
+  # Generic secret assignment (key, secret, password, token with long values)
+  if echo "$STAGED_DIFF" | grep -qiE '^\+.*(password|secret|api_key|apikey|private_key|access_token)[[:space:]]*[:=][[:space:]]*["\x27][A-Za-z0-9/+=_-]{20,}["\x27]'; then
+    echo -e "${RED}🚨  BLOCKED: Hardcoded secret/token pattern detected in staged changes.${NC}"
+    echo "$STAGED_DIFF" | grep -iE '^\+.*(password|secret|api_key|apikey|private_key|access_token)[[:space:]]*[:=][[:space:]]*["\x27][A-Za-z0-9/+=_-]{20,}["\x27]' | head -5 | while read -r line; do
+      echo -e "    ${YELLOW}$line${NC}"
+    done
+    FOUND=1
+  fi
+
+  # PEM private key headers
+  if echo "$STAGED_DIFF" | grep -q 'BEGIN.*PRIVATE KEY'; then
+    echo -e "${RED}🚨  BLOCKED: Private key content detected in staged changes.${NC}"
+    FOUND=1
+  fi
+
+  # MongoDB connection strings with credentials
+  if echo "$STAGED_DIFF" | grep -qE '^\+.*mongodb\+srv://[^:]+:[^@]+@'; then
+    echo -e "${RED}🚨  BLOCKED: MongoDB connection string with credentials detected.${NC}"
+    FOUND=1
+  fi
+
+fi
+
+# ── Verdict ───────────────────────────────────────────────────
+if [ "$FOUND" -ne 0 ]; then
+  echo ""
+  echo -e "${RED}❌  Commit aborted. Remove secrets from staged files before committing.${NC}"
+  echo -e "    Use ${YELLOW}git commit --no-verify${NC} to bypass (NOT recommended)."
+  exit 1
+fi
+
+exit 0

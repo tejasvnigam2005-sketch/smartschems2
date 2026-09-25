@@ -1,13 +1,29 @@
 # Dependencies
 node_modules/
 
-# Environment variables
+# Environment variables — catch ALL .env variants
 .env
-.env.local
-.env.production
+.env.*
+!.env.example
+
+# Secrets, credentials, and private keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*credentials*
+*secrets*
+*.secret
+config/aws.*
+!config/aws.js
 
 # Build output
 frontend/dist/
+
+# Uploaded user data
+backend/data/uploads/
 
 # OS files
 .DS_Store

@@ -1,14 +1,38 @@
-// Scheme controller — handles listing and retrieving business/education schemes.
-// All business logic extracted from routes/businessSchemes.js and educationSchemes.js.
+// Scheme controller — handles listing, searching, and retrieving schemes.
+// ┌──────────────────────────────────────────────────┐
+// │  DATA SOURCE: MongoDB Atlas  (Scheme collection) │
+// │  Supabase is NOT used here.                      │
+// └──────────────────────────────────────────────────┘
 
-const supabase = require('../config/supabase');
+const mongoose = require('mongoose');
+const Scheme = require('../models/Scheme');
 const { sendSuccess, sendBadRequest, sendNotFound, sendServiceUnavailable } = require('../utils/responseHelper');
 const { paginationSchema, formatZodError } = require('../validators/schemas');
 
+// ── Helpers ──────────────────────────────────
+
+function isMongoReady() {
+  return mongoose.connection.readyState === 1;
+}
+
+// Escapes regex metacharacters in user input to prevent ReDoS attacks.
+// Without this, crafted input like "(a+)+$" could hang the event loop.
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function buildCategoryRegex(keyword, { escape = false } = {}) {
+  // Matches a schemeCategory field that contains the keyword (case-insensitive)
+  const pattern = escape ? escapeRegex(keyword) : keyword;
+  return new RegExp(pattern, 'i');
+}
+
+// ── Business Schemes ─────────────────────────
+
 async function getBusinessSchemes(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
+    if (!isMongoReady()) {
+      return sendServiceUnavailable(res, 'Database not connected');
     }
 
     const parsed = paginationSchema.safeParse(req.query);
@@ -16,29 +40,34 @@ async function getBusinessSchemes(req, res, next) {
       return sendBadRequest(res, formatZodError(parsed.error));
     }
 
-    const { businessType, state } = req.query;
     const { page: pageNum, limit: limitNum } = parsed.data;
-    const offset = (pageNum - 1) * limitNum;
+    const skip = (pageNum - 1) * limitNum;
+    const { search, state } = req.query;
 
-    let query = supabase
-      .from('business_schemes')
-      .select('*', { count: 'exact' })
-      .eq('is_active', true);
+    // Filter: schemeCategory contains "Business" or "Entrepreneurship"
+    const filter = {
+      schemeCategory: buildCategoryRegex('Business|Entrepreneurship'),
+    };
 
-    if (businessType) query = query.contains('business_type', [businessType]);
-    if (state) query = query.contains('states', [state.toLowerCase()]);
+    if (state && state !== 'all') {
+      filter.level = new RegExp(escapeRegex(state), 'i');
+    }
 
-    query = query.order('created_at', { ascending: false }).range(offset, offset + limitNum - 1);
+    if (search) {
+      filter.$text = { $search: search };
+    }
 
-    const { data, count, error } = await query;
-    if (error) throw error;
+    const [schemes, total] = await Promise.all([
+      Scheme.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limitNum).lean(),
+      Scheme.countDocuments(filter),
+    ]);
 
     return sendSuccess(res, {
-      schemes: data || [],
+      schemes,
       pagination: {
-        total: count || 0,
+        total,
         page: pageNum,
-        pages: Math.ceil((count || 0) / limitNum),
+        pages: Math.ceil(total / limitNum),
       },
     }, 'Business schemes retrieved');
   } catch (error) {
@@ -48,30 +77,32 @@ async function getBusinessSchemes(req, res, next) {
 
 async function getBusinessSchemeById(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
+    if (!isMongoReady()) {
+      return sendServiceUnavailable(res, 'Database not connected');
     }
 
-    const { data, error } = await supabase
-      .from('business_schemes')
-      .select('*')
-      .eq('id', req.params.id)
-      .single();
-
-    if (error || !data) {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return sendNotFound(res, 'Business scheme not found');
     }
 
-    return sendSuccess(res, data, 'Business scheme retrieved');
+    const scheme = await Scheme.findById(id).lean();
+    if (!scheme) {
+      return sendNotFound(res, 'Business scheme not found');
+    }
+
+    return sendSuccess(res, scheme, 'Business scheme retrieved');
   } catch (error) {
     next(error);
   }
 }
 
+// ── Education Schemes ────────────────────────
+
 async function getEducationSchemes(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
+    if (!isMongoReady()) {
+      return sendServiceUnavailable(res, 'Database not connected');
     }
 
     const parsed = paginationSchema.safeParse(req.query);
@@ -79,30 +110,34 @@ async function getEducationSchemes(req, res, next) {
       return sendBadRequest(res, formatZodError(parsed.error));
     }
 
-    const { educationLevel, category, state } = req.query;
     const { page: pageNum, limit: limitNum } = parsed.data;
-    const offset = (pageNum - 1) * limitNum;
+    const skip = (pageNum - 1) * limitNum;
+    const { search, state } = req.query;
 
-    let query = supabase
-      .from('education_schemes')
-      .select('*', { count: 'exact' })
-      .eq('is_active', true);
+    // Filter: schemeCategory contains "Education" or "Learning"
+    const filter = {
+      schemeCategory: buildCategoryRegex('Education|Learning'),
+    };
 
-    if (educationLevel) query = query.contains('education_level', [educationLevel]);
-    if (category) query = query.contains('category', [category]);
-    if (state) query = query.contains('states', [state.toLowerCase()]);
+    if (state && state !== 'all') {
+      filter.level = new RegExp(state, 'i');
+    }
 
-    query = query.order('created_at', { ascending: false }).range(offset, offset + limitNum - 1);
+    if (search) {
+      filter.$text = { $search: search };
+    }
 
-    const { data, count, error } = await query;
-    if (error) throw error;
+    const [schemes, total] = await Promise.all([
+      Scheme.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limitNum).lean(),
+      Scheme.countDocuments(filter),
+    ]);
 
     return sendSuccess(res, {
-      schemes: data || [],
+      schemes,
       pagination: {
-        total: count || 0,
+        total,
         page: pageNum,
-        pages: Math.ceil((count || 0) / limitNum),
+        pages: Math.ceil(total / limitNum),
       },
     }, 'Education schemes retrieved');
   } catch (error) {
@@ -112,21 +147,98 @@ async function getEducationSchemes(req, res, next) {
 
 async function getEducationSchemeById(req, res, next) {
   try {
-    if (!supabase) {
-      return sendServiceUnavailable(res, 'Database not configured');
+    if (!isMongoReady()) {
+      return sendServiceUnavailable(res, 'Database not connected');
     }
 
-    const { data, error } = await supabase
-      .from('education_schemes')
-      .select('*')
-      .eq('id', req.params.id)
-      .single();
-
-    if (error || !data) {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return sendNotFound(res, 'Education scheme not found');
     }
 
-    return sendSuccess(res, data, 'Education scheme retrieved');
+    const scheme = await Scheme.findById(id).lean();
+    if (!scheme) {
+      return sendNotFound(res, 'Education scheme not found');
+    }
+
+    return sendSuccess(res, scheme, 'Education scheme retrieved');
+  } catch (error) {
+    next(error);
+  }
+}
+
+// ── All Schemes (search across 3400+ schemes) ───
+
+async function getAllSchemes(req, res, next) {
+  try {
+    if (!isMongoReady()) {
+      return sendServiceUnavailable(res, 'Database not connected');
+    }
+
+    const parsed = paginationSchema.safeParse(req.query);
+    if (!parsed.success) {
+      return sendBadRequest(res, formatZodError(parsed.error));
+    }
+
+    const { page: pageNum, limit: limitNum } = parsed.data;
+    const skip = (pageNum - 1) * limitNum;
+    const { search, level, category } = req.query;
+
+    const filter = {};
+
+    if (search) {
+      filter.$text = { $search: search };
+    }
+
+    if (level && level !== 'all') {
+      filter.level = new RegExp(`^${escapeRegex(level)}$`, 'i');
+    }
+
+    if (category && category !== 'all') {
+      filter.schemeCategory = buildCategoryRegex(category, { escape: true });
+    }
+
+    const sortBy = search
+      ? { score: { $meta: 'textScore' }, createdAt: -1 }
+      : { createdAt: -1 };
+
+    const projection = search ? { score: { $meta: 'textScore' } } : {};
+
+    const [schemes, total] = await Promise.all([
+      Scheme.find(filter, projection).sort(sortBy).skip(skip).limit(limitNum).lean(),
+      Scheme.countDocuments(filter),
+    ]);
+
+    return sendSuccess(res, {
+      schemes,
+      pagination: {
+        total,
+        page: pageNum,
+        pages: Math.ceil(total / limitNum),
+      },
+    }, 'Schemes retrieved');
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getSchemeById(req, res, next) {
+  try {
+    if (!isMongoReady()) {
+      return sendServiceUnavailable(res, 'Database not connected');
+    }
+
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return sendNotFound(res, 'Scheme not found');
+    }
+
+    const scheme = await Scheme.findById(id).lean();
+    if (!scheme) {
+      return sendNotFound(res, 'Scheme not found');
+    }
+
+    return sendSuccess(res, scheme, 'Scheme retrieved');
   } catch (error) {
     next(error);
   }
@@ -137,4 +249,6 @@ module.exports = {
   getBusinessSchemeById,
   getEducationSchemes,
   getEducationSchemeById,
+  getAllSchemes,
+  getSchemeById,
 };

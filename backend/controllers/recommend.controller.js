@@ -1,16 +1,21 @@
 // Recommend controller — handles scheme recommendation and eligibility scoring.
-// Uses the relevance engine and document helper utilities.
-// Falls back to local seed data when Supabase is unavailable.
+// ┌──────────────────────────────────────────────────────────┐
+// │  SCHEME DATA:   MongoDB Atlas  (BusinessScheme / EducationScheme) │
+// │  USER PROFILE:  Supabase       (profiles table — auth only)      │
+// └──────────────────────────────────────────────────────────┘
 
+const mongoose = require('mongoose');
 const supabase = require('../config/supabase');
 const logger = require('../utils/logger');
+const BusinessScheme = require('../models/BusinessScheme');
+const EducationScheme = require('../models/EducationScheme');
 const { computeBusinessRelevance, computeEducationRelevance } = require('../utils/relevanceEngine');
 const { getRequiredDocuments } = require('../utils/documentHelper');
 const { sendSuccess, sendBadRequest, sendServiceUnavailable } = require('../utils/responseHelper');
 const { eligibilitySchema, recommendSchema, formatZodError } = require('../validators/schemas');
 const { businessSchemes: localBusinessSchemes, educationSchemes: localEducationSchemes } = require('../data/schemes');
 
-// Normalize camelCase seed data to snake_case matching Supabase column names
+// Normalize camelCase seed data to snake_case matching model field names
 function normalizeScheme(s) {
   const id = s.id || s._id || (s.name ? s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : undefined);
   // If already has snake_case keys (from Supabase), ensure id exists and return as-is
@@ -34,16 +39,39 @@ function normalizeScheme(s) {
   };
 }
 
-// Helper: fetch schemes from Supabase, fall back to local seed data
-async function fetchSchemes(table, localData) {
-  if (!supabase) return localData.map(normalizeScheme);
+// Helper: fetch structured schemes from MongoDB Atlas, fall back to local data
+async function fetchBusinessSchemes() {
+  if (mongoose.connection.readyState !== 1) {
+    logger.warn('Recommend', 'MongoDB not connected, using local business data');
+    return localBusinessSchemes.map(normalizeScheme);
+  }
   try {
-    const { data, error } = await supabase.from(table).select('*').eq('is_active', true);
-    if (error) throw error;
-    return data && data.length > 0 ? data : localData.map(normalizeScheme);
+    const data = await BusinessScheme.find().lean();
+    if (data && data.length > 0) {
+      // Map Mongoose camelCase fields to snake_case for the relevance engine
+      return data.map((s) => normalizeScheme(s));
+    }
+    return localBusinessSchemes.map(normalizeScheme);
   } catch (err) {
-    logger.warn('Recommend', `Supabase unavailable for ${table}, using local data`, { error: err.message });
-    return localData.map(normalizeScheme);
+    logger.warn('Recommend', 'MongoDB query failed for business schemes, using local data', { error: err.message });
+    return localBusinessSchemes.map(normalizeScheme);
+  }
+}
+
+async function fetchEducationSchemes() {
+  if (mongoose.connection.readyState !== 1) {
+    logger.warn('Recommend', 'MongoDB not connected, using local education data');
+    return localEducationSchemes.map(normalizeScheme);
+  }
+  try {
+    const data = await EducationScheme.find().lean();
+    if (data && data.length > 0) {
+      return data.map((s) => normalizeScheme(s));
+    }
+    return localEducationSchemes.map(normalizeScheme);
+  } catch (err) {
+    logger.warn('Recommend', 'MongoDB query failed for education schemes, using local data', { error: err.message });
+    return localEducationSchemes.map(normalizeScheme);
   }
 }
 
@@ -65,13 +93,13 @@ async function recommend(req, res, next) {
     let scoredSchemes = [];
 
     if (category === 'business') {
-      const schemes = await fetchSchemes('business_schemes', localBusinessSchemes);
+      const schemes = await fetchBusinessSchemes();
       scoredSchemes = schemes.map((scheme) => ({
         ...scheme,
         relevanceScore: computeBusinessRelevance(scheme, filters),
       }));
     } else if (category === 'education') {
-      const schemes = await fetchSchemes('education_schemes', localEducationSchemes);
+      const schemes = await fetchEducationSchemes();
       scoredSchemes = schemes.map((scheme) => ({
         ...scheme,
         relevanceScore: computeEducationRelevance(scheme, filters),
@@ -110,7 +138,7 @@ async function checkEligibility(req, res, next) {
     const numIncome = income;
     const stateVal = state.toLowerCase();
 
-    // Optionally save preferences if user is authenticated
+    // Optionally save preferences to Supabase profile (auth concern only)
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (token && supabase) {
       try {
@@ -128,13 +156,14 @@ async function checkEligibility(req, res, next) {
           }).eq('id', user.id);
         }
       } catch (profileError) {
-        logger.warn('Recommend', 'Failed to save profile preferences', { error: profileError.message });
+        logger.warn('Recommend', 'Failed to save profile preferences to Supabase', { error: profileError.message });
       }
     }
 
     const results = [];
 
-    const bizData = await fetchSchemes('business_schemes', localBusinessSchemes);
+    // Fetch scheme data from MongoDB Atlas
+    const bizData = await fetchBusinessSchemes();
     for (const s of bizData) {
       const score = computeBusinessRelevance(s, {
         age: numAge,
@@ -153,7 +182,7 @@ async function checkEligibility(req, res, next) {
       }
     }
 
-    const eduData = await fetchSchemes('education_schemes', localEducationSchemes);
+    const eduData = await fetchEducationSchemes();
     for (const s of eduData) {
       const score = computeEducationRelevance(s, {
         age: numAge,

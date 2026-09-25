@@ -13,6 +13,12 @@ const errorMiddleware = require('./middlewares/error.middleware');
 dotenv.config();
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 
+// ── MongoDB Atlas connection (scheme data) ───
+const connectMongoDB = require('./config/mongodb');
+connectMongoDB().catch((err) => {
+  logger.error('Server', `MongoDB connection failed: ${err.message}`);
+});
+
 logger.info('Server', `Environment: ${process.env.NODE_ENV}`);
 
 const app = express();
@@ -81,12 +87,21 @@ const generalLimiter = rateLimit({
 
 // ── Routes ───────────────────────────────────
 app.use('/api', generalLimiter);
+
+// Auth routes — Supabase (user identity, profiles, preferences)
 app.use('/api/auth', authLimiter, require('./routes/auth.routes'));
-app.use('/api/recommend', require('./routes/recommend.routes'));
-app.use('/api/business-schemes', require('./routes/businessSchemes.routes'));
-app.use('/api/education-schemes', require('./routes/educationSchemes.routes'));
-app.use('/api/scheme-guide', require('./routes/schemeGuide.routes'));
-app.use('/api/chat', chatLimiter, require('./routes/chat.routes'));
+
+// Scheme routes — MongoDB Atlas (all scheme data)
+// ensureMongo middleware guarantees the DB connection is ready before handlers run
+const ensureMongo = require('./middlewares/ensureMongo');
+app.use('/api/schemes', ensureMongo, require('./routes/schemes.routes'));               // All 3400+ schemes
+app.use('/api/business-schemes', ensureMongo, require('./routes/businessSchemes.routes')); // Business category filter
+app.use('/api/education-schemes', ensureMongo, require('./routes/educationSchemes.routes')); // Education category filter
+app.use('/api/recommend', ensureMongo, require('./routes/recommend.routes'));             // Recommendation engine
+app.use('/api/scheme-guide', ensureMongo, require('./routes/schemeGuide.routes'));        // Document & application guides
+app.use('/api/chat', chatLimiter, ensureMongo, require('./routes/chat.routes'));          // AI chat (scheme context from MongoDB)
+app.use('/api/upload', authLimiter, require('./routes/upload.routes'));                    // Secure file uploads (profile photos)
+app.use('/api/admin', ensureMongo, require('./ingestion/routes/adminIngestion.routes'));      // Government scheme ingestion pipeline
 
 // Health check
 app.get('/api/health', (_req, res) => {
