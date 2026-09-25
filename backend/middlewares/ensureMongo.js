@@ -11,6 +11,8 @@ async function ensureMongo(req, res, next) {
     await connectMongoDB();
     next();
   } catch (err) {
+    const logger = require('../utils/logger');
+    logger.error('ensureMongo', `Database connection failed: ${err.message}`);
     return sendServiceUnavailable(res, 'Database connection failed');
   }
 }
